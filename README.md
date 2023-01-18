@@ -35,8 +35,11 @@ A real-time messaging app built with React, Next.js, Express, Node.js, TypeScrip
 Open the project folder in the integrated development (IDE) environment of your choice.
 
 2. Run the following in the root folder:
+
 `$ npm install`
+
 `$ npm run dev`
+
 This will start the back-end and front-end together
 
 3. Finally navigate too http://localhost:3000 in your browser or https://messaging-app.herokuapp.com/ if you wish to see the deployed version
