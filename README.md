@@ -5,12 +5,12 @@ A real-time messaging app built with React, Next.js, Express, Node.js, TypeScrip
 ## Contents
 
 - [Messaging App](#messaging-app)
-  -[Contents](#contents)
-  -[Main Features](#main-features)
-  -[Technology Stack](#technology-stack)
-  -[Prerequisites](#prerequisites)
-  -[Setup Guide](#setup-guide)
-
+  - [Contents](#contents)
+  - [Main Features](#main-features)
+  - [Technology Stack](#technology-stack)
+  - [Prerequisites](#prerequisites)
+  - [Setup Guide](#setup-guide)
+  
 ## Main Features
 **TBA**
 
