@@ -14,14 +14,14 @@ export default function Input(props: any) {
         Password
       </label>
 
-      <div className="w-full flex space-x-1 items-center">
+      <div className="w-full flex space-x-2.5 items-center">
         <input
           type={passwordShow ? "text" : props.type}
           autoComplete="off"
           placeholder={props.placeholder}
           maxLength={64}
           required
-          className="w-full px-3 py-2.5 text-sm leading-tight border rounded-lg focus:outline-blue-500 text-gray-400"
+          className="w-full px-3 py-2.5 text-sm leading-tight border rounded-lg focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-500 text-gray-400"
         />
 
         {/* Attribution: https://fontawesome.com/icons/eye?s=solid&f=classic */}
@@ -47,7 +47,7 @@ export default function Input(props: any) {
         placeholder={props.placeholder}
         required
         maxLength={50}
-        className="w-full px-3 py-2.5 mb-3 text-sm leading-tight border rounded-lg focus:outline-blue-500 text-gray-400"
+        className="w-full px-3 py-2.5 mb-3 text-sm leading-tight border rounded-lg focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-500 text-gray-400"
       />
     </div>
   );
