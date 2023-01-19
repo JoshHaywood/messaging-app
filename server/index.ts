@@ -1,22 +1,22 @@
-const express = require("express");
-const next = require("next");
+import express, { Express, Request, Response } from "express";
+import next from "next";
 const PORT = process.env.PORT || 3000;
-const bodyParser = require("body-parser");
+import bodyParser from "body-parser";
 
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
 app.prepare().then(() => {
-  const server = express();
+  const server: Express = express();
 
   // Body parser
   server.use(bodyParser.json());
   server.use(bodyParser.urlencoded({ extended: true }));
 
   // Next.js build serve
-  server.get("*", (req, res) => {
-    handle(req, res);
+  server.get("*", (req: Request, res: Response) => {
+    return handle(req, res);
   });
 
   // Server port
