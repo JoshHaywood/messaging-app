@@ -14,7 +14,7 @@ export default function Index() {
       </Head>
 
       <div className="w-screen h-screen flex justify-center items-center">
-        <div className="w-auto flex flex-col justify-center p-5 sm:p-12 shadow-lg bg-white">
+        <div className="w-full sm:w-auto flex flex-col justify-center mx-5 sm:mx-0 p-5 sm:p-12 shadow-lg bg-white">
           {/* Heading */}
           <div className="pt-4 mb-4 mx-auto">
             <Image src={logo} alt="logo" width={75} height={75} />
@@ -25,7 +25,7 @@ export default function Index() {
           <div className="text-center tracking-wide text-gray-400">Sign into your account</div>
 
           {/* Registration form */}
-          <form className="sm:mx-auto sm:w-[400px] py-8">
+          <form className="sm:w-[400px] py-8">
             {/* Email */}
             <Input label="Email Address" type="email" placeholder="email@email.com" />
 
@@ -62,4 +62,4 @@ export default function Index() {
       </div>
     </>
   );
-}
+};
