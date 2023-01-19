@@ -65,7 +65,7 @@ export default function Index() {
 
             <div className="text-center">
               <div className="inline-block tracking-wide text-sm text-gray-400">
-                Don't have an account yet?{" "}
+                Don&apos;t have an account yet?{" "}
                 <Link
                   className="inline-block text-sm text-cyan-1000 align-baseline text-blue-500 hover:text-blue-700 hover:underline"
                   href="/register"
