@@ -58,6 +58,7 @@ typings
 
 # Next.js specific
 .next
+next-env.d.ts
 
 # Serverless directories
 .serverless
