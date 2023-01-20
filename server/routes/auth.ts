@@ -4,19 +4,20 @@ const router = express.Router();
 const db = require("../config/db");
 const { HashPassword, salt } = require("../lib/security");
 
+interface User {
+  user_name: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  password: string;
+  profile_picture: string;
+  salt: string;
+};
+
 const selectEmail = "SELECT * FROM users WHERE email = ?"; // Selects all emails
 
 // Registering
 router.post("/register", (req: Request, res: Response) => {
-  interface User {
-    userName: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-    profilePicture: string;
-  };
-
   const { userName, firstName, lastName, email, password } = req.body;
   const profilePicture = "../images/default-profile.png";
 
@@ -56,6 +57,37 @@ router.post("/register", (req: Request, res: Response) => {
         });
       }
     });
+  });
+});
+
+// Login
+router.post("/login", (req: Request, res: Response) => {
+  const { email, password } = req.body;
+
+  // Check if email exists
+  db.query(selectEmail, [email], (err: Error, rows: User[]) => {
+    if (err) throw err;
+
+    // If email exists
+    if (rows.length > 0) {
+      if (HashPassword(password, rows[0].salt) === rows[0].password) {
+        // Create session
+        req.session = Object.assign(req.session, {
+          userName: rows[0].user_name,
+          firstName: rows[0].first_name,
+          lastName: rows[0].last_name,
+          email: rows[0].email,
+          profilePicture: rows[0].profile_picture
+        });
+
+        console.log("Logged in: \n" + "User:" + rows[0].user_name + "\n" + "Email:" + rows[0].email);
+        res.send("Login successful");
+      } else {
+        res.send("Incorrect password");
+      }
+    } else {
+      res.send("Email does not exist");
+    }
   });
 });
 
