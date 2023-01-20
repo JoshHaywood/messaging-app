@@ -1,10 +1,11 @@
 import { useState } from "react";
 
 interface InputProps {
-  type: string;
   label: string;
+  type: string;
   placeholder: string;
   setState: (value: string) => void;
+  error: string;
 };
 
 export default function Input(props: InputProps) {
@@ -31,7 +32,8 @@ export default function Input(props: InputProps) {
           required
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          className="w-full px-3 py-2.5 text-sm leading-tight border border-r-0 rounded-lg rounded-r-none focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-500 text-gray-400"
+          onChange={(e) => {props.setState(e.target.value)}}
+          className={`${props.error ? "border-red-500 rounded" : "border-gray-200"} w-full px-3 py-2.5 text-sm leading-tight border border-r-0 rounded-lg rounded-r-none focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-500 text-gray-400`}
         />
 
         {/* If password is shown, show the eye icon, else show the hide icon */}
@@ -81,7 +83,7 @@ export default function Input(props: InputProps) {
         required
         maxLength={50}
         onChange={(e) => {props.setState(e.target.value)}}
-        className="w-full px-3 py-2.5 mb-3 text-sm leading-tight border rounded-lg focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-500 text-gray-400"
+        className={`${props.error ? "border-red-500 rounded" : "border-gray-200"} w-full px-3 py-2.5 mb-3 text-sm leading-tight border rounded-lg focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-500 text-gray-400`}
       />
     </div>
   );

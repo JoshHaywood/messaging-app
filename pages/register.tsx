@@ -3,7 +3,9 @@ import Link from "next/link";
 import { useState } from "react";
 import axios from "axios";
 
+import { ContainsCapital, ContainsNumber, ContainsSpecial } from "../components/auth/inputFormatter";
 import Input from "../components/auth/Input";
+import ErrorMessage from "../components/auth/errorMessage";
 import Button from "@mui/material/Button";
 
 export default function Register() {
@@ -13,6 +15,8 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [error, setError] = useState("");
 
   const insertRow = () => {
     // Insert users into database
@@ -24,12 +28,38 @@ export default function Register() {
       password: password,
     })
     .then((res) => {
-      console.log(res);
+      setError(res.data);
     });
   };
 
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError("");
+
+    // // If first or last name contain numbers or special characters
+    if (ContainsNumber(firstName) || ContainsSpecial(firstName) || ContainsNumber(lastName) || ContainsSpecial(lastName)) {
+      return setError("Names may only contain alphabetic characters");    
+    };
+
+    // If password doesn't contain a capital
+    if (!ContainsCapital(password)) {
+      return setError("Password must contain at least one uppercase letter");
+    };
+
+    // If password doesn't contain a number
+    if (!ContainsNumber(password)) {
+      return setError("Password must contain at least one number");
+    };
+
+    // If password is less than 8 characters
+    if (password.length < 8) {
+      return setError("Password must be at least 8 characters long");
+    };
+
+    // If passwords don't match
+    if (confirmPassword !== password) {
+      return setError("Passwords do not match");
+    };
 
     insertRow();
   };
@@ -48,18 +78,21 @@ export default function Register() {
           </h1>
 
           <div className="text-center tracking-wide text-sm text-gray-400">
-                Already have an account?{" "}
-                <Link
-                  className="inline-block text-sm text-cyan-1000 align-baseline text-blue-500 hover:text-blue-700 hover:underline"
-                  href="/"
-                >
-                  Sign in here.
-                </Link>
-              </div>
+            Already have an account?{" "}
+            <Link
+              className="inline-block text-sm text-cyan-1000 align-baseline text-blue-500 hover:text-blue-700 hover:underline"
+              href="/"
+            >
+              Sign in here.
+            </Link>
+          </div>
 
           {/* Registration form */}
           <form 
             onSubmit={submitHandler} 
+            onKeyPress={(e) => {
+              e.key === 'Enter' && submitHandler; //Submit form on enter
+            }}
             className="sm:w-[400px] py-8"
           >
             {/* Username */}
@@ -68,7 +101,10 @@ export default function Register() {
               type="text"
               placeholder="Username"
               setState={setUsername}
+              error={error === "Username already exists" ? error : ""}
             />
+
+            <ErrorMessage error={error === "Username already exists" ? error : ""} />
 
             {/* Names row */}
             <div className="sm:flex sm:justify-between">
@@ -78,7 +114,8 @@ export default function Register() {
                 type="text"
                 placeholder="John"
                 setState={setFirstName}
-              />
+                error={error === "Names may only contain alphabetic characters" ? error : ""}
+                />
 
               {/* Last name */}
               <Input
@@ -86,8 +123,11 @@ export default function Register() {
                 type="text"
                 placeholder="Doe"
                 setState={setLastName}
-              />
+                error={error === "Names may only contain alphabetic characters" ? error : ""}
+                />
             </div>
+
+            <ErrorMessage error={error === "Names may only contain alphabetic characters" ? error : ""} />
 
             {/* Email */}
             <Input
@@ -95,7 +135,10 @@ export default function Register() {
               type="email"
               placeholder="email@email.com"
               setState={setEmail}
+              error={error === "Email already exists" ? error : ""}
             />
+
+            <ErrorMessage error={error === "Email already exists" ? error : ""} />
 
             {/* Password */}
             <Input 
@@ -103,6 +146,7 @@ export default function Register() {
               type="password" 
               placeholder="Password123" 
               setState={setPassword}
+              error={error === "Password must contain at least one uppercase letter" || error === "Password must contain at least one number" || error === "Password must be at least 8 characters long" ? error : ""}
             />
 
             {/* Confirm password */}
@@ -111,6 +155,17 @@ export default function Register() {
               type="password"
               placeholder="Password123"
               setState={setConfirmPassword}
+              error={error === "Passwords do not match" ? error : ""}
+            />
+
+            <ErrorMessage 
+              error={
+                error === "Password must contain at least one uppercase letter" ||
+                error === "Password must contain at least one number" || 
+                error === "Password must be at least 8 characters long" 
+                  ? error 
+                  : ""
+              } 
             />
 
             {/* Submit button */}
