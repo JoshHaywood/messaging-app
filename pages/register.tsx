@@ -1,15 +1,16 @@
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import axios from "axios";
 
 import { ContainsCapital, ContainsNumber, ContainsSpecial } from "../components/auth/inputFormatter";
 import Input from "../components/auth/Input";
-import ErrorMessage from "../components/auth/errorMessage";
+import ErrorMessage from "../components/auth/ErrorMessage";
 import Button from "@mui/material/Button";
 
 export default function Register() {
-  const [username, setUsername] = useState("");
+  const [userName, setUserName] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -18,10 +19,12 @@ export default function Register() {
 
   const [error, setError] = useState("");
 
+  const { push } = useRouter();
+
   const insertRow = () => {
     // Insert users into database
     axios.post("/auth/register", {
-      userName: username,
+      userName: userName,
       firstName: firstName,
       lastName: lastName,
       email: email,
@@ -29,6 +32,11 @@ export default function Register() {
     })
     .then((res) => {
       setError(res.data);
+
+      // If validation passed
+      if (res.data === 'Successfully registered, please login') {
+        push({ pathname: '/', query: { message: res.data } });
+      };
     });
   };
 
@@ -100,7 +108,7 @@ export default function Register() {
               label="Username"
               type="text"
               placeholder="Username"
-              setState={setUsername}
+              setState={setUserName}
               error={error === "Username already exists" ? error : ""}
             />
 

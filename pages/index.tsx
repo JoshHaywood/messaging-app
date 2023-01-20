@@ -1,12 +1,22 @@
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
 
 import logo from "../public/images/logo.png";
 import Input from "../components/auth/Input";
 import Button from "@mui/material/Button";
 
 export default function Index() {
+  const router = useRouter()
+
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    setMessage(router.query.message as string);
+  }, [router.query.message]);
+
   return (
     <>
       <Head>
@@ -35,6 +45,11 @@ export default function Index() {
 
           {/* Registration form */}
           <form className="sm:w-[400px] py-8">
+            {/* Registered message */}
+            {message === "Successfully registered, please login" && (
+              <p className="mb-8 p-4 rounded font-medium text-xs text-green-700 bg-green-300">Successfully registered, please login</p>
+            )}
+
             {/* Email */}
             <Input
               label="Email Address"
