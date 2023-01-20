@@ -1,6 +1,13 @@
 import { useState } from "react";
 
-export default function Input(props: any) {
+interface InputProps {
+  type: string;
+  label: string;
+  placeholder: string;
+  setState: (value: string) => void;
+};
+
+export default function Input(props: InputProps) {
   const [passwordShow, setPasswordShow] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -73,6 +80,7 @@ export default function Input(props: any) {
         placeholder={props.placeholder}
         required
         maxLength={50}
+        onChange={(e) => {props.setState(e.target.value)}}
         className="w-full px-3 py-2.5 mb-3 text-sm leading-tight border rounded-lg focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-500 text-gray-400"
       />
     </div>

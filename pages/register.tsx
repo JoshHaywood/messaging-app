@@ -1,10 +1,39 @@
 import Head from "next/head";
 import Link from "next/link";
+import { useState } from "react";
+import axios from "axios";
 
 import Input from "../components/auth/Input";
 import Button from "@mui/material/Button";
 
 export default function Register() {
+  const [username, setUsername] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const insertRow = () => {
+    // Insert users into database
+    axios.post("/auth/register", {
+      userName: username,
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      password: password,
+    })
+    .then((res) => {
+      console.log(res);
+    });
+  };
+
+  const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    insertRow();
+  };
+
   return (
     <>
       <Head>
@@ -29,12 +58,16 @@ export default function Register() {
               </div>
 
           {/* Registration form */}
-          <form className="sm:w-[400px] py-8">
+          <form 
+            onSubmit={submitHandler} 
+            className="sm:w-[400px] py-8"
+          >
             {/* Username */}
             <Input
               label="Username"
               type="text"
               placeholder="Username"
+              setState={setUsername}
             />
 
             {/* Names row */}
@@ -44,6 +77,7 @@ export default function Register() {
                 label="First name"
                 type="text"
                 placeholder="John"
+                setState={setFirstName}
               />
 
               {/* Last name */}
@@ -51,6 +85,7 @@ export default function Register() {
                 label="Last name"
                 type="text"
                 placeholder="Doe"
+                setState={setLastName}
               />
             </div>
 
@@ -59,6 +94,7 @@ export default function Register() {
               label="Email Address"
               type="email"
               placeholder="email@email.com"
+              setState={setEmail}
             />
 
             {/* Password */}
@@ -66,6 +102,7 @@ export default function Register() {
               label="Password" 
               type="password" 
               placeholder="Password123" 
+              setState={setPassword}
             />
 
             {/* Confirm password */}
@@ -73,6 +110,7 @@ export default function Register() {
               label="Confirm Password"
               type="password"
               placeholder="Password123"
+              setState={setConfirmPassword}
             />
 
             {/* Submit button */}

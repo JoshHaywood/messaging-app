@@ -7,12 +7,17 @@ const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
+const authRoutes = require("./routes/auth");
+
 app.prepare().then(() => {
   const server: Express = express();
 
   // Body parser
   server.use(bodyParser.json());
   server.use(bodyParser.urlencoded({ extended: true }));
+
+  // Routes
+  server.use("/auth", authRoutes);
 
   // Next.js build serve
   server.get("*", (req: Request, res: Response) => {
