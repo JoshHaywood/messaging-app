@@ -1,6 +1,9 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import express, { Express, Request, Response } from "express";
 import next from "next";
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 import bodyParser from "body-parser";
 
 const dev = process.env.NODE_ENV !== "production";

@@ -3,11 +3,11 @@ import mysql from "mysql";
 //Database setup
 const db = mysql.createConnection({
   //Remote
-  host: "eu-cdbr-west-03.cleardb.net",
-  user: "bcec77d8e13a20",
-  port: 3306,
-  password: "ef521053",
-  database: "heroku_c1e8ec3bb372891",
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  port: process.env.DB_PORT as unknown as number,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
 });
 
 module.exports = db;

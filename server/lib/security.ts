@@ -1,7 +1,4 @@
 import crypto from "crypto";
-import dotenv from "dotenv";
-
-dotenv.config();
 
 // Hashing algorithm parameters
 const salt = crypto.randomBytes(256).toString("hex");
@@ -17,6 +14,6 @@ function HashPassword(password: string, salt: string) {
   return crypto
     .pbkdf2Sync(password, salt + pepper, iterations, hashSize, hashAlgorithm)
     .toString("hex");
-}
+};
 
 module.exports = { HashPassword, salt };
