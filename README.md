@@ -43,3 +43,25 @@ Open the project folder in the integrated development (IDE) environment of your 
 This will start the back-end and front-end together
 
 3. Finally navigate too http://localhost:3000 in your browser or https://messaging-app.herokuapp.com/ if you wish to see the deployed version
+
+*Please note* there are several .env variables in the project, they are the following:
+
+- PORT
+- PEPPER
+- SECRET
+
+- DB_HOST
+- DB_USER
+- DB_PORT
+- DB_PASSWORD
+- DB_NAME
+
+There PORT, PEPPER and SECRET variables are your choice to assign however I would reccomend the following database setup:
+
+- DB_HOST = Localhost
+- DB_USER = root
+- DB_PORT = 3306
+- DB_PASSWORD = password
+- DB_NAME = database_name
+
+Assign these in `./server/config/db.ts` in place of the .end variables.
