@@ -19,7 +19,7 @@ export default function Register() {
 
   const [error, setError] = useState("");
 
-  const { push } = useRouter();
+  const router = useRouter();
 
   const insertRow = () => {
     // Insert users into database
@@ -35,7 +35,7 @@ export default function Register() {
 
       // If validation passed
       if (res.data === 'Successfully registered, please login') {
-        push({ pathname: '/', query: { message: res.data } });
+        router.push({ pathname: '/', query: { message: res.data }}, '/');
       };
     });
   };
