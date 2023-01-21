@@ -3,19 +3,48 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
+import axios from "axios";
 
 import logo from "../public/images/logo.png";
 import Input from "../components/auth/Input";
+import ErrorMessage from "../components/auth/ErrorMessage";
 import Button from "@mui/material/Button";
 
 export default function Index() {
   const router = useRouter()
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const [message, setMessage] = useState("");
 
   useEffect(() => {
     setMessage(router.query.message as string);
   }, [router.query.message]);
+
+  const validateRow = () => {
+    // Validate user data
+    axios.post("/auth/login", {
+      email: email,
+      password: password,
+    }).then((res) => {
+      setMessage(res.data);
+
+      console.log(res.data);
+
+      // If validation passed
+      if (res.data === "Login successful") {
+        router.push("#");
+      };
+    });
+  };
+
+  const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setMessage("");
+
+    validateRow();
+  };
 
   return (
     <>
@@ -44,7 +73,13 @@ export default function Index() {
           </div>
 
           {/* Registration form */}
-          <form className="sm:w-[400px] py-8">
+          <form 
+            onSubmit={submitHandler}
+            onKeyPress={(e) => {
+              e.key === 'Enter' && submitHandler; //Submit form on enter
+            }} 
+            className="sm:w-[400px] py-8"
+          >
             {/* Registered message */}
             {message === "Successfully registered, please login" && (
               <p className="mb-8 p-4 rounded font-medium text-xs text-green-700 bg-green-300">Successfully registered, please login</p>
@@ -55,14 +90,22 @@ export default function Index() {
               label="Email Address"
               type="email"
               placeholder="email@email.com"
+              setState={setEmail}
+              error={message === "Email does not exist" ? message : ""}
             />
+
+            <ErrorMessage error={message === "Email does not exist" ? message : ""} />
 
             {/* Password */}
             <Input 
               label="Password" 
               type="password" 
               placeholder="Password123" 
+              setState={setPassword}
+              error={message === "Incorrect password" ? message : ""}
             />
+
+            <ErrorMessage error={message === "Incorrect password" ? message : ""} />
 
             {/* Submit button */}
             <div className="mb-6 mt-10 text-center">

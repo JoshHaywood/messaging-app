@@ -80,14 +80,16 @@ router.post("/login", (req: Request, res: Response) => {
           profilePicture: rows[0].profile_picture
         });
 
-        console.log("Logged in: \n" + "User:" + rows[0].user_name + "\n" + "Email:" + rows[0].email);
+        console.log(req.session);
         res.send("Login successful");
+        // Else incorrect password
       } else {
         res.send("Incorrect password");
       }
+      // Else email does not exist
     } else {
       res.send("Email does not exist");
-    }
+    };
   });
 });
 
