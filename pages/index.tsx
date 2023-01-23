@@ -5,9 +5,9 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-import logo from "../public/images/logo.png";
-import Input from "../components/auth/Input";
-import ErrorMessage from "../components/auth/ErrorMessage";
+import logo from "@/public/images/logo.png";
+import Input from "@/components/auth/Input";
+import ErrorMessage from "@/components/auth/ErrorMessage";
 import Button from "@mui/material/Button";
 
 export default function Index() {
@@ -34,7 +34,7 @@ export default function Index() {
 
       // If validation passed
       if (res.data === "Login successful") {
-        router.push("#");
+        router.push("/chat");
       };
     });
   };
@@ -112,7 +112,7 @@ export default function Index() {
               <Button
                 type="submit"
                 variant="contained"
-                className="w-full py-1.5rem rounded-lg normal-case bg-blue-500"
+                className="w-full rounded-lg normal-case bg-blue-500"
               >
                 Sign in
               </Button>
