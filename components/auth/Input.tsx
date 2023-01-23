@@ -39,7 +39,7 @@ export default function Input(props: InputProps) {
         {/* If password is shown, show the eye icon, else show the hide icon */}
         {passwordShow ? (
           <div
-            id={`${isFocused && "passwordToggle"}`}
+            id={`${isFocused && "inputIcon"}`}
             className="p-3 border rounded-r-lg bg-gray-100"
           >
             {/* Attribution: https://fontawesome.com/icons/eye?s=solid&f=classic */}
@@ -54,7 +54,7 @@ export default function Input(props: InputProps) {
           </div>
         ) : (
           <div
-            id={`${isFocused && "passwordToggle"}`}
+            id={`${isFocused && "inputIcon"}`}
             className="p-3 border rounded-r-lg bg-gray-100"
           >
             {/* Attribution: https://fontawesome.com/icons/eye-slash?s=solid&f=classic */}
