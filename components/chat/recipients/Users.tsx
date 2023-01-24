@@ -10,7 +10,7 @@ export default function Users() {
 
   const [users, setUsers] = useState<User[]>([]);
 
-  const [focused, setFocused] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     axios.get("/users/get").then((res) => {
@@ -19,11 +19,17 @@ export default function Users() {
   }, []);
 
   return (
-    <div id="users-container" className="overflow-y-scroll">
+    <div
+      id="users-container"
+      className="overflow-y-scroll pr-2 -mr-3.5 hover:cursor-pointer"
+    >
       {users.map((user, index) => (
         <div
           key={index}
-          className="mb-2.5 flex flex-row items-center py-2 space-x-4 rounded-lg"
+          onClick={() => setCurrentIndex(index)}
+          className={`${
+            index === currentIndex ? "bg-gray-100" : "bg-none"
+          } mb-2.5 px-1 flex flex-row items-center py-2 space-x-4 rounded-lg`}
         >
           <img
             src={"../images/" + user.profile_picture}
@@ -33,7 +39,7 @@ export default function Users() {
             className="rounded-full border"
           ></img>
 
-          <div onClick={() => setFocused(!focused)} className="w-full">
+          <div className="w-full">
             {/* Profile picture */}
             <div className="font-medium text-gray-700">
               {user.first_name + " " + user.last_name}
