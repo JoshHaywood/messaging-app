@@ -9,8 +9,8 @@ interface InputProps {
 };
 
 export default function Input(props: InputProps) {
-  const [passwordShow, setPasswordShow] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
+  const [passwordShow, setPasswordShow] = useState<boolean>(false);
+  const [isFocused, setIsFocused] = useState<boolean>(false);
 
   // Password toggle handler
   const togglePassword = () => {

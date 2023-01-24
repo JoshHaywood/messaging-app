@@ -10,14 +10,14 @@ import ErrorMessage from "@/components/auth/ErrorMessage";
 import Button from "@mui/material/Button";
 
 export default function Register() {
-  const [userName, setUserName] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [userName, setUserName] = useState<string>("");
+  const [firstName, setFirstName] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
 
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string>("");
 
   const router = useRouter();
 

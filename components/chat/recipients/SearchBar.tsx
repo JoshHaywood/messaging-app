@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 export default function SearchBar() {
-  const [isFocused, setIsFocused] = useState(false);
+  const [isFocused, setIsFocused] = useState<boolean>(false);
 
   return (
     <div className="w-full flex my-5 items-center rounded-xl border">

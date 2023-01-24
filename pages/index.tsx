@@ -13,10 +13,10 @@ import Button from "@mui/material/Button";
 export default function Index() {
   const router = useRouter()
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState<string>("");
 
   useEffect(() => {
     setMessage(router.query.message as string);

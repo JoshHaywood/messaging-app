@@ -10,7 +10,7 @@ export default function Users() {
 
   const [users, setUsers] = useState<User[]>([]);
 
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   useEffect(() => {
     axios.get("/users/get").then((res) => {
