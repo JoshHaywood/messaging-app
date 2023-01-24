@@ -14,6 +14,7 @@ const handle = app.getRequestHandler();
 const session = require("./lib/session");
 
 const authRoutes = require("./routes/auth");
+const usersRoutes = require("./routes/users");
 
 app.prepare().then(() => {
   const server: Express = express();
@@ -34,6 +35,7 @@ app.prepare().then(() => {
 
   // Routes
   server.use("/auth", authRoutes);
+  server.use("/users", usersRoutes);
 
   // Next.js build serve
   server.get("*", (req: Request, res: Response) => {

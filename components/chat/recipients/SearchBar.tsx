@@ -4,7 +4,7 @@ export default function SearchBar() {
   const [isFocused, setIsFocused] = useState(false);
 
   return (
-    <div className="w-full flex mt-5 items-center rounded-xl border">
+    <div className="w-full flex my-5 items-center rounded-xl border">
       <input
         id="input"
         type="text"
