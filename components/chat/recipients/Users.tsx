@@ -30,22 +30,22 @@ export default function Users() {
           className={`${
             index === currentIndex ? "bg-gray-100" : "bg-none"
           } mb-2.5 px-1 flex flex-row items-center py-2 space-x-4 rounded-lg`}
-        >
+        > 
+          {/* Profile picture */}
           <img
             src={"../images/" + user.profile_picture}
-            alt="Default Profile"
+            alt="User profile picture"
             width={45}
             height={45}
             className="rounded-full border"
           ></img>
 
+          {/* User name and message preview */}
           <div className="w-full">
-            {/* Profile picture */}
             <div className="font-medium text-gray-700">
               {user.first_name + " " + user.last_name}
             </div>
 
-            {/* Message preview */}
             <div className="relative flex flex-row text-sm text-gray-400">
               {/* Placeholder text used instead of div to prevent overflow */}
               <input
