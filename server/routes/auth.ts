@@ -121,4 +121,12 @@ router.get("/user", (req: Request, res: Response) => {
   };
 });
 
+// Logout
+router.post("/logout", (req: Request, res: Response) => {
+  req.session.destroy((err: Error) => {
+    if (err) throw err;
+    res.send("Logged out");
+  });
+});
+
 module.exports = router;

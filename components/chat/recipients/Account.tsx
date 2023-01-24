@@ -1,16 +1,33 @@
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function Account() {
+  const router = useRouter()
+
   const [name, setName] = useState<string>("");
   const [profilePicture, setProfilePicture] = useState<string>("");
 
+  // Get user data
   useEffect(() => {
     axios.get("/auth/user").then((res) => {
+      // Set user data
       setName(res.data.firstName + " " + res.data.lastName);
       setProfilePicture(res.data.profilePicture);
     });
   }, []);
+
+  // Logout
+  const logoutHandler = () => {
+    axios.post("/auth/logout").then((res) => {
+      // Clear user data
+      setName("");
+      setProfilePicture("");
+
+      // Redirect to login page
+      router.push("/");
+    });
+  };
   
   return (
     <>
@@ -35,6 +52,7 @@ export default function Account() {
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
+            onClick={logoutHandler}
             className="w-6 h-6 text-gray-700 hover:cursor-pointer hover:text-blue-500"
           >
             <path

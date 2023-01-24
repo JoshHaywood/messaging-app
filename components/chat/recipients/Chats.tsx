@@ -7,21 +7,23 @@ import Account from "./Account";
 
 export default function Chats() {
   return (
-    <div className="w-1/4 h-full flex flex-col p-5 pb-0">
-      {/* Header */}
-      <div className="flex flex-row items-center space-x-2.5">
-        <Image
-          src={Logo}
-          alt="Logo"
-          width={35}
-          height={35}
-        />
+    <div className="w-1/4 h-full flex flex-col justify-between p-5 pb-0">
+      <div>
+        {/* Header */}
+        <div className="flex flex-row items-center space-x-2.5">
+          <Image
+            src={Logo}
+            alt="Logo"
+            width={35}
+            height={35}
+          />
 
-        <h1 className="font-bold tracking-wide">Chats</h1>
+          <h1 className="font-bold tracking-wide">Chats</h1>
+        </div>
+
+        {/* Search bar */}
+        <SearchBar />
       </div>
-
-      {/* Search bar */}
-      <SearchBar />
 
       {/* Recipients list */}
       <Users />
