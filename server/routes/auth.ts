@@ -4,6 +4,7 @@ const router = express.Router();
 const db = require("../config/db");
 const { HashPassword, salt } = require("../lib/security");
 
+// Database rows
 interface User {
   user_name: string;
   first_name: string;
@@ -12,6 +13,17 @@ interface User {
   password: string;
   profile_picture: string;
   salt: string;
+};
+
+// Session data
+declare module "express-session" {
+  interface SessionData {
+    userName: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    profilePicture: string;
+  }
 };
 
 const selectEmail = "SELECT * FROM users WHERE email = ?"; // Selects all emails
@@ -72,13 +84,11 @@ router.post("/login", (req: Request, res: Response) => {
     if (rows.length > 0) {
       if (HashPassword(password, rows[0].salt) === rows[0].password) {
         // Create session
-        req.session = Object.assign(req.session, {
-          userName: rows[0].user_name,
-          firstName: rows[0].first_name,
-          lastName: rows[0].last_name,
-          email: rows[0].email,
-          profilePicture: rows[0].profile_picture
-        });
+        req.session.userName = rows[0].user_name;
+        req.session.firstName = rows[0].first_name;
+        req.session.lastName = rows[0].last_name;
+        req.session.email = rows[0].email;
+        req.session.profilePicture = rows[0].profile_picture;
 
         console.log(req.session);
         res.send("Login successful");
@@ -91,6 +101,24 @@ router.post("/login", (req: Request, res: Response) => {
       res.send("Email does not exist");
     };
   });
+});
+
+// Get session user
+router.get("/user", (req: Request, res: Response) => {    
+  // If user is logged in, send user data
+  if (req.session.email) {
+    res.send({
+      loggedIn: true,
+      firstName: req.session.lastName,
+      lastName: req.session.lastName,
+      profilePicture: req.session.profilePicture
+    });  
+  }
+
+  // Else user is not logged in, send false
+  else {
+      res.send({loggedIn: false});
+  };
 });
 
 module.exports = router;

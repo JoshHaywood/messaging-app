@@ -10,7 +10,7 @@ export default function Chat() {
         <div className="w-1/2 h-full flex flex-col p-5 border">
         </div>
 
-        <div className="w-1/4 h-full flex flex-col p-5 border">
+        <div className="w-1/4 h-full flex flex-col p-5">
         </div>
       </div>
     </div>
