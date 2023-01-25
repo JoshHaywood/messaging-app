@@ -30,8 +30,6 @@ export default function Index() {
     }).then((res) => {
       setMessage(res.data);
 
-      console.log(res.data);
-
       // If validation passed
       if (res.data === "Login successful") {
         router.push("/chat");
@@ -75,7 +73,7 @@ export default function Index() {
           {/* Registration form */}
           <form 
             onSubmit={submitHandler}
-            onKeyPress={(e) => {
+            onKeyDown={(e) => {
               e.key === 'Enter' && submitHandler; //Submit form on enter
             }} 
             className="sm:w-[400px] py-8"

@@ -98,7 +98,7 @@ export default function Register() {
           {/* Registration form */}
           <form 
             onSubmit={submitHandler} 
-            onKeyPress={(e) => {
+            onKeyDown={(e) => {
               e.key === 'Enter' && submitHandler; //Submit form on enter
             }}
             className="sm:w-[400px] py-8"

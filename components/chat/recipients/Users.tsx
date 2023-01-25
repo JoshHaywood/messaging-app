@@ -1,35 +1,28 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useState } from "react";
 
-export default function Users() {
-  interface User {
+interface props {
+  usersArray: {
     first_name: string;
     last_name: string;
     profile_picture: string;
-  }
+  }[];
+};
 
-  const [users, setUsers] = useState<User[]>([]);
-
+export default function Users({ usersArray }: props) {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-
-  useEffect(() => {
-    axios.get("/users/get").then((res) => {
-      setUsers(res.data);
-    });
-  }, []);
 
   return (
     <div
       id="users-container"
-      className="overflow-y-scroll pr-2 -mr-3.5 hover:cursor-pointer"
+      className="h-full overflow-y-scroll pr-2 -mr-3.5 hover:cursor-pointer"
     >
-      {users.map((user, index) => (
+      {usersArray.map((user, index) => (
         <div
           key={index}
           onClick={() => setCurrentIndex(index)}
           className={`${
             index === currentIndex ? "bg-gray-100" : "bg-none"
-          } mb-2.5 px-1 flex flex-row items-center py-2 space-x-4 rounded-lg`}
+          } mb-2.5 px-2.5 flex flex-row items-center py-2 space-x-4 rounded-lg`}
         > 
           {/* Profile picture */}
           <img
@@ -42,7 +35,7 @@ export default function Users() {
 
           {/* User name and message preview */}
           <div className="w-full">
-            <div className="font-medium text-gray-700">
+            <div className="text-gray-700">
               {user.first_name + " " + user.last_name}
             </div>
 
