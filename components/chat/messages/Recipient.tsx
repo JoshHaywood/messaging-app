@@ -1,6 +1,6 @@
 export default function Recipient() {
   return (
-    <div className="flex flex-row items-center p-4 space-x-4 border">
+    <div className="flex flex-row items-center p-4 space-x-4 border border-b-0">
       {/* Profile picture */}
       <img
         src="../images/default-profile.png"
@@ -11,10 +11,10 @@ export default function Recipient() {
       ></img>
 
       {/* User name and status */}
-      <div className="w-full">
+      <div>
         <div className="font-medium text-gray-700">John Doe</div>
 
-        <div className="flex flex-row items-center text-xs font-medium text-green-400">
+        <div className="text-xs font-medium text-green-400">
           Online
         </div>
       </div>
