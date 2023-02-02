@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import axios from "axios";
 
 import Chats from "@/components/chat/recipients/Chats";
+import Messages from "@/components/chat/messages/Messages";
 
 export default function Chat() {
   const router = useRouter();
@@ -23,8 +24,8 @@ export default function Chat() {
         {/* Chats column */}
         <Chats />
 
-        <div className="w-1/2 h-full flex flex-col p-5 border">
-        </div>
+        {/* Messages column */}
+        <Messages />
 
         <div className="w-1/4 h-full flex flex-col p-5">
         </div>

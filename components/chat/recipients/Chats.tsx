@@ -38,7 +38,7 @@ export default function Chats() {
   };
 
   return (
-    <div className="w-1/4 h-full flex flex-col  p-5 pb-0">
+    <div className="w-1/4 h-full flex flex-col p-5 pb-0">
       {/* Header */}
       <div className="flex flex-row items-center space-x-2.5">
         <Image src={Logo} alt="Logo" width={35} height={35} />
