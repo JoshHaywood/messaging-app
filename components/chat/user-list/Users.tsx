@@ -1,15 +1,17 @@
 import Image from "next/image";
 import { useState } from "react";
 
-interface props {
+interface users {
   usersArray: {
     first_name: string;
     last_name: string;
+    email: string;
     profile_picture: string;
   }[];
 };
 
-export default function Users({ usersArray }: props) {
+export default function Users({ usersArray, ...props }: users & { setRecipient: (recipient: string) => void; }) {
+  const { setRecipient } = props;
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   return (
@@ -20,7 +22,10 @@ export default function Users({ usersArray }: props) {
       {usersArray.map((user, index) => (
         <div
           key={index}
-          onClick={() => setCurrentIndex(index)}
+          onClick={() => {
+            setCurrentIndex(index);
+            setRecipient(user.email);
+          }}
           className={`${
             index === currentIndex ? "bg-gray-100" : "bg-none"
           } mb-2.5 px-2.5 flex flex-row items-center py-2 space-x-4 rounded-lg`}

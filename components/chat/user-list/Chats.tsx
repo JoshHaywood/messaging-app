@@ -7,13 +7,15 @@ import SearchBar from "./SearchBar";
 import Users from "./Users";
 import Account from "./Account";
 
-export default function Chats() {
+export default function Chats(props: { recipient: string; setRecipient: (recipient: string) => void; }) {
   interface User {
     first_name: string;
     last_name: string;
     profile_picture: string;
-  }
+    email: string;
+  };
 
+  const { recipient, setRecipient } = props;
   const [users, setUsers] = useState<User[]>([]);
 
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -54,8 +56,14 @@ export default function Chats() {
       />
 
       {/* Recipients list */}
-      {/* If search term is empty, display all users, else display filtered users */}
-      <Users usersArray={searchTerm === "" ? users : filteredUsers} />
+      <Users 
+        /* If search term is empty, display all users, else display filtered users */
+        usersArray={
+          searchTerm === "" ? 
+          users : filteredUsers
+        } 
+        setRecipient={setRecipient}
+      />
 
       {/* Account */}
       <Account />

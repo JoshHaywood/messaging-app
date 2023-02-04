@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 import Chats from "@/components/chat/user-list/Chats";
@@ -8,6 +8,7 @@ import Recipient from "@/components/chat/recipient/Recipient";
 
 export default function Chat() {
   const router = useRouter();
+  const [recipient, setRecipient] = useState<string>("");
 
   useEffect(() => {
     // Check if user is logged in
@@ -23,12 +24,19 @@ export default function Chat() {
     <div className="w-screen h-screen relative bg-blue-200">
       <div className="absolute left-0 right-0 top-0 bottom-0 m-10 flex flex-row rounded-2xl bg-white">
         {/* Chats column */}
-        <Chats />
+        <Chats 
+          recipient={recipient}
+          setRecipient={setRecipient}
+        />
 
         {/* Messages column */}
-        <Messages />
+        <Messages 
+          recipient={recipient}
+        />
 
-        <Recipient />
+        <Recipient 
+          recipient={recipient}
+        />
       </div>
     </div>
   );

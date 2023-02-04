@@ -60,10 +60,14 @@ function SenderMessage() {
   );
 };
 
-export default function Messages() {
+export default function Messages(props: { recipient: string; }) {
+  const { recipient } = props;
+
   return (
     <div className="w-1/2 h-full flex flex-col">
-      <Recipient />
+      <Recipient 
+        recipient={recipient}
+      />
 
       <div 
         id="messages-container"
