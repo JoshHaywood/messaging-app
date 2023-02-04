@@ -2,8 +2,9 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import axios from "axios";
 
-import Chats from "@/components/chat/recipients/Chats";
+import Chats from "@/components/chat/user-list/Chats";
 import Messages from "@/components/chat/messages/Messages";
+import Recipient from "@/components/chat/recipient/Recipient";
 
 export default function Chat() {
   const router = useRouter();
@@ -27,8 +28,7 @@ export default function Chat() {
         {/* Messages column */}
         <Messages />
 
-        <div className="w-1/4 h-full flex flex-col p-5">
-        </div>
+        <Recipient />
       </div>
     </div>
   );

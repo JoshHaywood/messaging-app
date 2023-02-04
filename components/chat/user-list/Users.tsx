@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { useState } from "react";
 
 interface props {
@@ -25,13 +26,13 @@ export default function Users({ usersArray }: props) {
           } mb-2.5 px-2.5 flex flex-row items-center py-2 space-x-4 rounded-lg`}
         > 
           {/* Profile picture */}
-          <img
-            src={"../images/" + user.profile_picture}
+          <Image
+            src={"/images/" + user.profile_picture}
             alt="User profile picture"
             width={45}
             height={45}
             className="rounded-full border"
-          ></img>
+          ></Image>
 
           {/* User name and message preview */}
           <div className="w-full">

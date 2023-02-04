@@ -17,7 +17,7 @@ html {
 }
 
 html, body {
-  max-width: 100vw;
+  max-width: 100vw; 
   overflow-x: hidden;
 }
 
@@ -36,15 +36,19 @@ h1, h2, h3, h4, h5, h6 {
   clip-path: inset(-3px 0px -3px -3px);
 }
 
-#users-container::-webkit-scrollbar-track, #messages-container::-webkit-scrollbar-track {
+#users-container::-webkit-scrollbar-track, #messages-container::-webkit-scrollbar-track, #media-container::-webkit-scrollbar-track {
   background-color: transparent;
 }
 
-#users-container::-webkit-scrollbar, #messages-container::-webkit-scrollbar {
+#users-container::-webkit-scrollbar, #messages-container::-webkit-scrollbar, #media-container::-webkit-scrollbar {
   width: 0.375rem;
 }
 
-#users-container::-webkit-scrollbar-thumb, #messages-container::-webkit-scrollbar-thumb {
+#users-container::-webkit-scrollbar-thumb, #messages-container::-webkit-scrollbar-thumb, #media-container::-webkit-scrollbar-thumb {
   border-radius: 0.5rem;
   background-color: #d1d5db;
+}
+
+#about:hover svg, #media:hover svg {
+  color: #3b82f6;
 }

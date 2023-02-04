@@ -3,7 +3,7 @@ import { useState } from "react";
 export default function SearchBar(props: {
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   searchTerm: string;
-  setSearchTerm: any;
+  setSearchTerm: (searchTerm: string) => void;
 }) {
   const [isFocused, setIsFocused] = useState<boolean>(false);
 

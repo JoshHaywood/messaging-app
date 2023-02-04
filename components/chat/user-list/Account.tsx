@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -34,13 +35,13 @@ export default function Account() {
       <hr className="-mx-5 mt-1 border-t"></hr>
 
       <div className="flex flex-row items-center my-3 space-x-4 rounded-lg">
-        <img
-          src={"../images/" + profilePicture}
+        <Image
+          src={"/images/" + profilePicture}
           alt="User profile picture"
           width={35}
           height={35}
           className="rounded-full border"
-        ></img>
+        ></Image>
 
         <div className="w-full flex flex- row justify-between">
           <div className="font-medium text-gray-700">{name}</div>

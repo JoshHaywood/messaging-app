@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import Recipient from "./Recipient";
 import MessageInput from "./MessageInput";
 
@@ -6,13 +8,13 @@ function RecipientMessage() {
     <div className="flex flex-row space-x-2.5">
       {/* Profile picture */}
       <div className="h-full">
-        <img
-          src="../images/default-profile.png"
+        <Image
+          src="/images/default-profile.png"
           alt="User profile picture"
           width={35}
           height={35}
           className="rounded-full border"
-        ></img>
+        ></Image>
       </div>
 
       {/* Message */}
@@ -46,13 +48,13 @@ function SenderMessage() {
 
       {/* Profile picture */}
       <div className="h-full">
-        <img
-          src="../images/default-profile.png"
+        <Image
+          src="/images/default-profile.png"
           alt="User profile picture"
           width={35}
           height={35}
           className="rounded-full border"
-        ></img>
+        ></Image>
       </div>
     </div>
   );
