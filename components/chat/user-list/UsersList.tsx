@@ -2,20 +2,14 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
 
+import User from "@/interfaces/user";
 import Logo from "@/public/images/logo.png";
 import SearchBar from "./SearchBar";
 import Users from "./Users";
 import Account from "./Account";
 
-export default function Chats(props: { recipient: string; setRecipient: (recipient: string) => void; }) {
-  interface User {
-    first_name: string;
-    last_name: string;
-    profile_picture: string;
-    email: string;
-  };
-
-  const { recipient, setRecipient } = props;
+export default function UsersList(props: { setRecipient: (recipient: string) => void; }) {
+  const { setRecipient } = props;
   const [users, setUsers] = useState<User[]>([]);
 
   const [searchTerm, setSearchTerm] = useState<string>("");

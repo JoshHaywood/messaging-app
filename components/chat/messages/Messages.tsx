@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+import User from "@/interfaces/user";
 import Recipient from "./Recipient";
 import MessageInput from "./MessageInput";
 
@@ -60,13 +61,15 @@ function SenderMessage() {
   );
 };
 
-export default function Messages(props: { recipient: string; }) {
-  const { recipient } = props;
+export default function Messages(props: { recipient: string; profile: User[]; setProfile: (value: User[]) => void;}) {
+  const { recipient, profile, setProfile } = props;
 
   return (
     <div className="w-1/2 h-full flex flex-col">
       <Recipient 
         recipient={recipient}
+        profile={profile}
+        setProfile={setProfile}
       />
 
       <div 

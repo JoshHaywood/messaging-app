@@ -1,14 +1,17 @@
+// Chat.tsx
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
 import axios from "axios";
 
-import Chats from "@/components/chat/user-list/Chats";
+import User from "@/interfaces/user";
+import Chats from "@/components/chat/user-list/UsersList";
 import Messages from "@/components/chat/messages/Messages";
 import Recipient from "@/components/chat/recipient/Recipient";
 
 export default function Chat() {
   const router = useRouter();
   const [recipient, setRecipient] = useState<string>("");
+  const [profile, setProfile] = useState<User[]>([]);
 
   useEffect(() => {
     // Check if user is logged in
@@ -25,17 +28,20 @@ export default function Chat() {
       <div className="absolute left-0 right-0 top-0 bottom-0 m-10 flex flex-row rounded-2xl bg-white">
         {/* Chats column */}
         <Chats 
-          recipient={recipient}
           setRecipient={setRecipient}
         />
 
         {/* Messages column */}
-        <Messages 
+        <Messages
           recipient={recipient}
+          profile={profile}
+          setProfile={setProfile}
         />
 
         <Recipient 
           recipient={recipient}
+          profile={profile}
+          setProfile={setProfile}
         />
       </div>
     </div>

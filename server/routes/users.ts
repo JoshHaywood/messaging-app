@@ -2,16 +2,7 @@ import express, { Request, Response } from "express";
 const router = express.Router();
 
 const db = require("../config/db");
-
-interface User {
-  user_name: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  password: string;
-  salt: string;
-  profile_picture: string;
-};
+import User from "@/interfaces/user";
 
 // Get all users
 router.get("/get", (req: Request, res: Response) => {

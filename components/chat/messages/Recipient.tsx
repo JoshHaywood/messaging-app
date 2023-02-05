@@ -1,16 +1,11 @@
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import axios from "axios";
 
-export default function Recipient(props: { recipient: string; }) {
-  interface Profile {
-    first_name: string;
-    last_name: string;
-    profile_picture: string;
-  };
+import Profile from "@/interfaces/user";
 
-  const { recipient } = props;
-  const [profile, setProfile] = useState<Profile[]>([]);
+export default function Recipient(props: { recipient: string; profile: Profile[]; setProfile: (value: Profile[]) => void;}) {
+  const { recipient, profile, setProfile } = props;
 
   // Get recipient data
   useEffect(() => {
@@ -23,7 +18,7 @@ export default function Recipient(props: { recipient: string; }) {
         setProfile(res.data);
       });
     };
-  }, [recipient]);
+  }, [recipient, setProfile]);
     
   return (
     <>

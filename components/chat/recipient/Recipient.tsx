@@ -2,6 +2,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+import User from "@/interfaces/user";
 import Button from "@mui/material/Button";
 
 const buttons = [
@@ -55,16 +56,8 @@ const mediaContent = [
   },
 ];
 
-export default function Recipient(props: { recipient: string; }) {
-  interface Profile {
-    first_name: string;
-    last_name: string;
-    profile_picture: string;
-    about: string;
-  };
-
-  const { recipient } = props;
-  const [profile, setProfile] = useState<Profile[]>([]);
+export default function Recipient(props: { recipient: string; profile: User[]; setProfile: (value: User[]) => void;}) {
+  const { recipient, profile, setProfile } = props;
 
   const [about, setAbout] = useState<boolean>(false);
   const [media, setMedia] = useState<boolean>(true);
@@ -81,7 +74,7 @@ export default function Recipient(props: { recipient: string; }) {
         setProfile(res.data);
       });
     };
-  }, [recipient]);
+  }, [recipient, setProfile]);
 
   return (
     <>

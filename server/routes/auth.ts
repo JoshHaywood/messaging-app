@@ -3,17 +3,7 @@ const router = express.Router();
 
 const db = require("../config/db");
 const { HashPassword, salt } = require("../lib/security");
-
-// Database rows
-interface User {
-  user_name: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  password: string;
-  profile_picture: string;
-  salt: string;
-};
+import User from "@/interfaces/user";
 
 // Session data
 declare module "express-session" {

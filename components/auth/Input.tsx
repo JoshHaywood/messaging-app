@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-interface InputProps {
+interface Input {
   label: string;
   type: string;
   placeholder: string;
@@ -8,7 +8,7 @@ interface InputProps {
   error: string;
 };
 
-export default function Input(props: InputProps) {
+export default function Input(props: Input) {
   const [passwordShow, setPasswordShow] = useState<boolean>(false);
   const [isFocused, setIsFocused] = useState<boolean>(false);
 

@@ -1,17 +1,10 @@
 import Image from "next/image";
 import { useState } from "react";
 
-interface users {
-  usersArray: {
-    first_name: string;
-    last_name: string;
-    email: string;
-    profile_picture: string;
-  }[];
-};
+import User from "@/interfaces/user";
 
-export default function Users({ usersArray, ...props }: users & { setRecipient: (recipient: string) => void; }) {
-  const { setRecipient } = props;
+export default function Users(props: { usersArray: User[]; setRecipient: (recipient: string) => void; }) {
+  const { usersArray, setRecipient } = props;
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   return (
