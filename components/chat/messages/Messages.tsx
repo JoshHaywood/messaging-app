@@ -61,15 +61,13 @@ function SenderMessage() {
   );
 };
 
-export default function Messages(props: { recipient: string; profile: User[]; setProfile: (value: User[]) => void;}) {
-  const { recipient, profile, setProfile } = props;
-
+export default function Messages(props: { profile: User[]; }) {
+  const profile = props.profile;
+  
   return (
     <div className="w-1/2 h-full flex flex-col">
       <Recipient 
-        recipient={recipient}
         profile={profile}
-        setProfile={setProfile}
       />
 
       <div 

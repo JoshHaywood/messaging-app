@@ -1,6 +1,5 @@
 import Image from "next/image";
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useState } from "react";
 
 import User from "@/interfaces/user";
 import Button from "@mui/material/Button";
@@ -56,25 +55,12 @@ const mediaContent = [
   },
 ];
 
-export default function Recipient(props: { recipient: string; profile: User[]; setProfile: (value: User[]) => void;}) {
-  const { recipient, profile, setProfile } = props;
+export default function Recipient(props: { profile: User[]; }) {
+  const profile = props.profile;
 
   const [about, setAbout] = useState<boolean>(false);
   const [media, setMedia] = useState<boolean>(true);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-
-  // Get recipient data
-  useEffect(() => {
-    // If recipient is empty, return
-    if (recipient === "") return;
-
-    // Else, get recipient data
-    else {
-      axios.get(`/users/get/${recipient}`).then((res) => {
-        setProfile(res.data);
-      });
-    };
-  }, [recipient, setProfile]);
 
   return (
     <>

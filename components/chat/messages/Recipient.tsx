@@ -1,24 +1,9 @@
 import Image from "next/image";
-import { useEffect } from "react";
-import axios from "axios";
 
 import Profile from "@/interfaces/user";
 
-export default function Recipient(props: { recipient: string; profile: Profile[]; setProfile: (value: Profile[]) => void;}) {
-  const { recipient, profile, setProfile } = props;
-
-  // Get recipient data
-  useEffect(() => {
-    // If recipient is empty, return
-    if (recipient === "") return;
-
-    // Else, get recipient data
-    else {
-      axios.get(`/users/get/${recipient}`).then((res) => {
-        setProfile(res.data);
-      });
-    };
-  }, [recipient, setProfile]);
+export default function Recipient(props: { profile: Profile[]; }) {
+  const profile = props.profile;
     
   return (
     <>

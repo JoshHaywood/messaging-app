@@ -13,15 +13,29 @@ export default function Chat() {
   const [recipient, setRecipient] = useState<string>("");
   const [profile, setProfile] = useState<User[]>([]);
 
+  // Check if user is logged in
   useEffect(() => {
-    // Check if user is logged in
     axios.get("/auth/user").then((res) => {
       // If user is not logged in, redirect to login page
       if (res.data.loggedIn === false) {
         router.push("/");
       };
     });
-  }, []);
+  }, [router]);
+
+  // Get recipient data
+  useEffect(() => {
+    // If recipient is empty, return
+    if (recipient === "") return;
+
+    // Else, get recipient data
+    else {
+      axios.get(`/users/get/${recipient}`).then((res) => {
+        setProfile(res.data);
+      });
+    };
+  }, [recipient, setProfile]);
+
 
   return (
     <div className="w-screen h-screen relative bg-blue-200">
@@ -33,15 +47,11 @@ export default function Chat() {
 
         {/* Messages column */}
         <Messages
-          recipient={recipient}
           profile={profile}
-          setProfile={setProfile}
         />
 
         <Recipient 
-          recipient={recipient}
           profile={profile}
-          setProfile={setProfile}
         />
       </div>
     </div>
