@@ -3,7 +3,6 @@ import axios from "axios";
 import Image from "next/image";
 
 import User from "@/interfaces/user";
-import Logo from "@/public/images/logo.png";
 import SearchBar from "./SearchBar";
 import Users from "./Users";
 import Account from "./Account";
@@ -37,7 +36,7 @@ export default function UsersList(props: { setRecipient: (recipient: string) => 
     <div className="w-1/4 h-full flex flex-col p-5 pb-0">
       {/* Header */}
       <div className="flex flex-row items-center space-x-2.5">
-        <Image src={Logo} alt="Logo" width={35} height={35} />
+        <Image src="/images/logo.png" alt="Logo" width={35} height={35} />
 
         <h1 className="font-bold tracking-wide">Chats</h1>
       </div>

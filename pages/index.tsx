@@ -1,11 +1,10 @@
 import Head from "next/head";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-import logo from "@/public/images/logo.png";
 import Input from "@/components/auth/Input";
 import ErrorMessage from "@/components/auth/ErrorMessage";
 import Button from "@mui/material/Button";
@@ -55,7 +54,7 @@ export default function Index() {
           {/* Heading */}
           <div className="pt-4 mb-4 mx-auto">
             <Image 
-              src={logo} 
+              src="/images/logo.png" 
               alt="logo" 
               width={75} 
               height={75} 
