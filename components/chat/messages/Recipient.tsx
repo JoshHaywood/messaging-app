@@ -1,8 +1,8 @@
 import Image from "next/image";
 
-import Profile from "@/interfaces/user";
+import User from "@/interfaces/user";
 
-export default function Recipient(props: { profile: Profile[]; }) {
+export default function Recipient(props: { profile: User[]; }) {
   const profile = props.profile;
     
   return (

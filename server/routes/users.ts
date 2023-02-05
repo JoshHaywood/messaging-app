@@ -17,6 +17,7 @@ router.get("/get", (req: Request, res: Response) => {
 // Get recipient by id
 router.get("/get/:id", (req: Request, res: Response) => {
   const recipient = req.params.id;
+  
   // Select all rows from users where id = recipient
   db.query("SELECT * FROM users WHERE email = ?", [recipient], (err: Error, rows: User[]) => {
     if (err) throw err;

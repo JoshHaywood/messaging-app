@@ -55,20 +55,20 @@ const mediaContent = [
   },
 ];
 
-export default function Recipient(props: { profile: User[]; }) {
-  const profile = props.profile;
+export default function Recipient(props: {
+  profile: User[];
+  about: boolean;
+  setAbout: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
+  const { profile, about, setAbout } = props;
 
-  const [about, setAbout] = useState<boolean>(false);
   const [media, setMedia] = useState<boolean>(true);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   return (
     <>
       {profile.map((profile, index) => (
-        <div 
-          key={index} 
-          className="w-1/4 h-full flex flex-col"
-        >
+        <div key={index}>
           {/* Profile picture */}
           <div className="mx-auto p-5 text-center">
             <Image
@@ -76,10 +76,12 @@ export default function Recipient(props: { profile: User[]; }) {
               alt="User profile picture"
               width={125}
               height={125}
-              className="rounded-full border"
+              className="mx-auto rounded-full border"
             ></Image>
 
-            <div className="mt-4 text-xl font-medium text-gray-700">{profile.first_name + " " + profile.last_name}</div>
+            <div className="mt-4 text-xl font-medium text-gray-700">
+              {profile.first_name + " " + profile.last_name}
+            </div>
 
             <div className="mt-1 text-xs text-green-400">Online</div>
           </div>
@@ -132,14 +134,15 @@ export default function Recipient(props: { profile: User[]; }) {
             </div>
 
             {about && (
-              <p className="mt-2 text-sm text-gray-400">
-                {profile.about}
-              </p>
+              <p className="mt-2 text-sm text-gray-400">{profile.about}</p>
             )}
           </div>
 
           {/* Media */}
-          <div id="media" className={`${media ? "border-0" : "border-b"} px-5 py-3`}>
+          <div
+            id="media"
+            className={`${media ? "border-0" : "border-b"} px-5 py-3`}
+          >
             <div
               onClick={() => setMedia(!media)}
               className="flex flex-row justify-between hover:cursor-pointer"
@@ -208,7 +211,10 @@ export default function Recipient(props: { profile: User[]; }) {
                 {/* If the current index is 0, show the media contents, else don't show anything */}
                 {currentIndex === 0 && (
                   /* Media contents */
-                  <div id="media-container" className="mt-4 h-[494px] overflow-y-scroll">
+                  <div
+                    id="media-container"
+                    className="mt-4 h-[494px] overflow-y-scroll"
+                  >
                     <div className="grid grid-cols-3 grid-rows-3 gap-1">
                       {mediaContent.map((media, index) => (
                         <Image
@@ -230,4 +236,4 @@ export default function Recipient(props: { profile: User[]; }) {
       ))}
     </>
   );
-}
+};

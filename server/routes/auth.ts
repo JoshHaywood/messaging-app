@@ -13,6 +13,7 @@ declare module "express-session" {
     lastName: string;
     email: string;
     profilePicture: string;
+    about: string;
   }
 };
 
@@ -79,6 +80,7 @@ router.post("/login", (req: Request, res: Response) => {
         req.session.lastName = rows[0].last_name;
         req.session.email = rows[0].email;
         req.session.profilePicture = rows[0].profile_picture;
+        req.session.about = rows[0].about;
 
         console.log(req.session);
         res.send("Login successful");
@@ -101,7 +103,8 @@ router.get("/user", (req: Request, res: Response) => {
       loggedIn: true,
       firstName: req.session.lastName,
       lastName: req.session.lastName,
-      profilePicture: req.session.profilePicture
+      profilePicture: req.session.profilePicture,
+      about: req.session.about,
     });  
   }
 

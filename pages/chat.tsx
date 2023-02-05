@@ -6,7 +6,7 @@ import axios from "axios";
 import User from "@/interfaces/user";
 import Chats from "@/components/chat/user-list/UsersList";
 import Messages from "@/components/chat/messages/Messages";
-import Recipient from "@/components/chat/recipient/Recipient";
+import Profile from "@/components/chat/profile/Profile";
 
 export default function Chat() {
   const router = useRouter();
@@ -26,10 +26,10 @@ export default function Chat() {
   // Get recipient data
   useEffect(() => {
     // If recipient is empty, return
-    if (recipient === "") return;
-
-    // Else, get recipient data
-    else {
+    if (recipient === "") {
+      return
+      // Else, get recipient data
+    } else {
       axios.get(`/users/get/${recipient}`).then((res) => {
         setProfile(res.data);
       });
@@ -48,10 +48,12 @@ export default function Chat() {
         {/* Messages column */}
         <Messages
           profile={profile}
+          recipient={recipient}
         />
 
-        <Recipient 
+        <Profile 
           profile={profile}
+          recipient={recipient}
         />
       </div>
     </div>

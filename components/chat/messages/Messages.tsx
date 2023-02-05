@@ -26,7 +26,7 @@ function RecipientMessage() {
         </div>
 
         <div className="break-words p-2.5 text-[13px] rounded-xl rounded-tl-none text-gray-700 bg-gray-100">
-        Message content
+          Message content
         </div>
       </div>
     </div>
@@ -43,7 +43,7 @@ function SenderMessage() {
         </div>
 
         <div className="justify-end break-words p-2.5 text-[13px] rounded-xl rounded-tr-none text-white bg-blue-500">
-          Message content           
+          Message content
         </div>
       </div>
 
@@ -61,25 +61,47 @@ function SenderMessage() {
   );
 };
 
-export default function Messages(props: { profile: User[]; }) {
-  const profile = props.profile;
-  
+export default function Messages(props: { profile: User[]; recipient: string }) {
+  const { profile, recipient } = props;
+
   return (
     <div className="w-1/2 h-full flex flex-col">
-      <Recipient 
-        profile={profile}
-      />
+      {/* If no recipient has been selected, show the welcome message. Else show recipient data */}
+      {recipient === "" ? (
+        /* Welcome message */
+        <div className="h-full flex flex-col justify-center items-center p-5 border">
+          <Image
+            src="/images/logo.png"
+            alt="Chathub logo"
+            width={100}
+            height={100}
+          />            
 
-      <div 
-        id="messages-container"
-        className="h-full p-4 pt-8 space-y-5 overflow-y-scroll border"
-      >
-        <RecipientMessage />
+          <div className="mt-8 text-3xl font-semibold tracking-wide text-gray-700">Welcome to ChatHub</div>
 
-        <SenderMessage />
-      </div>
+          <p className="mt-4 max-w-2xl text-center text-gray-400">
+            Where you can connect with friends, family, and colleagues in real-time.
+            Start a conversation or join an existing one to share updates, thoughts, and memories.
+            With ChatHub, you&apos;re always connected to the people who matter most to you.
+            Just search for a friend or colleague and start chatting.
+          </p>
+        </div>
+      ) : (
+        <>
+          <Recipient profile={profile} />
 
-      <MessageInput />
+          <div
+            id="messages-container"
+            className="h-full p-4 pt-8 space-y-5 overflow-y-scroll border"
+          >
+            <RecipientMessage />
+
+            <SenderMessage />
+          </div>
+
+          <MessageInput />
+        </>
+      )}
     </div>
   );
 };
