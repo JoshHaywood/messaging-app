@@ -6,18 +6,17 @@ import SessionUser from "./SessionUser";
 
 export default function Profile(props: {
   profile: User[];
-  recipient: string;
   name: string;
   profilePicture: string;
   about: string;
 }) {
-  const { profile, recipient, name, profilePicture, about } = props;
+  const { profile, name, profilePicture, about } = props;
 
   const [aboutToggle, setAboutToggle] = useState<boolean>(false);
 
   return (
     <div className="w-1/4 h-full flex flex-col">
-      {recipient === "" ? (
+      {profile.length === 0 ? (
         <SessionUser
           aboutToggle={aboutToggle}
           setAboutToggle={setAboutToggle}

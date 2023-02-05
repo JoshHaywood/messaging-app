@@ -2,8 +2,9 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import axios from "axios";
 
+import User from "@/interfaces/user";
+
 export default function Account(props: {
-  setRecipient: React.Dispatch<React.SetStateAction<string>>;
   name: string;
   setName: React.Dispatch<React.SetStateAction<string>>;
   profilePicture: string;
@@ -11,11 +12,12 @@ export default function Account(props: {
   welcomeMessage: boolean;
   showProfile: boolean;
   setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
+  setProfile: React.Dispatch<React.SetStateAction<User[]>>;
 }) {
   const router = useRouter();
 
   const {
-    setRecipient,
+    setProfile,
     name,
     setName,
     profilePicture,
@@ -48,7 +50,7 @@ export default function Account(props: {
           width={35}
           height={35}
           onClick={() => {
-            setRecipient("");
+            setProfile([]);
             {welcomeMessage && setShowProfile(!showProfile)}
           }}
           className="rounded-full border hover:cursor-pointer"
@@ -57,7 +59,7 @@ export default function Account(props: {
         <div className="w-full flex flex- row justify-between">
           <div
             onClick={() => {
-              setRecipient("");
+              setProfile([]);
               {welcomeMessage && setShowProfile(!showProfile)}
             }}
             className="font-medium text-gray-700 hover:cursor-pointer"

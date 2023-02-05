@@ -63,18 +63,17 @@ function SenderMessage() {
 
 export default function Messages(props: {
   profile: User[];
-  recipient: string;
   welcomeMessage: boolean;
   showProfile: boolean;
 }) {
-  const { profile, recipient, welcomeMessage, showProfile } = props;
+  const { profile, welcomeMessage, showProfile } = props;
 
   return (
     <div
       className={`${welcomeMessage && !showProfile ? "w-full" : "w-1/2"} h-full flex flex-col`}
     >
       {/* If no recipient has been selected and welcome message is set to true, show the welcome message. Else show message data */}
-      {recipient === "" && welcomeMessage === true ? (
+      {profile && welcomeMessage ? (
         /* Welcome message */
         <div className="h-full flex flex-col justify-center items-center p-5 border">
           <Image

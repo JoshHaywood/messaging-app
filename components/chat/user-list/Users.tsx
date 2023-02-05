@@ -5,11 +5,11 @@ import User from "@/interfaces/user";
 
 export default function Users(props: {
   usersArray: User[];
-  setRecipient: React.Dispatch<React.SetStateAction<string>>;
+  setProfile: React.Dispatch<React.SetStateAction<User[]>>;
   setWelcomeMessage: React.Dispatch<React.SetStateAction<boolean>>;
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
 }) {
-  const { usersArray, setRecipient, setWelcomeMessage, setSearchTerm } = props;
+  const { usersArray, setProfile, setWelcomeMessage, setSearchTerm } = props;
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   return (
@@ -22,7 +22,7 @@ export default function Users(props: {
           key={index}
           onClick={() => {
             setCurrentIndex(index);
-            setRecipient(user.email);
+            setProfile([user]);
             setWelcomeMessage(false);
             setSearchTerm("");
           }}

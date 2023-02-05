@@ -8,7 +8,6 @@ import Users from "./Users";
 import Account from "./Account";
 
 export default function UsersList(props: {
-  setRecipient: React.Dispatch<React.SetStateAction<string>>;
   name: string;
   setName: React.Dispatch<React.SetStateAction<string>>;
   profilePicture: string;
@@ -17,9 +16,9 @@ export default function UsersList(props: {
   setWelcomeMessage: React.Dispatch<React.SetStateAction<boolean>>;
   showProfile: boolean;
   setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
+  setProfile: React.Dispatch<React.SetStateAction<User[]>>;
 }) {
   const {
-    setRecipient,
     name,
     setName,
     profilePicture,
@@ -28,6 +27,7 @@ export default function UsersList(props: {
     setWelcomeMessage,
     showProfile,
     setShowProfile,
+    setProfile,
   } = props;
   const [users, setUsers] = useState<User[]>([]);
 
@@ -80,14 +80,14 @@ export default function UsersList(props: {
       <Users
         /* If search term is empty, display all users, else display filtered users */
         usersArray={searchTerm === "" ? users : filteredUsers}
-        setRecipient={setRecipient}
+        setProfile={setProfile}
         setWelcomeMessage={setWelcomeMessage}
         setSearchTerm={setSearchTerm}
       />
 
       {/* Account */}
       <Account
-        setRecipient={setRecipient}
+        setProfile={setProfile}
         name={name}
         setName={setName}
         profilePicture={profilePicture}
