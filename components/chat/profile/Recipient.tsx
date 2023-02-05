@@ -193,15 +193,26 @@ export default function Recipient(props: {
                 {/* Buttons */}
                 <div className="flex flex-row mt-4 space-x-5">
                   {buttons.map((button, index) => (
-                    <Button
+                    <Button 
                       key={index}
                       variant="contained"
                       onClick={() => setCurrentIndex(index)}
-                      className={`${
-                        index === currentIndex
-                          ? "text-sky-500 bg-sky-100 hover:text-sky-600 hover:bg-sky-100"
-                          : "text-gray-400 bg-gray-100 hover:text-sky-600 hover:bg-sky-100"
-                      } text-xs normal-case shadow-none hover:shadow-none rounded-2xl transition-colors duration-300 ease-in-out`}
+                      sx={{
+                        fontSize: "0.75rem",
+                        lineHeight: "1rem",
+                        textTransform: "none",
+                        boxShadow: "none",
+                        borderRadius: "1.5rem",
+                        transition: "all 0.3s ease-in-out",
+                        color: index === currentIndex ? "#0ea5e9" : "#9ca3af",
+                        backgroundColor: index === currentIndex ? "#e0f2fe" : "#f3f4f6",
+
+                        "&:hover": { 
+                          boxShadow: "none",
+                          color: "#0284c7",
+                          backgroundColor: "#e0f2fe",
+                        },
+                      }}
                     >
                       {button.name}
                     </Button>

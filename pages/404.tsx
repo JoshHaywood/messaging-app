@@ -15,7 +15,14 @@ export default function Custom404() {
       <Button
         variant="contained"
         onClick={() => {router.back()}}
-        className="mx-auto py-2 px-10 rounded-lg normal-case bg-blue-500"
+        sx={{
+          margin: "0 auto",
+          padding: "0.5rem 2.5rem",
+          borderRadius: "0.5rem",
+          textTransform: "none",
+          color: "#fff",
+        }}
+        className="bg-blue-500 hover:bg-blue-600" // MUI background color bug workaround
       >
         Go Back
       </Button>

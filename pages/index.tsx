@@ -109,7 +109,14 @@ export default function Index() {
               <Button
                 type="submit"
                 variant="contained"
-                className="w-full rounded-lg normal-case bg-blue-500"
+                sx={{
+                  width: "100%",
+                  margin: "0 auto",
+                  borderRadius: "0.5rem",
+                  textTransform: "none",
+                  color: "#fff",
+                }}
+                className="bg-blue-500 hover:bg-blue-600" // MUI background color bug workaround
               >
                 Sign in
               </Button>
