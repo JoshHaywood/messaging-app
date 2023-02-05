@@ -21,21 +21,26 @@ export default function UsersList(props: {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
 
-  // Get users from users table
+  // Get users from users table 
   useEffect(() => {
     axios.get("/users/get").then((res) => {
-      setUsers(res.data);
+      // Exclude session user
+      const usersArray = res.data.filter((user: User) => {
+        return user.first_name + " " + user.last_name !== name;
+      });
+
+      setUsers(usersArray);
     });
-  }, []);
+  }, [name]);
 
   // Handle search bar input
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value); // Set search term as input value
 
-    // Filter users array based on search term
-    const filteredUsers = users.filter((user) =>
-      user.first_name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    // Filter users array based on search term excluding session user
+    const filteredUsers = users.filter((user) => {
+      return user.first_name.toLowerCase().includes(searchTerm.toLowerCase()) && user.first_name + " " + user.last_name !== name;
+    });
     setFilteredUsers(filteredUsers);
   };
 
