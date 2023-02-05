@@ -5,8 +5,8 @@ import User from "@/interfaces/user";
 
 export default function Users(props: {
   usersArray: User[];
-  setRecipient: (recipient: string) => void;
-  setWelcomeMessage: (welcomeMessage: boolean) => void;
+  setRecipient: React.Dispatch<React.SetStateAction<string>>;
+  setWelcomeMessage: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const { usersArray, setRecipient, setWelcomeMessage } = props;
   const [currentIndex, setCurrentIndex] = useState<number>(0);

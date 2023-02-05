@@ -3,11 +3,11 @@ import Image from "next/image";
 import axios from "axios";
 
 export default function Account(props: {
-  setRecipient: (recipient: string) => void;
+  setRecipient: React.Dispatch<React.SetStateAction<string>>;
   name: string;
-  setName: (name: string) => void;
+  setName: React.Dispatch<React.SetStateAction<string>>;
   profilePicture: string;
-  setProfilePicture: (profilePicture: string) => void;
+  setProfilePicture: React.Dispatch<React.SetStateAction<string>>;
 }) {
   const router = useRouter();
 

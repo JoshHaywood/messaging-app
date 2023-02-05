@@ -4,7 +4,7 @@ interface Input {
   label: string;
   type: string;
   placeholder: string;
-  setState: (value: string) => void;
+  setState: React.Dispatch<React.SetStateAction<string>>;
   error: string;
 };
 

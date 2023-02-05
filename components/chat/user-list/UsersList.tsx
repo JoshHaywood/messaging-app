@@ -8,12 +8,12 @@ import Users from "./Users";
 import Account from "./Account";
 
 export default function UsersList(props: {
-  setRecipient: (recipient: string) => void;
+  setRecipient: React.Dispatch<React.SetStateAction<string>>;
   name: string;
-  setName: (name: string) => void;
+  setName: React.Dispatch<React.SetStateAction<string>>;
   profilePicture: string;
-  setProfilePicture: (profilePicture: string) => void;
-  setWelcomeMessage: (welcomeMessage: boolean) => void;
+  setProfilePicture: React.Dispatch<React.SetStateAction<string>>;
+  setWelcomeMessage: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const { setRecipient, name, setName, profilePicture, setProfilePicture, setWelcomeMessage } = props;
   const [users, setUsers] = useState<User[]>([]);
