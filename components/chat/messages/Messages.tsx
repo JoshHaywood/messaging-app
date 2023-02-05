@@ -61,13 +61,13 @@ function SenderMessage() {
   );
 };
 
-export default function Messages(props: { profile: User[]; recipient: string }) {
-  const { profile, recipient } = props;
+export default function Messages(props: { profile: User[]; recipient: string; welcomeMessage: boolean; }) {
+  const { profile, recipient, welcomeMessage } = props;
 
   return (
     <div className="w-1/2 h-full flex flex-col">
-      {/* If no recipient has been selected, show the welcome message. Else show recipient data */}
-      {recipient === "" ? (
+      {/* If no recipient has been selected and welcome message is set to true, show the welcome message. Else show message data */}
+      {recipient === "" && welcomeMessage === true ? (
         /* Welcome message */
         <div className="h-full flex flex-col justify-center items-center p-5 border">
           <Image

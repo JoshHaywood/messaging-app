@@ -3,8 +3,12 @@ import { useState } from "react";
 
 import User from "@/interfaces/user";
 
-export default function Users(props: { usersArray: User[]; setRecipient: (recipient: string) => void; }) {
-  const { usersArray, setRecipient } = props;
+export default function Users(props: {
+  usersArray: User[];
+  setRecipient: (recipient: string) => void;
+  setWelcomeMessage: (welcomeMessage: boolean) => void;
+}) {
+  const { usersArray, setRecipient, setWelcomeMessage } = props;
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   return (
@@ -18,11 +22,12 @@ export default function Users(props: { usersArray: User[]; setRecipient: (recipi
           onClick={() => {
             setCurrentIndex(index);
             setRecipient(user.email);
+            setWelcomeMessage(false);
           }}
           className={`${
             index === currentIndex ? "bg-gray-100" : "bg-none"
           } mb-2.5 px-2.5 flex flex-row items-center py-2 space-x-4 rounded-lg`}
-        > 
+        >
           {/* Profile picture */}
           <Image
             src={"/images/" + user.profile_picture}

@@ -3,6 +3,7 @@ import Image from "next/image";
 import axios from "axios";
 
 export default function Account(props: {
+  setRecipient: (recipient: string) => void;
   name: string;
   setName: (name: string) => void;
   profilePicture: string;
@@ -10,7 +11,7 @@ export default function Account(props: {
 }) {
   const router = useRouter();
 
-  const { name, setName, profilePicture, setProfilePicture } = props;
+  const { setRecipient, name, setName, profilePicture, setProfilePicture } = props;
 
   // Logout
   const logoutHandler = () => {
@@ -34,11 +35,15 @@ export default function Account(props: {
           alt="User profile picture"
           width={35}
           height={35}
-          className="rounded-full border"
+          onClick={() => setRecipient("")}
+          className="rounded-full border hover:cursor-pointer"
         ></Image>
 
         <div className="w-full flex flex- row justify-between">
-          <div className="font-medium text-gray-700">{name}</div>
+          <div 
+            onClick={() => setRecipient("")}
+            className="font-medium text-gray-700 hover:cursor-pointer"
+          >{name}</div>
   
           {/* Attribution: https://heroicons.com/ */}
           <svg

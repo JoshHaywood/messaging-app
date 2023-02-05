@@ -13,8 +13,9 @@ export default function UsersList(props: {
   setName: (name: string) => void;
   profilePicture: string;
   setProfilePicture: (profilePicture: string) => void;
+  setWelcomeMessage: (welcomeMessage: boolean) => void;
 }) {
-  const { setRecipient, name, setName, profilePicture, setProfilePicture } = props;
+  const { setRecipient, name, setName, profilePicture, setProfilePicture, setWelcomeMessage } = props;
   const [users, setUsers] = useState<User[]>([]);
 
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -59,10 +60,12 @@ export default function UsersList(props: {
         /* If search term is empty, display all users, else display filtered users */
         usersArray={searchTerm === "" ? users : filteredUsers}
         setRecipient={setRecipient}
+        setWelcomeMessage={setWelcomeMessage}
       />
 
       {/* Account */}
       <Account 
+        setRecipient={setRecipient}
         name={name} 
         setName={setName}
         profilePicture={profilePicture} 

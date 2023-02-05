@@ -18,6 +18,8 @@ export default function Chat() {
   const [recipient, setRecipient] = useState<string>("");
   const [profile, setProfile] = useState<User[]>([]);
 
+  const [welcomeMessage, setWelcomeMessage] = useState<boolean>(true);
+
   // Check if user is logged in
   useEffect(() => {
     axios.get("/auth/user").then((res) => {
@@ -57,12 +59,14 @@ export default function Chat() {
           setName={setName}
           profilePicture={profilePicture}
           setProfilePicture={setProfilePicture}
+          setWelcomeMessage={setWelcomeMessage}
         />
 
         {/* Messages column */}
         <Messages
           profile={profile}
           recipient={recipient}
+          welcomeMessage={welcomeMessage}
         />
 
         <Profile 
