@@ -5,6 +5,7 @@ export default function SearchBar(props: {
   searchTerm: string;
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
 }) {
+  const { handleChange, searchTerm, setSearchTerm } = props;
   const [isFocused, setIsFocused] = useState<boolean>(false);
 
   return (
@@ -13,10 +14,10 @@ export default function SearchBar(props: {
         id="input"
         type="text"
         placeholder="Search chats"
-        value={props.searchTerm}
-        onChange={props.handleChange}
+        value={searchTerm}
+        onChange={handleChange}
         onKeyDown={(e) => {
-          e.key === "Enter" && props.setSearchTerm("");
+          e.key === "Enter" && setSearchTerm("");
         }}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
@@ -31,7 +32,7 @@ export default function SearchBar(props: {
           viewBox="0 0 24 24"
           fill="none"
           onClick={() => {
-            props.setSearchTerm("");
+            setSearchTerm("");
             setIsFocused(false);
           }}
           className="w-5 h-5 mx-2.5 text-gray-400 hover:text-blue-500 hover:cursor-pointer"

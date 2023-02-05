@@ -66,6 +66,7 @@ export default function UsersList(props: {
         usersArray={searchTerm === "" ? users : filteredUsers}
         setRecipient={setRecipient}
         setWelcomeMessage={setWelcomeMessage}
+        setSearchTerm={setSearchTerm}
       />
 
       {/* Account */}

@@ -7,8 +7,9 @@ export default function Users(props: {
   usersArray: User[];
   setRecipient: React.Dispatch<React.SetStateAction<string>>;
   setWelcomeMessage: React.Dispatch<React.SetStateAction<boolean>>;
+  setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
 }) {
-  const { usersArray, setRecipient, setWelcomeMessage } = props;
+  const { usersArray, setRecipient, setWelcomeMessage, setSearchTerm } = props;
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   return (
@@ -23,6 +24,7 @@ export default function Users(props: {
             setCurrentIndex(index);
             setRecipient(user.email);
             setWelcomeMessage(false);
+            setSearchTerm("");
           }}
           className={`${
             index === currentIndex ? "bg-gray-100" : "bg-none"
