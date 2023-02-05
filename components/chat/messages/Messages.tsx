@@ -69,11 +69,9 @@ export default function Messages(props: {
   const { profile, welcomeMessage, showProfile } = props;
 
   return (
-    <div
-      className={`${welcomeMessage && !showProfile ? "w-full" : "w-1/2"} h-full flex flex-col`}
-    >
+    <div className={`${welcomeMessage && !showProfile ? "w-full" : "w-1/2"} h-full flex flex-col`}>
       {/* If no recipient has been selected and welcome message is set to true, show the welcome message. Else show message data */}
-      {profile && welcomeMessage ? (
+      {welcomeMessage ? (
         /* Welcome message */
         <div className="h-full flex flex-col justify-center items-center p-5 border">
           <Image

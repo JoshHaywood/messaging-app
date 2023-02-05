@@ -14,6 +14,7 @@ export default function UsersList(props: {
   setProfilePicture: React.Dispatch<React.SetStateAction<string>>;
   welcomeMessage: boolean;
   setWelcomeMessage: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsAccountSettings: React.Dispatch<React.SetStateAction<boolean>>;
   showProfile: boolean;
   setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
   setProfile: React.Dispatch<React.SetStateAction<User[]>>;
@@ -25,6 +26,7 @@ export default function UsersList(props: {
     setProfilePicture,
     welcomeMessage,
     setWelcomeMessage,
+    setIsAccountSettings,
     showProfile,
     setShowProfile,
     setProfile,
@@ -83,11 +85,11 @@ export default function UsersList(props: {
         setProfile={setProfile}
         setWelcomeMessage={setWelcomeMessage}
         setSearchTerm={setSearchTerm}
+        setIsAccountSettings={setIsAccountSettings}
       />
 
       {/* Account */}
       <Account
-        setProfile={setProfile}
         name={name}
         setName={setName}
         profilePicture={profilePicture}
@@ -95,6 +97,7 @@ export default function UsersList(props: {
         welcomeMessage={welcomeMessage}
         showProfile={showProfile}
         setShowProfile={setShowProfile}
+        setIsAccountSettings={setIsAccountSettings}
       />
     </div>
   );

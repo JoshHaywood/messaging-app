@@ -14,9 +14,10 @@ export default function Chat() {
   const [name, setName] = useState<string>("");
   const [profilePicture, setProfilePicture] = useState<string>("");
   const [about, setAbout] = useState<string>("");
-  const [showProfile, setShowProfile] = useState<boolean>(false);
-
+  
   const [profile, setProfile] = useState<User[]>([]);
+  const [isAccountSettings, setIsAccountSettings] = useState<boolean>(false);
+  const [showProfile, setShowProfile] = useState<boolean>(false);
 
   const [welcomeMessage, setWelcomeMessage] = useState<boolean>(true);
 
@@ -34,19 +35,6 @@ export default function Chat() {
       };
     });
   }, [router]);
-
-  // Get recipient data
-  useEffect(() => {
-    // If recipient is empty, return
-    if (profile) {
-      return
-      // Else, get recipient data
-    } else {
-      axios.get(`/users/get/${profile}`).then((res) => {
-        setProfile(res.data);
-      });
-    };
-  }, [profile, setProfile]);
 
   // Show profile column
   useEffect(() => {
@@ -67,6 +55,7 @@ export default function Chat() {
           setProfilePicture={setProfilePicture}
           welcomeMessage={welcomeMessage}
           setWelcomeMessage={setWelcomeMessage}
+          setIsAccountSettings={setIsAccountSettings}
           showProfile={showProfile}
           setShowProfile={setShowProfile}
           setProfile={setProfile}
@@ -82,10 +71,11 @@ export default function Chat() {
         {/* Profile column */}
         {showProfile && (
           <Profile 
+            accountSettings={isAccountSettings}
             profile={profile}
             name={name}
             profilePicture={profilePicture}
-            about={about}
+            about={about} 
           />
         )}
       </div>

@@ -10,19 +10,19 @@ export default function Account(props: {
   profilePicture: string;
   setProfilePicture: React.Dispatch<React.SetStateAction<string>>;
   welcomeMessage: boolean;
+  setIsAccountSettings: React.Dispatch<React.SetStateAction<boolean>>;
   showProfile: boolean;
   setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
-  setProfile: React.Dispatch<React.SetStateAction<User[]>>;
 }) {
   const router = useRouter();
 
   const {
-    setProfile,
     name,
     setName,
     profilePicture,
     setProfilePicture,
     welcomeMessage,
+    setIsAccountSettings,
     showProfile,
     setShowProfile,
   } = props;
@@ -50,8 +50,8 @@ export default function Account(props: {
           width={35}
           height={35}
           onClick={() => {
-            setProfile([]);
             {welcomeMessage && setShowProfile(!showProfile)}
+            setIsAccountSettings(true);
           }}
           className="rounded-full border hover:cursor-pointer"
         ></Image>
@@ -59,8 +59,8 @@ export default function Account(props: {
         <div className="w-full flex flex- row justify-between">
           <div
             onClick={() => {
-              setProfile([]);
               {welcomeMessage && setShowProfile(!showProfile)}
+              setIsAccountSettings(true);
             }}
             className="font-medium text-gray-700 hover:cursor-pointer"
           >

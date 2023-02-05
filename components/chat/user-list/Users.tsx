@@ -8,8 +8,15 @@ export default function Users(props: {
   setProfile: React.Dispatch<React.SetStateAction<User[]>>;
   setWelcomeMessage: React.Dispatch<React.SetStateAction<boolean>>;
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
+  setIsAccountSettings: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const { usersArray, setProfile, setWelcomeMessage, setSearchTerm } = props;
+  const {
+    usersArray,
+    setProfile,
+    setWelcomeMessage,
+    setSearchTerm,
+    setIsAccountSettings,
+  } = props;
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   return (
@@ -24,6 +31,7 @@ export default function Users(props: {
             setCurrentIndex(index);
             setProfile([user]);
             setWelcomeMessage(false);
+            setIsAccountSettings(false);
             setSearchTerm("");
           }}
           className={`${
