@@ -13,15 +13,28 @@ export default function UsersList(props: {
   setName: React.Dispatch<React.SetStateAction<string>>;
   profilePicture: string;
   setProfilePicture: React.Dispatch<React.SetStateAction<string>>;
+  welcomeMessage: boolean;
   setWelcomeMessage: React.Dispatch<React.SetStateAction<boolean>>;
+  showProfile: boolean;
+  setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const { setRecipient, name, setName, profilePicture, setProfilePicture, setWelcomeMessage } = props;
+  const {
+    setRecipient,
+    name,
+    setName,
+    profilePicture,
+    setProfilePicture,
+    welcomeMessage,
+    setWelcomeMessage,
+    showProfile,
+    setShowProfile,
+  } = props;
   const [users, setUsers] = useState<User[]>([]);
 
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
 
-  // Get users from users table 
+  // Get users from users table
   useEffect(() => {
     axios.get("/users/get").then((res) => {
       // Exclude session user
@@ -39,7 +52,10 @@ export default function UsersList(props: {
 
     // Filter users array based on search term excluding session user
     const filteredUsers = users.filter((user) => {
-      return user.first_name.toLowerCase().includes(searchTerm.toLowerCase()) && user.first_name + " " + user.last_name !== name;
+      return (
+        user.first_name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+        user.first_name + " " + user.last_name !== name
+      );
     });
     setFilteredUsers(filteredUsers);
   };
@@ -70,12 +86,15 @@ export default function UsersList(props: {
       />
 
       {/* Account */}
-      <Account 
+      <Account
         setRecipient={setRecipient}
-        name={name} 
+        name={name}
         setName={setName}
-        profilePicture={profilePicture} 
+        profilePicture={profilePicture}
         setProfilePicture={setProfilePicture}
+        welcomeMessage={welcomeMessage}
+        showProfile={showProfile}
+        setShowProfile={setShowProfile}
       />
     </div>
   );

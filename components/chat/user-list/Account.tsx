@@ -8,10 +8,22 @@ export default function Account(props: {
   setName: React.Dispatch<React.SetStateAction<string>>;
   profilePicture: string;
   setProfilePicture: React.Dispatch<React.SetStateAction<string>>;
+  welcomeMessage: boolean;
+  showProfile: boolean;
+  setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const router = useRouter();
 
-  const { setRecipient, name, setName, profilePicture, setProfilePicture } = props;
+  const {
+    setRecipient,
+    name,
+    setName,
+    profilePicture,
+    setProfilePicture,
+    welcomeMessage,
+    showProfile,
+    setShowProfile,
+  } = props;
 
   // Logout
   const logoutHandler = () => {
@@ -24,7 +36,7 @@ export default function Account(props: {
       router.push("/");
     });
   };
-  
+
   return (
     <>
       <hr className="-mx-5 mt-1 border-t"></hr>
@@ -35,16 +47,24 @@ export default function Account(props: {
           alt="User profile picture"
           width={35}
           height={35}
-          onClick={() => setRecipient("")}
+          onClick={() => {
+            setRecipient("");
+            {welcomeMessage && setShowProfile(!showProfile)}
+          }}
           className="rounded-full border hover:cursor-pointer"
         ></Image>
 
         <div className="w-full flex flex- row justify-between">
-          <div 
-            onClick={() => setRecipient("")}
+          <div
+            onClick={() => {
+              setRecipient("");
+              {welcomeMessage && setShowProfile(!showProfile)}
+            }}
             className="font-medium text-gray-700 hover:cursor-pointer"
-          >{name}</div>
-  
+          >
+            {name}
+          </div>
+
           {/* Attribution: https://heroicons.com/ */}
           <svg
             xmlns="http://www.w3.org/2000/svg"

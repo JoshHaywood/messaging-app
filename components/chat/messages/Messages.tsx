@@ -31,7 +31,7 @@ function RecipientMessage() {
       </div>
     </div>
   );
-};
+}
 
 function SenderMessage() {
   return (
@@ -59,13 +59,20 @@ function SenderMessage() {
       </div>
     </div>
   );
-};
+}
 
-export default function Messages(props: { profile: User[]; recipient: string; welcomeMessage: boolean; }) {
-  const { profile, recipient, welcomeMessage } = props;
+export default function Messages(props: {
+  profile: User[];
+  recipient: string;
+  welcomeMessage: boolean;
+  showProfile: boolean;
+}) {
+  const { profile, recipient, welcomeMessage, showProfile } = props;
 
   return (
-    <div className="w-1/2 h-full flex flex-col">
+    <div
+      className={`${welcomeMessage && !showProfile ? "w-full" : "w-1/2"} h-full flex flex-col`}
+    >
       {/* If no recipient has been selected and welcome message is set to true, show the welcome message. Else show message data */}
       {recipient === "" && welcomeMessage === true ? (
         /* Welcome message */
@@ -75,15 +82,18 @@ export default function Messages(props: { profile: User[]; recipient: string; we
             alt="Chathub logo"
             width={100}
             height={100}
-          />            
+          />
 
-          <div className="mt-8 text-3xl font-semibold tracking-wide text-gray-700">Welcome to ChatHub</div>
+          <div className="mt-8 text-3xl font-semibold tracking-wide text-gray-700">
+            Welcome to ChatHub
+          </div>
 
           <p className="mt-4 max-w-2xl text-center text-gray-400">
-            Where you can connect with friends, family, and colleagues in real-time.
-            Start a conversation or join an existing one to share updates, thoughts, and memories.
-            With ChatHub, you&apos;re always connected to the people who matter most to you.
-            Just search for a friend or colleague and start chatting.
+            Where you can connect with friends, family, and colleagues in
+            real-time. Start a conversation or join an existing one to share
+            updates, thoughts, and memories. With ChatHub, you&apos;re always
+            connected to the people who matter most to you. Just search for a
+            friend or colleague and start chatting.
           </p>
         </div>
       ) : (

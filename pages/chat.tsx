@@ -14,6 +14,7 @@ export default function Chat() {
   const [name, setName] = useState<string>("");
   const [profilePicture, setProfilePicture] = useState<string>("");
   const [about, setAbout] = useState<string>("");
+  const [showProfile, setShowProfile] = useState<boolean>(false);
 
   const [recipient, setRecipient] = useState<string>("");
   const [profile, setProfile] = useState<User[]>([]);
@@ -48,6 +49,13 @@ export default function Chat() {
     };
   }, [recipient, setProfile]);
 
+  // Show profile column
+  useEffect(() => {
+    // If welcome message is false, show profile column
+    if (welcomeMessage === false) {
+      setShowProfile(true);
+    };
+  }, [welcomeMessage]);
 
   return (
     <div className="w-screen h-screen relative bg-blue-200">
@@ -59,23 +67,30 @@ export default function Chat() {
           setName={setName}
           profilePicture={profilePicture}
           setProfilePicture={setProfilePicture}
+          welcomeMessage={welcomeMessage}
           setWelcomeMessage={setWelcomeMessage}
+          showProfile={showProfile}
+          setShowProfile={setShowProfile}
         />
-
+ 
         {/* Messages column */}
         <Messages
           profile={profile}
           recipient={recipient}
           welcomeMessage={welcomeMessage}
+          showProfile={showProfile}
         />
 
-        <Profile 
-          profile={profile}
-          recipient={recipient}
-          name={name}
-          profilePicture={profilePicture}
-          about={about}
-        />
+        {/* Profile column */}
+        {showProfile && (
+          <Profile 
+            profile={profile}
+            recipient={recipient}
+            name={name}
+            profilePicture={profilePicture}
+            about={about}
+          />
+        )}
       </div>
     </div>
   );
