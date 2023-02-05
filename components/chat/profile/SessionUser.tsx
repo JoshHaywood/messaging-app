@@ -1,21 +1,27 @@
 import Image from "next/image";
 
-export default function SessionUser(props: { about: boolean; setAbout: React.Dispatch<React.SetStateAction<boolean>>; }) {
-  const { about, setAbout } = props;
+export default function SessionUser(props: {
+  aboutToggle: boolean;
+  setAboutToggle: React.Dispatch<React.SetStateAction<boolean>>;
+  name: string;
+  profilePicture: string;
+  about: string;
+}) {
+  const { aboutToggle, setAboutToggle, name, profilePicture, about } = props;
 
   return (
     <>
       {/* Profile picture */}
       <div className="mx-auto p-5 text-center">
         <Image
-          src={"/images/" + "default-profile.png"}
+          src={"/images/" + profilePicture}
           alt="User profile picture"
           width={125}
           height={125}
           className="mx-auto rounded-full border"
         ></Image>
 
-        <div className="mt-4 text-xl font-medium text-gray-700">John Doe</div>
+        <div className="mt-4 text-xl font-medium text-gray-700">{name}</div>
 
         <div className="mt-1 text-xs text-green-400">Online</div>
       </div>
@@ -23,7 +29,7 @@ export default function SessionUser(props: { about: boolean; setAbout: React.Dis
       {/* About */}
       <div
         id="about"
-        onClick={() => setAbout(!about)}
+        onClick={() => setAboutToggle(!aboutToggle)}
         className="mt-4 px-5 py-3 border border-x-0 hover:cursor-pointer"
       >
         <div className="flex flex-row justify-between">
@@ -32,7 +38,7 @@ export default function SessionUser(props: { about: boolean; setAbout: React.Dis
           </div>
 
           {/* If about is true, show the up arrow, else show the down arrow */}
-          {about ? (
+          {aboutToggle ? (
             /* Attribution: https://heroicons.com/ */
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -67,7 +73,7 @@ export default function SessionUser(props: { about: boolean; setAbout: React.Dis
           )}
         </div>
 
-        {about && <p className="mt-2 text-sm text-gray-400">Lorem ipsum</p>}
+        {aboutToggle && <p className="mt-2 text-sm text-gray-400">{about}</p>}
       </div>
     </>
   );

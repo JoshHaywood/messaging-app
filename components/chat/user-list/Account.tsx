@@ -1,22 +1,16 @@
 import { useRouter } from "next/router";
 import Image from "next/image";
-import { useEffect, useState } from "react";
 import axios from "axios";
 
-export default function Account() {
-  const router = useRouter()
+export default function Account(props: {
+  name: string;
+  setName: (name: string) => void;
+  profilePicture: string;
+  setProfilePicture: (profilePicture: string) => void;
+}) {
+  const router = useRouter();
 
-  const [name, setName] = useState<string>("");
-  const [profilePicture, setProfilePicture] = useState<string>("");
-
-  // Get user data
-  useEffect(() => {
-    axios.get("/auth/user").then((res) => {
-      // Set user data
-      setName(res.data.firstName + " " + res.data.lastName);
-      setProfilePicture(res.data.profilePicture);
-    });
-  }, []);
+  const { name, setName, profilePicture, setProfilePicture } = props;
 
   // Logout
   const logoutHandler = () => {

@@ -4,12 +4,17 @@ import { useRouter } from "next/router";
 import axios from "axios";
 
 import User from "@/interfaces/user";
-import Chats from "@/components/chat/user-list/UsersList";
+import UserList from "@/components/chat/user-list/UsersList";
 import Messages from "@/components/chat/messages/Messages";
 import Profile from "@/components/chat/profile/Profile";
 
 export default function Chat() {
   const router = useRouter();
+
+  const [name, setName] = useState<string>("");
+  const [profilePicture, setProfilePicture] = useState<string>("");
+  const [about, setAbout] = useState<string>("");
+
   const [recipient, setRecipient] = useState<string>("");
   const [profile, setProfile] = useState<User[]>([]);
 
@@ -19,6 +24,11 @@ export default function Chat() {
       // If user is not logged in, redirect to login page
       if (res.data.loggedIn === false) {
         router.push("/");
+        // Else, set user data
+      } else {
+        setName(res.data.firstName + " " + res.data.lastName);
+        setProfilePicture(res.data.profilePicture);
+        setAbout(res.data.about);
       };
     });
   }, [router]);
@@ -41,8 +51,12 @@ export default function Chat() {
     <div className="w-screen h-screen relative bg-blue-200">
       <div className="absolute left-0 right-0 top-0 bottom-0 m-10 flex flex-row rounded-2xl bg-white">
         {/* Chats column */}
-        <Chats 
+        <UserList
           setRecipient={setRecipient}
+          name={name}
+          setName={setName}
+          profilePicture={profilePicture}
+          setProfilePicture={setProfilePicture}
         />
 
         {/* Messages column */}
@@ -54,6 +68,9 @@ export default function Chat() {
         <Profile 
           profile={profile}
           recipient={recipient}
+          name={name}
+          profilePicture={profilePicture}
+          about={about}
         />
       </div>
     </div>

@@ -7,15 +7,21 @@ import SearchBar from "./SearchBar";
 import Users from "./Users";
 import Account from "./Account";
 
-export default function UsersList(props: { setRecipient: (recipient: string) => void; }) {
-  const { setRecipient } = props;
+export default function UsersList(props: {
+  setRecipient: (recipient: string) => void;
+  name: string;
+  setName: (name: string) => void;
+  profilePicture: string;
+  setProfilePicture: (profilePicture: string) => void;
+}) {
+  const { setRecipient, name, setName, profilePicture, setProfilePicture } = props;
   const [users, setUsers] = useState<User[]>([]);
 
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
 
+  // Get users from users table
   useEffect(() => {
-    // Get users from users table
     axios.get("/users/get").then((res) => {
       setUsers(res.data);
     });
@@ -49,17 +55,19 @@ export default function UsersList(props: { setRecipient: (recipient: string) => 
       />
 
       {/* Recipients list */}
-      <Users 
+      <Users
         /* If search term is empty, display all users, else display filtered users */
-        usersArray={
-          searchTerm === "" ? 
-          users : filteredUsers
-        } 
+        usersArray={searchTerm === "" ? users : filteredUsers}
         setRecipient={setRecipient}
       />
 
       {/* Account */}
-      <Account />
+      <Account 
+        name={name} 
+        setName={setName}
+        profilePicture={profilePicture} 
+        setProfilePicture={setProfilePicture}
+      />
     </div>
   );
 };

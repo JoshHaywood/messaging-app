@@ -4,25 +4,30 @@ import User from "@/interfaces/user";
 import Recipient from "./Recipient";
 import SessionUser from "./SessionUser";
 
-export default function Profile(props: { profile: User[]; recipient: string }) {
-  const { profile, recipient } = props;
+export default function Profile(props: {
+  profile: User[];
+  recipient: string;
+  name: string;
+  profilePicture: string;
+  about: string;
+}) {
+  const { profile, recipient, name, profilePicture, about } = props;
 
-  const [about, setAbout] = useState<boolean>(false);
+  const [aboutToggle, setAboutToggle] = useState<boolean>(false);
 
   return (
     <div className="w-1/4 h-full flex flex-col">
       {recipient === "" ? (
-        <SessionUser 
+        <SessionUser
+          aboutToggle={aboutToggle}
+          setAboutToggle={setAboutToggle}
+          name={name}
+          profilePicture={profilePicture}
           about={about}
-          setAbout={setAbout}
         />
       ) : (
-        <Recipient
-          profile={profile}
-          about={about}
-          setAbout={setAbout}
-        />
+        <Recipient profile={profile} about={aboutToggle} setAbout={setAboutToggle} />
       )}
     </div>
   );
-}
+};
