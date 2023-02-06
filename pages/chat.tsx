@@ -11,15 +11,16 @@ import Profile from "@/components/chat/profile/Profile";
 export default function Chat() {
   const router = useRouter();
   
-  const [welcomeMessage, setWelcomeMessage] = useState<boolean>(true);
+  const [welcomeMessage, setWelcomeMessage] = useState<boolean>(true); // Show or hide welcome message
+  const [showMessages, setShowMessages] = useState<boolean>(false); // Show or hide messages column
 
-  const [showProfile, setShowProfile] = useState<boolean>(false);
-  const [isAccountSettings, setIsAccountSettings] = useState<boolean>(false);
-  const [profile, setProfile] = useState<User[]>([]);
-
-  const [name, setName] = useState<string>("");
-  const [profilePicture, setProfilePicture] = useState<string>("");
-  const [about, setAbout] = useState<string>("");
+  const [showProfile, setShowProfile] = useState<boolean>(false); // Show or hide profile column
+  const [isAccountSettings, setIsAccountSettings] = useState<boolean>(false); // Show account settings or profile
+  
+  const [profile, setProfile] = useState<User[]>([]); // User profile data
+  const [name, setName] = useState<string>(""); // Account name
+  const [profilePicture, setProfilePicture] = useState<string>(""); // Account profile picture
+  const [about, setAbout] = useState<string>(""); // Account about
 
   // Check if user is logged in
   useEffect(() => {
@@ -51,6 +52,8 @@ export default function Chat() {
         <UserList
           welcomeMessage={welcomeMessage}
           setWelcomeMessage={setWelcomeMessage}
+          showMessages={showMessages}
+          setShowMessages={setShowMessages}
           showProfile={showProfile}
           setShowProfile={setShowProfile}
           setIsAccountSettings={setIsAccountSettings}
@@ -64,6 +67,8 @@ export default function Chat() {
         {/* Messages column */}
         <Messages
           welcomeMessage={welcomeMessage}
+          showMessages={showMessages}
+          setShowMessages={setShowMessages}
           showProfile={showProfile}
           profile={profile}
         />

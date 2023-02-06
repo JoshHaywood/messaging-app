@@ -5,6 +5,7 @@ import User from "@/interfaces/user";
 
 export default function Users(props: {
   setWelcomeMessage: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowMessages: React.Dispatch<React.SetStateAction<boolean>>;
   setIsAccountSettings: React.Dispatch<React.SetStateAction<boolean>>;
   setProfile: React.Dispatch<React.SetStateAction<User[]>>;
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
@@ -12,6 +13,7 @@ export default function Users(props: {
 }) {
   const {
     setWelcomeMessage,
+    setShowMessages,
     setIsAccountSettings,
     setProfile,
     setSearchTerm,
@@ -28,11 +30,12 @@ export default function Users(props: {
         <div
           key={index}
           onClick={() => {
-            setCurrentIndex(index);
-            setProfile([user]);
             setWelcomeMessage(false);
+            setShowMessages(true);
             setIsAccountSettings(false);
+            setProfile([user]);
             setSearchTerm("");
+            setCurrentIndex(index);
           }}
           className={`${
             index === currentIndex ? "bg-gray-100" : "bg-none"

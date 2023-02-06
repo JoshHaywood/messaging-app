@@ -10,6 +10,8 @@ import Account from "./Account";
 export default function UsersList(props: {
   welcomeMessage: boolean;
   setWelcomeMessage: React.Dispatch<React.SetStateAction<boolean>>;
+  showMessages: boolean;
+  setShowMessages: React.Dispatch<React.SetStateAction<boolean>>;
   showProfile: boolean;
   setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
   setIsAccountSettings: React.Dispatch<React.SetStateAction<boolean>>;
@@ -22,6 +24,8 @@ export default function UsersList(props: {
   const {
     welcomeMessage,
     setWelcomeMessage,
+    showMessages,
+    setShowMessages,
     showProfile,
     setShowProfile,
     setIsAccountSettings,
@@ -31,6 +35,8 @@ export default function UsersList(props: {
     profilePicture,
     setProfilePicture,
   } = props;
+  const [isMobile, setIsMobile] = useState(false);
+
   const [users, setUsers] = useState<User[]>([]);
 
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -48,6 +54,29 @@ export default function UsersList(props: {
     });
   }, [name]);
 
+  // Show messages column
+  useEffect(() => {
+    // Prevent type error
+    if (typeof window !== 'undefined') {
+      setIsMobile(window.innerWidth < 640);
+    };
+    
+    // If not on mobile, show messages column else hide it
+    if (!isMobile) {
+      setShowMessages(true);
+    } else {
+      setShowMessages(false);
+    };
+    
+    // Re-assign isMobile on window resize
+    function handleResize() {
+      setIsMobile(window.innerWidth < 640);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+
+  }, [isMobile, setShowMessages]);
+
   // Handle search bar input
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value); // Set search term as input value
@@ -63,7 +92,11 @@ export default function UsersList(props: {
   };
 
   return (
-    <div className="w-full sm:w-[600px] lg:w-[400px] h-full flex flex-col pt-2.5 lg:pt-5 px-2.5 lg:px-5 pb-0">
+    <div
+      className={`${
+        showMessages && isMobile ? "hidden" : "flex"
+      } h-full w-full sm:w-[600px] lg:w-[400px] flex-col pt-2.5 lg:pt-5 px-2.5 lg:px-5 pb-0`}
+    >
       {/* Header */}
       <div className="flex flex-row items-center space-x-2.5">
         <Image src="/images/logo.png" alt="Logo" width={35} height={35} />
@@ -82,6 +115,7 @@ export default function UsersList(props: {
       {/* Recipients list */}
       <Users
         setWelcomeMessage={setWelcomeMessage}
+        setShowMessages={setShowMessages}
         setIsAccountSettings={setIsAccountSettings}
         setProfile={setProfile}
         setSearchTerm={setSearchTerm}

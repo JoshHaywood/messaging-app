@@ -63,52 +63,71 @@ function SenderMessage() {
 
 export default function Messages(props: {
   welcomeMessage: boolean;
+  showMessages: boolean;
+  setShowMessages: React.Dispatch<React.SetStateAction<boolean>>;
   showProfile: boolean;
   profile: User[];
 }) {
-  const { welcomeMessage, showProfile, profile } = props;
+  const {
+    welcomeMessage,
+    showMessages,
+    setShowMessages,
+    showProfile,
+    profile,
+  } = props;
 
   return (
-    <div className={`${welcomeMessage && !showProfile ? "w-full lg:w-3/4" : "w-full lg:w-1/2"} h-full hidden sm:flex flex-col`}>
-      {/* If no recipient has been selected and welcome message is set to true, show the welcome message. Else show message data */}
-      {welcomeMessage ? (
-        /* Welcome message */
-        <div className="h-full flex flex-col justify-center items-center p-5 border">
-          <Image
-            src="/images/logo.png"
-            alt="Chathub logo"
-            width={100}
-            height={100}
-          />
+    <>
+      {/* If showMessages is set to true, show the messages */}
+      {showMessages && (
+        <div
+          className={`${
+            welcomeMessage && !showProfile
+              ? "w-full lg:w-3/4"
+              : "w-full lg:w-1/2"
+          } h-full flex flex-col`}
+        >
+          {/* If no recipient has been selected and welcome message is set to true, show the welcome message. Else show message data */}
+          {welcomeMessage ? (
+            /* Welcome message */
+            <div className="h-full flex flex-col justify-center items-center p-5 border">
+              <Image
+                src="/images/logo.png"
+                alt="Chathub logo"
+                width={100}
+                height={100}
+              />
 
-          <div className="mt-8 text-3xl font-semibold tracking-wide text-center md:text-left text-gray-700">
-            Welcome to ChatHub
-          </div>
+              <div className="mt-8 text-3xl font-semibold tracking-wide text-center md:text-left text-gray-700">
+                Welcome to ChatHub
+              </div>
 
-          <p className="mt-4 max-w-2xl text-center text-gray-400">
-            Where you can connect with friends, family, and colleagues in
-            real-time. Start a conversation or join an existing one to share
-            updates, thoughts, and memories. With ChatHub, you&apos;re always
-            connected to the people who matter most to you. Just search for a
-            friend or colleague and start chatting.
-          </p>
+              <p className="mt-4 max-w-2xl text-center text-gray-400">
+                Where you can connect with friends, family, and colleagues in
+                real-time. Start a conversation or join an existing one to share
+                updates, thoughts, and memories. With ChatHub, you&apos;re
+                always connected to the people who matter most to you. Just
+                search for a friend or colleague and start chatting.
+              </p>
+            </div>
+          ) : (
+            <>
+              <Recipient setShowMessages={setShowMessages} profile={profile} />
+
+              <div
+                id="messages-container"
+                className="h-full p-4 pt-8 space-y-5 overflow-y-scroll border"
+              >
+                <RecipientMessage />
+
+                <SenderMessage />
+              </div>
+
+              <MessageInput />
+            </>
+          )}
         </div>
-      ) : (
-        <>
-          <Recipient profile={profile} />
-
-          <div
-            id="messages-container"
-            className="h-full p-4 pt-8 space-y-5 overflow-y-scroll border"
-          >
-            <RecipientMessage />
-
-            <SenderMessage />
-          </div>
-
-          <MessageInput />
-        </>
       )}
-    </div>
+    </>
   );
 };
