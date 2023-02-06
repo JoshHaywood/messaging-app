@@ -5,19 +5,19 @@ import Recipient from "./Recipient";
 import SessionUser from "./SessionUser";
 
 export default function Profile(props: {
-  accountSettings: boolean;
+  isAccountSettings: boolean;
   profile: User[];
   name: string;
   profilePicture: string;
   about: string;
 }) {
-  const { accountSettings, profile, name, profilePicture, about } = props;
+  const { isAccountSettings, profile, name, profilePicture, about } = props;
 
   const [aboutToggle, setAboutToggle] = useState<boolean>(false);
 
   return (
     <div className="w-1/4 h-full flex flex-col">
-      {accountSettings ? (
+      {isAccountSettings ? (
         <SessionUser
           aboutToggle={aboutToggle}
           setAboutToggle={setAboutToggle}

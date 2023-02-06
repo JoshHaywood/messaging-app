@@ -62,11 +62,11 @@ function SenderMessage() {
 }
 
 export default function Messages(props: {
-  profile: User[];
   welcomeMessage: boolean;
   showProfile: boolean;
+  profile: User[];
 }) {
-  const { profile, welcomeMessage, showProfile } = props;
+  const { welcomeMessage, showProfile, profile } = props;
 
   return (
     <div className={`${welcomeMessage && !showProfile ? "w-full" : "w-1/2"} h-full flex flex-col`}>

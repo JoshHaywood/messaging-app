@@ -2,29 +2,27 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import axios from "axios";
 
-import User from "@/interfaces/user";
-
 export default function Account(props: {
+  welcomeMessage: boolean;
+  showProfile: boolean;
+  setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsAccountSettings: React.Dispatch<React.SetStateAction<boolean>>;
   name: string;
   setName: React.Dispatch<React.SetStateAction<string>>;
   profilePicture: string;
   setProfilePicture: React.Dispatch<React.SetStateAction<string>>;
-  welcomeMessage: boolean;
-  setIsAccountSettings: React.Dispatch<React.SetStateAction<boolean>>;
-  showProfile: boolean;
-  setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const router = useRouter();
 
   const {
+    welcomeMessage,
+    showProfile,
+    setShowProfile,
+    setIsAccountSettings,
     name,
     setName,
     profilePicture,
     setProfilePicture,
-    welcomeMessage,
-    setIsAccountSettings,
-    showProfile,
-    setShowProfile,
   } = props;
 
   // Logout

@@ -4,18 +4,18 @@ import { useState } from "react";
 import User from "@/interfaces/user";
 
 export default function Users(props: {
-  usersArray: User[];
-  setProfile: React.Dispatch<React.SetStateAction<User[]>>;
   setWelcomeMessage: React.Dispatch<React.SetStateAction<boolean>>;
-  setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
   setIsAccountSettings: React.Dispatch<React.SetStateAction<boolean>>;
+  setProfile: React.Dispatch<React.SetStateAction<User[]>>;
+  setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
+  usersArray: User[];
 }) {
   const {
-    usersArray,
-    setProfile,
     setWelcomeMessage,
-    setSearchTerm,
     setIsAccountSettings,
+    setProfile,
+    setSearchTerm,
+    usersArray,
   } = props;
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 

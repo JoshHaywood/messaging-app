@@ -10,16 +10,16 @@ import Profile from "@/components/chat/profile/Profile";
 
 export default function Chat() {
   const router = useRouter();
+  
+  const [welcomeMessage, setWelcomeMessage] = useState<boolean>(true);
+
+  const [showProfile, setShowProfile] = useState<boolean>(false);
+  const [isAccountSettings, setIsAccountSettings] = useState<boolean>(false);
+  const [profile, setProfile] = useState<User[]>([]);
 
   const [name, setName] = useState<string>("");
   const [profilePicture, setProfilePicture] = useState<string>("");
   const [about, setAbout] = useState<string>("");
-  
-  const [profile, setProfile] = useState<User[]>([]);
-  const [isAccountSettings, setIsAccountSettings] = useState<boolean>(false);
-  const [showProfile, setShowProfile] = useState<boolean>(false);
-
-  const [welcomeMessage, setWelcomeMessage] = useState<boolean>(true);
 
   // Check if user is logged in
   useEffect(() => {
@@ -49,29 +49,29 @@ export default function Chat() {
       <div className="absolute left-0 right-0 top-0 bottom-0 m-10 flex flex-row rounded-2xl bg-white">
         {/* Chats column */}
         <UserList
+          welcomeMessage={welcomeMessage}
+          setWelcomeMessage={setWelcomeMessage}
+          showProfile={showProfile}
+          setShowProfile={setShowProfile}
+          setIsAccountSettings={setIsAccountSettings}
+          setProfile={setProfile}
           name={name}
           setName={setName}
           profilePicture={profilePicture}
           setProfilePicture={setProfilePicture}
-          welcomeMessage={welcomeMessage}
-          setWelcomeMessage={setWelcomeMessage}
-          setIsAccountSettings={setIsAccountSettings}
-          showProfile={showProfile}
-          setShowProfile={setShowProfile}
-          setProfile={setProfile}
         />
  
         {/* Messages column */}
         <Messages
-          profile={profile}
           welcomeMessage={welcomeMessage}
           showProfile={showProfile}
+          profile={profile}
         />
 
         {/* Profile column */}
         {showProfile && (
           <Profile 
-            accountSettings={isAccountSettings}
+            isAccountSettings={isAccountSettings}
             profile={profile}
             name={name}
             profilePicture={profilePicture}

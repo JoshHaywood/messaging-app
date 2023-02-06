@@ -8,28 +8,28 @@ import Users from "./Users";
 import Account from "./Account";
 
 export default function UsersList(props: {
+  welcomeMessage: boolean;
+  setWelcomeMessage: React.Dispatch<React.SetStateAction<boolean>>;
+  showProfile: boolean;
+  setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsAccountSettings: React.Dispatch<React.SetStateAction<boolean>>;
+  setProfile: React.Dispatch<React.SetStateAction<User[]>>;
   name: string;
   setName: React.Dispatch<React.SetStateAction<string>>;
   profilePicture: string;
   setProfilePicture: React.Dispatch<React.SetStateAction<string>>;
-  welcomeMessage: boolean;
-  setWelcomeMessage: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsAccountSettings: React.Dispatch<React.SetStateAction<boolean>>;
-  showProfile: boolean;
-  setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
-  setProfile: React.Dispatch<React.SetStateAction<User[]>>;
 }) {
   const {
+    welcomeMessage,
+    setWelcomeMessage,
+    showProfile,
+    setShowProfile,
+    setIsAccountSettings,
+    setProfile,
     name,
     setName,
     profilePicture,
     setProfilePicture,
-    welcomeMessage,
-    setWelcomeMessage,
-    setIsAccountSettings,
-    showProfile,
-    setShowProfile,
-    setProfile,
   } = props;
   const [users, setUsers] = useState<User[]>([]);
 
@@ -73,31 +73,31 @@ export default function UsersList(props: {
 
       {/* Search bar */}
       <SearchBar
-        handleChange={handleChange}
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
+        handleChange={handleChange}
       />
 
       {/* Recipients list */}
       <Users
+        setWelcomeMessage={setWelcomeMessage}
+        setIsAccountSettings={setIsAccountSettings}
+        setProfile={setProfile}
+        setSearchTerm={setSearchTerm}
         /* If search term is empty, display all users, else display filtered users */
         usersArray={searchTerm === "" ? users : filteredUsers}
-        setProfile={setProfile}
-        setWelcomeMessage={setWelcomeMessage}
-        setSearchTerm={setSearchTerm}
-        setIsAccountSettings={setIsAccountSettings}
       />
 
       {/* Account */}
       <Account
-        name={name}
-        setName={setName}
-        profilePicture={profilePicture}
-        setProfilePicture={setProfilePicture}
         welcomeMessage={welcomeMessage}
         showProfile={showProfile}
         setShowProfile={setShowProfile}
         setIsAccountSettings={setIsAccountSettings}
+        name={name}
+        setName={setName}
+        profilePicture={profilePicture}
+        setProfilePicture={setProfilePicture}
       />
     </div>
   );
