@@ -38,8 +38,8 @@ export default function Account(props: {
   };
 
   return (
-    <>
-      <hr className="-mx-2.5 lg:-mx-5 mt-1 border-t"></hr>
+    <div className="fixed sm:relative bottom-0 sm:bottom-auto left-0 sm:left-auto w-full sm:w-auto px-5 sm:px-0 bg-white">
+      <hr className="-mx-2.5 lg:-mx-5 border-t"></hr>
 
       <div className="flex flex-row items-center my-3 space-x-4 rounded-lg">
         <Image
@@ -83,6 +83,6 @@ export default function Account(props: {
           </svg>
         </div>
       </div>
-    </>
+    </div>
   );
 };
