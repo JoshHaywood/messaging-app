@@ -4,16 +4,20 @@ import { useState } from "react";
 import User from "@/interfaces/user";
 
 export default function Users(props: {
+  isMobile: boolean;
   setWelcomeMessage: React.Dispatch<React.SetStateAction<boolean>>;
   setShowMessages: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
   setIsAccountSettings: React.Dispatch<React.SetStateAction<boolean>>;
   setProfile: React.Dispatch<React.SetStateAction<User[]>>;
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
   usersArray: User[];
 }) {
   const {
+    isMobile,
     setWelcomeMessage,
     setShowMessages,
+    setShowProfile,
     setIsAccountSettings,
     setProfile,
     setSearchTerm,
@@ -31,7 +35,10 @@ export default function Users(props: {
           key={index}
           onClick={() => {
             setWelcomeMessage(false);
-            setShowMessages(true);
+            isMobile && ( 
+              setShowMessages(true),
+              setShowProfile(false)
+            )
             setIsAccountSettings(false);
             setProfile([user]);
             setSearchTerm("");

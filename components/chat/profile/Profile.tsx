@@ -5,7 +5,9 @@ import Recipient from "./Recipient";
 import SessionUser from "./SessionUser";
 
 export default function Profile(props: {
+  isMobile: boolean;
   welcomeMessage: boolean;
+  setShowMessages: React.Dispatch<React.SetStateAction<boolean>>;
   showProfile: boolean;
   setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
   isAccountSettings: boolean;
@@ -16,7 +18,9 @@ export default function Profile(props: {
   about: string;
 }) {
   const {
+    isMobile,
     welcomeMessage,
+    setShowMessages,
     showProfile,
     setShowProfile,
     isAccountSettings,
@@ -30,26 +34,34 @@ export default function Profile(props: {
   const [aboutToggle, setAboutToggle] = useState<boolean>(false);
 
   return (
-    <div className="w-1/4 h-full hidden lg:flex flex-col">
-      {isAccountSettings ? (
-        <SessionUser
-          welcomeMessage={welcomeMessage}
-          showProfile={showProfile}
-          setShowProfile={setShowProfile}
-          setIsAccountSettings={setIsAccountSettings}
-          name={name}
-          profilePicture={profilePicture}
-          about={about}
-          aboutToggle={aboutToggle}
-          setAboutToggle={setAboutToggle}
-        />
-      ) : (
-        <Recipient
-          profile={profile}
-          about={aboutToggle}
-          setAbout={setAboutToggle}
-        />
+    <>
+      {showProfile && (
+        <div className="w-full sm:w-1/4 h-full flex flex-col">
+          {isAccountSettings ? (
+            <SessionUser
+              isMobile={isMobile}
+              welcomeMessage={welcomeMessage}
+              showProfile={showProfile}
+              setShowProfile={setShowProfile}
+              setIsAccountSettings={setIsAccountSettings}
+              name={name}
+              profilePicture={profilePicture}
+              about={about}
+              aboutToggle={aboutToggle}
+              setAboutToggle={setAboutToggle}
+            />
+          ) : (
+            <Recipient
+              isMobile={isMobile}
+              setShowMessages={setShowMessages}
+              setShowProfile={setShowProfile}
+              profile={profile}
+              about={aboutToggle}
+              setAbout={setAboutToggle}
+            />
+          )}
+        </div>
       )}
-    </div>
+    </>
   );
 };

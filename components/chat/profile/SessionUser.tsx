@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 export default function SessionUser(props: {
+  isMobile: boolean;
   welcomeMessage: boolean;
   showProfile: boolean;
   setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
@@ -12,6 +13,7 @@ export default function SessionUser(props: {
   about: string;
 }) {
   const {
+    isMobile,
     welcomeMessage,
     showProfile,
     setShowProfile,
@@ -28,6 +30,7 @@ export default function SessionUser(props: {
       <div
         id="close-profile"
         onClick={() => {
+          {isMobile && setShowProfile(false)}
           {welcomeMessage && setShowProfile(!showProfile)}
           setIsAccountSettings(false);
         }}

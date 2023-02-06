@@ -8,6 +8,7 @@ import Users from "./Users";
 import Account from "./Account";
 
 export default function UsersList(props: {
+  isMobile: boolean;
   welcomeMessage: boolean;
   setWelcomeMessage: React.Dispatch<React.SetStateAction<boolean>>;
   showMessages: boolean;
@@ -22,6 +23,7 @@ export default function UsersList(props: {
   setProfilePicture: React.Dispatch<React.SetStateAction<string>>;
 }) {
   const {
+    isMobile,
     welcomeMessage,
     setWelcomeMessage,
     showMessages,
@@ -35,8 +37,6 @@ export default function UsersList(props: {
     profilePicture,
     setProfilePicture,
   } = props;
-  const [isMobile, setIsMobile] = useState(false);
-
   const [users, setUsers] = useState<User[]>([]);
 
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -54,29 +54,6 @@ export default function UsersList(props: {
     });
   }, [name]);
 
-  // Show messages column
-  useEffect(() => {
-    // Prevent type error
-    if (typeof window !== 'undefined') {
-      setIsMobile(window.innerWidth < 640);
-    };
-    
-    // If not on mobile, show messages column else hide it
-    if (!isMobile) {
-      setShowMessages(true);
-    } else {
-      setShowMessages(false);
-    };
-    
-    // Re-assign isMobile on window resize
-    function handleResize() {
-      setIsMobile(window.innerWidth < 640);
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-
-  }, [isMobile, setShowMessages]);
-
   // Handle search bar input
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value); // Set search term as input value
@@ -92,48 +69,56 @@ export default function UsersList(props: {
   };
 
   return (
-    <div
-      className={`${
-        showMessages && isMobile ? "hidden" : "flex"
-      } h-full w-full sm:w-[600px] lg:w-[400px] flex-col pt-2.5 lg:pt-5 px-2.5 lg:px-5 pb-0`}
-    >
-      {/* Header */}
-      <div className="flex flex-row items-center space-x-2.5">
-        <Image src="/images/logo.png" alt="Logo" width={35} height={35} />
+    <>
+      <div
+        className={`${
+          isMobile && showMessages || isMobile && showProfile ? "hidden" : "flex"
+        } h-full w-full sm:w-[600px] lg:w-[400px] flex-col pt-2.5 lg:pt-5 px-2.5 lg:px-5 pb-0`}
+      >
+        {/* Header */}
+        <div className="flex flex-row items-center space-x-2.5">
+          <Image src="/images/logo.png" alt="Logo" width={35} height={35} />
 
-        <h1 className="hidden sm:block font-bold tracking-wide">Chats</h1>
-        <h1 className="block sm:hidden font-bold tracking-wide">ChatHub</h1>
+          <h1 className="hidden sm:block font-bold tracking-wide">Chats</h1>
+          <h1 className="block sm:hidden font-bold tracking-wide">ChatHub</h1>
+        </div>
+
+        {/* Search bar */}
+        <SearchBar
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          handleChange={handleChange}
+        />
+
+        {/* Recipients list */}
+        <Users
+          isMobile={isMobile}
+          setWelcomeMessage={setWelcomeMessage}
+          setShowMessages={setShowMessages}
+          setShowProfile={setShowProfile}
+          setIsAccountSettings={setIsAccountSettings}
+          setProfile={setProfile}
+          setSearchTerm={setSearchTerm}
+          usersArray={
+            /* If search term is empty, display all users, else display filtered users */
+            searchTerm === "" ? users : filteredUsers
+          }
+        />
+
+        {/* Account */}
+        <Account
+          isMobile={isMobile}
+          welcomeMessage={welcomeMessage}
+          setShowMessages={setShowMessages}
+          showProfile={showProfile}
+          setShowProfile={setShowProfile}
+          setIsAccountSettings={setIsAccountSettings}
+          name={name}
+          setName={setName}
+          profilePicture={profilePicture}
+          setProfilePicture={setProfilePicture}
+        />
       </div>
-
-      {/* Search bar */}
-      <SearchBar
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-        handleChange={handleChange}
-      />
-
-      {/* Recipients list */}
-      <Users
-        setWelcomeMessage={setWelcomeMessage}
-        setShowMessages={setShowMessages}
-        setIsAccountSettings={setIsAccountSettings}
-        setProfile={setProfile}
-        setSearchTerm={setSearchTerm}
-        /* If search term is empty, display all users, else display filtered users */
-        usersArray={searchTerm === "" ? users : filteredUsers}
-      />
-
-      {/* Account */}
-      <Account
-        welcomeMessage={welcomeMessage}
-        showProfile={showProfile}
-        setShowProfile={setShowProfile}
-        setIsAccountSettings={setIsAccountSettings}
-        name={name}
-        setName={setName}
-        profilePicture={profilePicture}
-        setProfilePicture={setProfilePicture}
-      />
-    </div>
+    </>
   );
 };

@@ -3,7 +3,9 @@ import Image from "next/image";
 import axios from "axios";
 
 export default function Account(props: {
+  isMobile: boolean;
   welcomeMessage: boolean;
+  setShowMessages: React.Dispatch<React.SetStateAction<boolean>>;
   showProfile: boolean;
   setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
   setIsAccountSettings: React.Dispatch<React.SetStateAction<boolean>>;
@@ -15,7 +17,9 @@ export default function Account(props: {
   const router = useRouter();
 
   const {
+    isMobile,
     welcomeMessage,
+    setShowMessages,
     showProfile,
     setShowProfile,
     setIsAccountSettings,
@@ -48,6 +52,10 @@ export default function Account(props: {
           width={35}
           height={35}
           onClick={() => {
+            {isMobile && 
+              setShowMessages(false);
+              setShowProfile(true);
+            }
             {welcomeMessage && setShowProfile(!showProfile)}
             setIsAccountSettings(true);
           }}
@@ -57,6 +65,10 @@ export default function Account(props: {
         <div className="w-full flex flex- row justify-between">
           <div
             onClick={() => {
+              {isMobile && 
+                setShowMessages(false);
+                setShowProfile(true);
+              }
               {welcomeMessage && setShowProfile(!showProfile)}
               setIsAccountSettings(true);
             }}

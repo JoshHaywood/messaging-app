@@ -10,6 +10,7 @@ import Profile from "@/components/chat/profile/Profile";
 
 export default function Chat() {
   const router = useRouter();
+  const [isMobile, setIsMobile] = useState(false); // Check if device is mobile
   
   const [welcomeMessage, setWelcomeMessage] = useState<boolean>(true); // Show or hide welcome message
   const [showMessages, setShowMessages] = useState<boolean>(false); // Show or hide messages column
@@ -37,19 +38,44 @@ export default function Chat() {
     });
   }, [router]);
 
+  // Show messages column
+  useEffect(() => {
+    // Prevent type error
+    if (typeof window !== 'undefined') {
+      setIsMobile(window.innerWidth < 640);
+    };
+    
+    // If not on mobile, show messages and profile columns else hide them
+    if (!isMobile) {
+      setShowMessages(true);
+      setShowProfile(false);
+    } else {
+      setShowMessages(false);
+      setShowProfile(false);
+    };
+    
+    // Re-assign isMobile on window resize
+    function handleResize() {
+      setIsMobile(window.innerWidth < 640);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [isMobile, setShowMessages]);
+
   // Show profile column
   useEffect(() => {
-    // If welcome message is false, show profile column
-    if (welcomeMessage === false) {
+    // If welcome message is false and not on mobile, show profile column
+    if (welcomeMessage === false && !isMobile) {
       setShowProfile(true);
     };
-  }, [welcomeMessage]);
+  }, [welcomeMessage, isMobile, setShowProfile]);
 
   return (
     <div className="w-screen h-screen relative bg-blue-200">
       <div className="absolute left-0 right-0 top-0 bottom-0 m-0 lg:m-5 xl:m-10 flex flex-row lg:rounded-2xl bg-white">
         {/* Chats column */}
         <UserList
+          isMobile={isMobile}
           welcomeMessage={welcomeMessage}
           setWelcomeMessage={setWelcomeMessage}
           showMessages={showMessages}
@@ -66,27 +92,30 @@ export default function Chat() {
  
         {/* Messages column */}
         <Messages
+          isMobile={isMobile}
           welcomeMessage={welcomeMessage}
           showMessages={showMessages}
           setShowMessages={setShowMessages}
           showProfile={showProfile}
+          setShowProfile={setShowProfile}
+          setIsAccountSettings={setIsAccountSettings}
           profile={profile}
         />
 
         {/* Profile column */}
-        {showProfile && (
-          <Profile 
-            welcomeMessage={welcomeMessage}
-            showProfile={showProfile}
-            setShowProfile={setShowProfile}
-            isAccountSettings={isAccountSettings}
-            setIsAccountSettings={setIsAccountSettings}
-            profile={profile}
-            name={name}
-            profilePicture={profilePicture}
-            about={about} 
-          />
-        )}
+        <Profile 
+          isMobile={isMobile}
+          welcomeMessage={welcomeMessage}
+          setShowMessages={setShowMessages}
+          showProfile={showProfile}
+          setShowProfile={setShowProfile}
+          isAccountSettings={isAccountSettings}
+          setIsAccountSettings={setIsAccountSettings}
+          profile={profile}
+          name={name}
+          profilePicture={profilePicture}
+          about={about} 
+        />
       </div>
     </div>
   );
