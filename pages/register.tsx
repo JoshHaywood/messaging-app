@@ -41,8 +41,8 @@ export default function Register() {
   };
 
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setError("");
+    e.preventDefault(); // Prevent page refresh
+    setError(""); // Clear error
 
     // // If first or last name contain numbers or special characters
     if (ContainsNumber(firstName) || ContainsSpecial(firstName) || ContainsNumber(lastName) || ContainsSpecial(lastName)) {
@@ -69,7 +69,7 @@ export default function Register() {
       return setError("Passwords do not match");
     };
 
-    insertRow();
+    insertRow(); // Insert user into database
   };
 
   return (

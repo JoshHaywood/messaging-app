@@ -27,12 +27,13 @@ export default function SessionUser(props: {
 
   return (
     <>
+      {/* Back button */}
       <div
         id="close-profile"
         onClick={() => {
-          {isMobile && setShowProfile(false)}
-          {welcomeMessage && setShowProfile(!showProfile)}
-          setIsAccountSettings(false);
+          {isMobile && setShowProfile(false)} // If mobile, close profile
+          {welcomeMessage && setShowProfile(!showProfile)} // If welcome message is showing, toggle profile
+          setIsAccountSettings(false); // Revert to recipient profile instead of account settings
         }}
         className="flex flex-row items-center p-5 space-x-2.5 bg-gray-50 hover:cursor-pointer"
       >
@@ -117,6 +118,7 @@ export default function SessionUser(props: {
           )}
         </div>
 
+        {/* If about is true, show the about text */}
         {aboutToggle && <p className="mt-2 text-sm text-gray-400">{about}</p>}
       </div>
     </>

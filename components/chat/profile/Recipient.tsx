@@ -72,15 +72,18 @@ export default function Recipient(props: {
     setAbout,
   } = props;
 
-  const [media, setMedia] = useState<boolean>(true);
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [media, setMedia] = useState<boolean>(true); // Toggle media section
+  const [currentIndex, setCurrentIndex] = useState<number>(0); // Current index of media content
 
   return (
     <>
+      {/* Back button */}
+      {/* If is mobile, show back button */}
       {isMobile && (
         <div
           id="close-profile"
           onClick={() => {
+            // Hide messages and profile to show chat list
             setShowMessages(true);
             setShowProfile(false);
           }}
@@ -106,6 +109,7 @@ export default function Recipient(props: {
         </div>
       )}
 
+      {/* Recipient profile */}
       {profile.map((profile, index) => (
         <div key={index}>
           {/* Profile picture */}
@@ -128,6 +132,7 @@ export default function Recipient(props: {
           {/* About */}
           <div
             id="about"
+            // Toggle about on click
             onClick={() => setAbout(!about)}
             className="mt-4 px-5 py-3 border border-x-0 hover:cursor-pointer"
           >
@@ -172,6 +177,7 @@ export default function Recipient(props: {
               )}
             </div>
 
+            {/* If about is true, show the about text */}
             {about && (
               <p className="mt-2 text-sm text-gray-400">{profile.about}</p>
             )}

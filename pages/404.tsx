@@ -14,7 +14,7 @@ export default function Custom404() {
       {/* Return button */}
       <Button
         variant="contained"
-        onClick={() => {router.back()}}
+        onClick={() => {router.back()}} // Go back to previous page
         sx={{
           margin: "0 auto",
           padding: "0.5rem 2.5rem",

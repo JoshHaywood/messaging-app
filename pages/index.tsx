@@ -37,10 +37,10 @@ export default function Index() {
   };
 
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setMessage("");
+    e.preventDefault(); // Prevent page refresh
+    setMessage(""); // Clear message
 
-    validateRow();
+    validateRow(); // Validate user data
   };
 
   return (
@@ -71,7 +71,7 @@ export default function Index() {
 
           {/* Registration form */}
           <form 
-            onSubmit={submitHandler}
+            onSubmit={submitHandler} // Submit form on submit
             onKeyDown={(e) => {
               e.key === 'Enter' && submitHandler; //Submit form on enter
             }} 

@@ -12,6 +12,8 @@ export default function Recipient(props: {
 
   return (
     <div className="flex flex-row items-center p-4 space-x-4 border border-b-0">
+      {/* Back button */}
+      {/* If is mobile, show back button */}
       {isMobile && (
         /* Attribution: https://heroicons.com/ */
         <svg
@@ -21,6 +23,7 @@ export default function Recipient(props: {
           strokeWidth="1.5"
           stroke="currentColor"
           onClick={() => {
+            // Hide messages and profile to show chat list
             setShowMessages(false);
             setShowProfile(false);
           }}
@@ -34,6 +37,7 @@ export default function Recipient(props: {
         </svg>
       )}
 
+      {/* Recipient profile */}
       {profile.map((profile, index) => (
         <div key={index} className="flex flex-row items-center space-x-4">
           {/* Profile picture */}
@@ -42,10 +46,13 @@ export default function Recipient(props: {
             alt="User profile picture"
             width={45}
             height={45}
-            onClick={() => isMobile && (
-              setShowMessages(false),
-              setShowProfile(true)
-            )}
+            onClick={() =>
+              // If is mobile, hide messages and show profile
+              isMobile && (
+                setShowMessages(false),
+                setShowProfile(true)
+              )
+            }
             className="rounded-full border hover:cursor-pointer"
           ></Image>
 

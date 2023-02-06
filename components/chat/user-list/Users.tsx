@@ -23,9 +23,10 @@ export default function Users(props: {
     setSearchTerm,
     usersArray,
   } = props;
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [currentIndex, setCurrentIndex] = useState<number>(0); // Current index of user in usersArray
 
   return (
+    /* Recipient profile */
     <div
       id="users-container"
       className="h-full overflow-y-scroll pr-1 lg:pr-2 -mr-1.5 lg:-mr-3.5 hover:cursor-pointer"
@@ -34,17 +35,19 @@ export default function Users(props: {
         <div
           key={index}
           onClick={() => {
-            setWelcomeMessage(false);
+            // If is mobile, show messages and hide profile
             isMobile && ( 
               setShowMessages(true),
               setShowProfile(false)
-            )
-            setIsAccountSettings(false);
-            setProfile([user]);
-            setSearchTerm("");
-            setCurrentIndex(index);
+            );
+            setWelcomeMessage(false); // Hide welcome message
+            setIsAccountSettings(false); // Hide account settings
+            setProfile([user]); // Set profile to current user
+            setSearchTerm(""); // Clear search term
+            setCurrentIndex(index); // Set current index to current user
           }}
           className={`${
+            // If current index is equal to index, set background color to gray
             index === currentIndex ? "bg-gray-100" : "bg-none"
           } mb-2.5 px-1 lg:px-2.5 flex flex-row items-center py-2 space-x-4 rounded-lg`}
         >

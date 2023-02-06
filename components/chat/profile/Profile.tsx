@@ -31,12 +31,14 @@ export default function Profile(props: {
     about,
   } = props;
 
-  const [aboutToggle, setAboutToggle] = useState<boolean>(false);
+  const [aboutToggle, setAboutToggle] = useState<boolean>(false); // Toggle about section
 
   return (
     <>
+      {/* If profile is open show profile component else show nothing */}
       {showProfile && (
         <div className="w-full sm:w-1/4 h-full flex flex-col">
+          {/* If the user is viewing their own profile show setting component else show recipient component */}
           {isAccountSettings ? (
             <SessionUser
               isMobile={isMobile}

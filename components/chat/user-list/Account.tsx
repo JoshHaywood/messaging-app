@@ -43,40 +43,47 @@ export default function Account(props: {
 
   return (
     <div className="fixed sm:relative bottom-0 sm:bottom-auto left-0 sm:left-auto w-full sm:w-auto px-5 sm:px-0 bg-white">
+      {/* Top bar */}
       <hr className="-mx-2.5 lg:-mx-5 border-t"></hr>
 
+      {/* User profile */}
       <div className="flex flex-row items-center my-3 space-x-4 rounded-lg">
+        {/* Profile picture */}
         <Image
           src={"/images/" + profilePicture}
           alt="User profile picture"
           width={35}
           height={35}
           onClick={() => {
+            // If mobile, close messages and open profile
             {isMobile && 
               setShowMessages(false);
               setShowProfile(true);
-            }
-            {welcomeMessage && setShowProfile(!showProfile)}
-            setIsAccountSettings(true);
+            };
+            {welcomeMessage && setShowProfile(!showProfile)} // If welcome message is showing, toggle profile
+            setIsAccountSettings(true); // Revert to recipient profile instead of account settings
           }}
           className="rounded-full border hover:cursor-pointer"
         ></Image>
 
+        {/* Account information */}
         <div className="w-full flex flex- row justify-between">
           <div
             onClick={() => {
-              {isMobile && 
-                setShowMessages(false);
-                setShowProfile(true);
-              }
-              {welcomeMessage && setShowProfile(!showProfile)}
-              setIsAccountSettings(true);
+            // If mobile, close messages and open profile
+            {isMobile && 
+              setShowMessages(false);
+              setShowProfile(true);
+            };
+            {welcomeMessage && setShowProfile(!showProfile)} // If welcome message is showing, toggle profile
+            setIsAccountSettings(true); // Revert to recipient profile instead of account settings
             }}
             className="font-medium text-gray-700 hover:cursor-pointer"
           >
             {name}
           </div>
 
+          {/* Logout button */}
           {/* Attribution: https://heroicons.com/ */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -84,7 +91,7 @@ export default function Account(props: {
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
-            onClick={logoutHandler}
+            onClick={logoutHandler} // On click, logout
             className="w-6 h-6 text-gray-700 hover:cursor-pointer hover:text-blue-500"
           >
             <path

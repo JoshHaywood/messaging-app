@@ -37,10 +37,10 @@ export default function UsersList(props: {
     profilePicture,
     setProfilePicture,
   } = props;
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<User[]>([]); // Users array
 
-  const [searchTerm, setSearchTerm] = useState<string>("");
-  const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
+  const [searchTerm, setSearchTerm] = useState<string>(""); // Search term
+  const [filteredUsers, setFilteredUsers] = useState<User[]>([]); // Filtered users array
 
   // Get users from users table
   useEffect(() => {
@@ -72,6 +72,7 @@ export default function UsersList(props: {
     <>
       <div
         className={`${
+          // Hide users list if mobile and messages or profile are shown
           isMobile && showMessages || isMobile && showProfile ? "hidden" : "flex"
         } h-full w-full sm:w-[600px] lg:w-[400px] flex-col pt-2.5 lg:pt-5 px-2.5 lg:px-5 pb-0`}
       >

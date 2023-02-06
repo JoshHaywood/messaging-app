@@ -79,7 +79,9 @@ export default function Messages(props: {
             alt="User profile picture"
             width={35}
             height={35}
-            onClick={() => isMobile && (
+            onClick={() => 
+            // If on mobile, show the account settings page
+            isMobile && (
               setShowMessages(false),
               setShowProfile(true),
               setIsAccountSettings(true)
@@ -97,6 +99,7 @@ export default function Messages(props: {
       {showMessages && (
         <div
           className={`${
+            // If the welcome message is displayed and the profile isn't displayed allow the message to take up full screen width else account for profiles width
             welcomeMessage && !showProfile
               ? "w-full lg:w-3/4"
               : "w-full lg:w-1/2"
