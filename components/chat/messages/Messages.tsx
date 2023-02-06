@@ -69,7 +69,7 @@ export default function Messages(props: {
   const { welcomeMessage, showProfile, profile } = props;
 
   return (
-    <div className={`${welcomeMessage && !showProfile ? "hidden sm:block w-full lg:w-3/4" : "w-1/2"} h-full flex flex-col`}>
+    <div className={`${welcomeMessage && !showProfile ? "w-full lg:w-3/4" : "w-full lg:w-1/2"} h-full hidden sm:flex flex-col`}>
       {/* If no recipient has been selected and welcome message is set to true, show the welcome message. Else show message data */}
       {welcomeMessage ? (
         /* Welcome message */

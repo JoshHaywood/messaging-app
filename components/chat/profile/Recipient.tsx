@@ -191,7 +191,7 @@ export default function Recipient(props: {
             {media && (
               <>
                 {/* Buttons */}
-                <div className="flex flex-row mt-4 space-x-5">
+                <div className="flex flex-row mt-4 space-x-2.5 xl:space-x-5">
                   {buttons.map((button, index) => (
                     <Button 
                       key={index}
@@ -224,9 +224,9 @@ export default function Recipient(props: {
                   /* Media contents */
                   <div
                     id="media-container"
-                    className="mt-4 h-[494px] overflow-y-scroll"
+                    className="mt-4 h-[534px] xl:h-[494px] overflow-y-scroll"
                   >
-                    <div className="grid grid-cols-3 grid-rows-3 gap-1">
+                    <div className="grid grid-cols-2 2xl:grid-cols-3 gap-1">
                       {mediaContent.map((media, index) => (
                         <Image
                           key={index}

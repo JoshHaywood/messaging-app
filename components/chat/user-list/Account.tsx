@@ -39,7 +39,7 @@ export default function Account(props: {
 
   return (
     <>
-      <hr className="-mx-5 mt-1 border-t"></hr>
+      <hr className="-mx-2.5 lg:-mx-5 mt-1 border-t"></hr>
 
       <div className="flex flex-row items-center my-3 space-x-4 rounded-lg">
         <Image

@@ -30,7 +30,7 @@ export default function Profile(props: {
   const [aboutToggle, setAboutToggle] = useState<boolean>(false);
 
   return (
-    <div className="w-1/4 h-full flex flex-col">
+    <div className="w-1/4 h-full hidden lg:flex flex-col">
       {isAccountSettings ? (
         <SessionUser
           welcomeMessage={welcomeMessage}
