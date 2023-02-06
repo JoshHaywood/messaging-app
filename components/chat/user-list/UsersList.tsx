@@ -63,7 +63,7 @@ export default function UsersList(props: {
   };
 
   return (
-    <div className="w-1/4 h-full flex flex-col p-5 pb-0">
+    <div className="w-full sm:w-[600px] lg:w-[400px] h-full flex flex-col pt-2.5 lg:pt-5 px-2.5 lg:px-5 pb-0">
       {/* Header */}
       <div className="flex flex-row items-center space-x-2.5">
         <Image src="/images/logo.png" alt="Logo" width={35} height={35} />

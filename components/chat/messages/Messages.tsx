@@ -69,7 +69,7 @@ export default function Messages(props: {
   const { welcomeMessage, showProfile, profile } = props;
 
   return (
-    <div className={`${welcomeMessage && !showProfile ? "w-full" : "w-1/2"} h-full flex flex-col`}>
+    <div className={`${welcomeMessage && !showProfile ? "hidden sm:block w-full lg:w-3/4" : "w-1/2"} h-full flex flex-col`}>
       {/* If no recipient has been selected and welcome message is set to true, show the welcome message. Else show message data */}
       {welcomeMessage ? (
         /* Welcome message */
@@ -81,7 +81,7 @@ export default function Messages(props: {
             height={100}
           />
 
-          <div className="mt-8 text-3xl font-semibold tracking-wide text-gray-700">
+          <div className="mt-8 text-3xl font-semibold tracking-wide text-center md:text-left text-gray-700">
             Welcome to ChatHub
           </div>
 
