@@ -1,16 +1,57 @@
 import Image from "next/image";
 
 export default function SessionUser(props: {
+  welcomeMessage: boolean;
+  showProfile: boolean;
+  setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsAccountSettings: React.Dispatch<React.SetStateAction<boolean>>;
   aboutToggle: boolean;
   setAboutToggle: React.Dispatch<React.SetStateAction<boolean>>;
   name: string;
   profilePicture: string;
   about: string;
 }) {
-  const { aboutToggle, setAboutToggle, name, profilePicture, about } = props;
+  const {
+    welcomeMessage,
+    showProfile,
+    setShowProfile,
+    setIsAccountSettings,
+    aboutToggle,
+    setAboutToggle,
+    name,
+    profilePicture,
+    about,
+  } = props;
 
   return (
     <>
+      <div
+        id="close-profile"
+        onClick={() => {
+          {welcomeMessage && setShowProfile(!showProfile)}
+          setIsAccountSettings(false);
+        }}
+        className="flex flex-row items-center p-5 space-x-2.5 bg-gray-50 hover:cursor-pointer"
+      >
+        {/* Attribution: https://heroicons.com/ */}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="w-5 h-5 text-gray-700 hover:cursor-pointer"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+          />
+        </svg>
+
+        <div className="text-gray-700 hover:cursor-pointer">Profile</div>
+      </div>
+
       {/* Profile picture */}
       <div className="mx-auto p-5 text-center">
         <Image

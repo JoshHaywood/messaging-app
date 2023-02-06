@@ -71,7 +71,11 @@ export default function Chat() {
         {/* Profile column */}
         {showProfile && (
           <Profile 
+            welcomeMessage={welcomeMessage}
+            showProfile={showProfile}
+            setShowProfile={setShowProfile}
             isAccountSettings={isAccountSettings}
+            setIsAccountSettings={setIsAccountSettings}
             profile={profile}
             name={name}
             profilePicture={profilePicture}

@@ -5,13 +5,27 @@ import Recipient from "./Recipient";
 import SessionUser from "./SessionUser";
 
 export default function Profile(props: {
+  welcomeMessage: boolean;
+  showProfile: boolean;
+  setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
   isAccountSettings: boolean;
+  setIsAccountSettings: React.Dispatch<React.SetStateAction<boolean>>;
   profile: User[];
   name: string;
   profilePicture: string;
   about: string;
 }) {
-  const { isAccountSettings, profile, name, profilePicture, about } = props;
+  const {
+    welcomeMessage,
+    showProfile,
+    setShowProfile,
+    isAccountSettings,
+    setIsAccountSettings,
+    profile,
+    name,
+    profilePicture,
+    about,
+  } = props;
 
   const [aboutToggle, setAboutToggle] = useState<boolean>(false);
 
@@ -19,11 +33,15 @@ export default function Profile(props: {
     <div className="w-1/4 h-full flex flex-col">
       {isAccountSettings ? (
         <SessionUser
-          aboutToggle={aboutToggle}
-          setAboutToggle={setAboutToggle}
+          welcomeMessage={welcomeMessage}
+          showProfile={showProfile}
+          setShowProfile={setShowProfile}
+          setIsAccountSettings={setIsAccountSettings}
           name={name}
           profilePicture={profilePicture}
           about={about}
+          aboutToggle={aboutToggle}
+          setAboutToggle={setAboutToggle}
         />
       ) : (
         <Recipient
