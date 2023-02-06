@@ -41,7 +41,7 @@ export default function Profile(props: {
         <motion.div 
           initial={isMobile && { y: "100%" }}
           animate={isMobile && { y: 0 }}
-          exit={{ position: "absolute", y: "100%" }}
+          exit={isMobile ? { position: "absolute", y: "100%" } : {}}
           transition={{ duration: 0.2, ease: "easeInOut" }}
           className="w-full sm:w-1/4 h-full flex flex-col"
         >

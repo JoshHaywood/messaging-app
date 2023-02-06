@@ -101,7 +101,7 @@ export default function Messages(props: {
         <motion.div
           initial={isMobile && { y: "100%" }}
           animate={isMobile && { y: 0 }}
-          exit={{ position: "absolute", y: "100%" }}
+          exit={isMobile ? { position: "absolute", y: "100%" } : {}}
           transition={{ duration: 0.2, ease: "easeInOut" }}
           className={`${
             // If the welcome message is displayed and the profile isn't displayed allow the message to take up full screen width else account for profiles width
