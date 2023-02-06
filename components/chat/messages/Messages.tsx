@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { AnimatePresence, motion } from "framer-motion";
 
 import User from "@/interfaces/user";
 import Recipient from "./Recipient";
@@ -94,10 +95,14 @@ export default function Messages(props: {
   };
 
   return (
-    <>
+    <AnimatePresence>
       {/* If showMessages is set to true, show the messages */}
       {showMessages && (
-        <div
+        <motion.div
+          initial={isMobile && { y: "100%" }}
+          animate={isMobile && { y: 0 }}
+          exit={{ position: "absolute", y: "100%" }}
+          transition={{ duration: 0.2, ease: "easeInOut" }}
           className={`${
             // If the welcome message is displayed and the profile isn't displayed allow the message to take up full screen width else account for profiles width
             welcomeMessage && !showProfile
@@ -149,8 +154,8 @@ export default function Messages(props: {
               <MessageInput />
             </>
           )}
-        </div>
+        </motion.div>
       )}
-    </>
+    </AnimatePresence>
   );
 };

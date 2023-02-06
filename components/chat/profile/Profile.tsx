@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 import User from "@/interfaces/user";
 import Recipient from "./Recipient";
@@ -34,10 +35,16 @@ export default function Profile(props: {
   const [aboutToggle, setAboutToggle] = useState<boolean>(false); // Toggle about section
 
   return (
-    <>
+    <AnimatePresence>
       {/* If profile is open show profile component else show nothing */}
       {showProfile && (
-        <div className="w-full sm:w-1/4 h-full flex flex-col">
+        <motion.div 
+          initial={isMobile && { y: "100%" }}
+          animate={isMobile && { y: 0 }}
+          exit={{ position: "absolute", y: "100%" }}
+          transition={{ duration: 0.2, ease: "easeInOut" }}
+          className="w-full sm:w-1/4 h-full flex flex-col"
+        >
           {/* If the user is viewing their own profile show setting component else show recipient component */}
           {isAccountSettings ? (
             <SessionUser
@@ -62,8 +69,8 @@ export default function Profile(props: {
               setAbout={setAboutToggle}
             />
           )}
-        </div>
+        </motion.div>
       )}
-    </>
+    </AnimatePresence>
   );
 };

@@ -82,7 +82,16 @@ router.post("/login", (req: Request, res: Response) => {
         req.session.profilePicture = rows[0].profile_picture;
         req.session.about = rows[0].about;
 
-        console.log(req.session);
+        // Log session
+        console.log(
+          "Created session for user: " +
+            "\n" +
+            req.session.firstName +
+            " " +
+            req.session.lastName +
+            "\n" +
+            req.session.email
+        );        
         res.send("Login successful");
         // Else incorrect password
       } else {
