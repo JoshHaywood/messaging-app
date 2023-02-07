@@ -1,12 +1,12 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import * as io from "socket.io-client";
 import { AnimatePresence, motion } from "framer-motion";
 
 import User from "@/interfaces/user";
+import Message from "@/interfaces/message";
 import Recipient from "./Recipient";
 import MessageInput from "./MessageInput";
-
-import * as io from "socket.io-client";
 
 export default function Messages(props: {
   isMobile: boolean;
@@ -39,21 +39,20 @@ export default function Messages(props: {
             alt="User profile picture"
             width={35}
             height={35}
-            onClick={() => isMobile && (
-              setShowMessages(false),
-              setShowProfile(true)
-            )}
+            onClick={() =>
+              isMobile && (setShowMessages(false), setShowProfile(true))
+            }
             className="rounded-full border hover:cursor-pointer"
           ></Image>
         </div>
-  
+
         {/* Message */}
         <div className="max-w-[55%]">
           <div className="flex flex-row items-baseline space-x-1.5 mb-1">
             <div className="text-[12px] text-gray-700">John Doe</div>
             <div className="text-[10px] text-gray-400">00:00 AM</div>
           </div>
-  
+
           <div className="break-words p-2.5 text-[13px] rounded-xl rounded-tl-none text-gray-700 bg-gray-100">
             Message content
           </div>
@@ -61,7 +60,7 @@ export default function Messages(props: {
       </div>
     );
   };
-  
+
   function SenderMessage() {
     return (
       <div className="flex flex-row justify-end space-x-2.5">
@@ -70,12 +69,12 @@ export default function Messages(props: {
           <div className="flex justify-end mb-1 text-[10px] text-gray-400">
             00:00 AM
           </div>
-  
+
           <div className="justify-end break-words p-2.5 text-[13px] rounded-xl rounded-tr-none text-white bg-blue-500">
             Message content
           </div>
         </div>
-  
+
         {/* Profile picture */}
         <div className="h-full">
           <Image
@@ -83,13 +82,13 @@ export default function Messages(props: {
             alt="User profile picture"
             width={35}
             height={35}
-            onClick={() => 
-            // If on mobile, show the account settings page
-            isMobile && (
-              setShowMessages(false),
+            onClick={() =>
+              // If on mobile, show the account settings page
+              isMobile &&
+              (setShowMessages(false),
               setShowProfile(true),
-              setIsAccountSettings(true)
-            )}
+              setIsAccountSettings(true))
+            }
             className="rounded-full border hover:cursor-pointer"
           ></Image>
         </div>
@@ -99,11 +98,8 @@ export default function Messages(props: {
 
   const socket = io.connect(`http://localhost:${process.env.NEXT_PUBLIC_PORT}`);
 
-  useEffect(() => {
-    socket.on('data', (data) => {
-      console.log(data); // { message: "Hello from the backend" }
-    });
-  }, [socket]);
+  const [message, setMessage] = useState(""); // Message to be sent
+  const [messageList, setMessageList] = useState<Message[]>([]); // List of messages
 
   return (
     <AnimatePresence>
@@ -162,7 +158,14 @@ export default function Messages(props: {
                 <SenderMessage />
               </div>
 
-              <MessageInput />
+              <MessageInput
+                profile={profile}
+                socket={socket}
+                message={message}
+                setMessage={setMessage}
+                messageList={messageList}
+                setMessageList={setMessageList}
+              />
             </>
           )}
         </motion.div>

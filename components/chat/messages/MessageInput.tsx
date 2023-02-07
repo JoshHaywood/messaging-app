@@ -1,9 +1,39 @@
-export default function MessageInput() {
+import Message from "@/interfaces/message";
+import User from "@/interfaces/user";
+import { Socket } from "socket.io-client";
+
+export default function MessageInput(props: {
+  profile: User[];
+  socket: Socket;
+  message: string;
+  setMessage: React.Dispatch<React.SetStateAction<string>>;
+  messageList: Message[];
+  setMessageList: React.Dispatch<React.SetStateAction<Message[]>>;
+}) {
+  const { profile, socket, message, setMessage, messageList, setMessageList } = props;
+
+  const sendMessage = () => {
+    const messageContent = {
+      recipient: profile[0].first_name + " " + profile[0].last_name,
+      content: {
+        message: message,
+        time: new Date().getHours() + ":" + new Date().getMinutes(),
+      },
+    };
+
+    socket.emit("message", messageContent);
+    setMessageList([...messageList, messageContent]);
+    setMessage("");
+  };
+
   return (
     <div className="flex flex-row items-center p-5 space-x-2.5 border border-b-0">
       <input
         type="text"
         placeholder="Type a message..."
+        value={message}
+        onChange={(e) => setMessage(e.target.value)} // Set messages value as input
+        onKeyDown={(e) => e.key === "Enter" && sendMessage()} // Send message on enter key
         className="w-full p-2.5 text-sm rounded-lg text-gray-700 bg-gray-100 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-500"
       ></input>
 
@@ -14,6 +44,7 @@ export default function MessageInput() {
         viewBox="0 0 24 24"
         strokeWidth="1.5"
         stroke="currentColor"
+        onClick={sendMessage} // Send message on click
         className="w-8 h-8 text-gray-500 hover:text-blue-500 hover:cursor-pointer"
       >
         <path
