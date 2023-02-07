@@ -80,8 +80,8 @@ export default function UsersList(props: {
         <div className="flex flex-row items-center space-x-2.5">
           <Image src="/images/logo.png" alt="Logo" width={35} height={35} />
 
-          <h1 className="hidden sm:block font-bold tracking-wide">Chats</h1>
-          <h1 className="block sm:hidden font-bold tracking-wide">ChatHub</h1>
+          <h1 className="hidden md:block font-bold tracking-wide">Chats</h1>
+          <h1 className="block md:hidden font-bold tracking-wide">ChatHub</h1>
         </div>
 
         {/* Search bar */}
