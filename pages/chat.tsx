@@ -42,7 +42,7 @@ export default function Chat() {
   useEffect(() => {
     // Prevent type error
     if (typeof window !== 'undefined') {
-      setIsMobile(window.innerWidth < 640);
+      setIsMobile(window.innerWidth < 800);
     };
     
     // If not on mobile, show messages and profile columns else hide them
@@ -56,7 +56,7 @@ export default function Chat() {
     
     // Re-assign isMobile on window resize
     function handleResize() {
-      setIsMobile(window.innerWidth < 640);
+      setIsMobile(window.innerWidth < 800);
     };
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);

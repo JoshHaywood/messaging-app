@@ -43,7 +43,7 @@ export default function Profile(props: {
           animate={isMobile && { y: 0 }}
           exit={isMobile ? { position: "absolute", y: "100%" } : {}}
           transition={{ duration: 0.2, ease: "easeInOut" }}
-          className="w-full sm:w-[600px] lg:w-1/4 h-full flex flex-col"
+          className="w-full lg:w-1/4 h-full flex flex-col"
         >
           {/* If the user is viewing their own profile show setting component else show recipient component */}
           {isAccountSettings ? (

@@ -74,7 +74,7 @@ export default function UsersList(props: {
         className={`${
           // Hide users list if mobile and messages or profile are shown
           isMobile && showMessages || isMobile && showProfile ? "hidden" : "flex"
-        } h-full w-full sm:w-[600px] lg:w-[400px] flex-col pt-2.5 lg:pt-5 px-2.5 lg:px-5 pb-0`}
+        } h-full w-full lg:w-1/4 flex-col pt-2.5 lg:pt-5 px-2.5 lg:px-5 pb-0`}
       >
         {/* Header */}
         <div className="flex flex-row items-center space-x-2.5">
