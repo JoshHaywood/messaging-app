@@ -111,7 +111,7 @@ export default function Recipient(props: {
 
       {/* Recipient profile */}
       {profile.map((profile, index) => (
-        <div key={index}>
+        <div key={index} className="h-full overflow-hidden">
           {/* Profile picture */}
           <div className="mx-auto p-5 text-center">
             <Image
@@ -186,7 +186,7 @@ export default function Recipient(props: {
           {/* Media */}
           <div
             id="media"
-            className={`${media ? "border-0" : "border-b"} px-5 py-3`}
+            className={`${media ? "border-0" : "border-b"} px-5 py-3 h-full`}
           >
             <div
               onClick={() => setMedia(!media)}
@@ -234,7 +234,7 @@ export default function Recipient(props: {
 
             {/* If media is true, show the contents, else don't show anything */}
             {media && (
-              <>
+              <div className="h-full flex flex-col">
                 {/* Buttons */}
                 <div className="flex flex-row mt-4 space-x-2.5 xl:space-x-5">
                   {buttons.map((button, index) => (
@@ -270,7 +270,7 @@ export default function Recipient(props: {
                   /* Media contents */
                   <div
                     id="media-container"
-                    className="mt-4 h-[534px] xl:h-[494px] overflow-y-scroll"
+                    className="mt-4 overflow-y-scroll"
                   >
                     <div className="grid grid-cols-2 2xl:grid-cols-3 gap-1">
                       {mediaContent.map((media, index) => (
@@ -286,7 +286,7 @@ export default function Recipient(props: {
                     </div>
                   </div>
                 )}
-              </>
+              </div>
             )}
           </div>
         </div>
