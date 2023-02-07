@@ -270,7 +270,7 @@ export default function Recipient(props: {
                   /* Media contents */
                   <div
                     id="media-container"
-                    className="mt-4 overflow-y-scroll"
+                    className="mt-4 pr-1 overflow-y-scroll"
                   >
                     <div className="grid grid-cols-2 2xl:grid-cols-3 gap-1">
                       {mediaContent.map((media, index) => (
