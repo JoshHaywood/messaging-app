@@ -1,9 +1,12 @@
 import Image from "next/image";
+import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import User from "@/interfaces/user";
 import Recipient from "./Recipient";
 import MessageInput from "./MessageInput";
+
+import * as io from "socket.io-client";
 
 export default function Messages(props: {
   isMobile: boolean;
@@ -93,6 +96,14 @@ export default function Messages(props: {
       </div>
     );
   };
+
+  const socket = io.connect(`http://localhost:${process.env.NEXT_PUBLIC_PORT}`);
+
+  useEffect(() => {
+    socket.on('data', (data) => {
+      console.log(data); // { message: "Hello from the backend" }
+    });
+  }, [socket]);
 
   return (
     <AnimatePresence>
