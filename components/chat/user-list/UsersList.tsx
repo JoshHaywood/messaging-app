@@ -69,57 +69,55 @@ export default function UsersList(props: {
   };
 
   return (
-    <>
-      <div
-        className={`${
-          // Hide users list if mobile and messages or profile are shown
-          isMobile && showMessages || isMobile && showProfile ? "hidden" : "flex"
-        } h-full w-full lg:w-1/4 flex-col pt-2.5 lg:pt-5 px-2.5 lg:px-5 pb-0`}
-      >
-        {/* Header */}
-        <div className="flex flex-row items-center space-x-2.5">
-          <Image src="/images/logo.png" alt="Logo" width={35} height={35} />
+    <div
+      className={`${
+        // Hide users list if mobile and messages or profile are shown
+        isMobile && showMessages || isMobile && showProfile ? "hidden" : "flex"
+      } h-full w-full lg:w-1/4 flex-col pt-2.5 lg:pt-5 px-2.5 lg:px-5 pb-0`}
+    >
+      {/* Header */}
+      <div className="flex flex-row items-center space-x-2.5">
+        <Image src="/images/logo.png" alt="Logo" width={35} height={35} />
 
-          <h1 className="hidden md:block font-bold tracking-wide">Chats</h1>
-          <h1 className="block md:hidden font-bold tracking-wide">ChatHub</h1>
-        </div>
-
-        {/* Search bar */}
-        <SearchBar
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-          handleChange={handleChange}
-        />
-
-        {/* Recipients list */}
-        <Users
-          isMobile={isMobile}
-          setWelcomeMessage={setWelcomeMessage}
-          setShowMessages={setShowMessages}
-          setShowProfile={setShowProfile}
-          setIsAccountSettings={setIsAccountSettings}
-          setProfile={setProfile}
-          setSearchTerm={setSearchTerm}
-          usersArray={
-            /* If search term is empty, display all users, else display filtered users */
-            searchTerm === "" ? users : filteredUsers
-          }
-        />
-
-        {/* Account */}
-        <Account
-          isMobile={isMobile}
-          welcomeMessage={welcomeMessage}
-          setShowMessages={setShowMessages}
-          showProfile={showProfile}
-          setShowProfile={setShowProfile}
-          setIsAccountSettings={setIsAccountSettings}
-          name={name}
-          setName={setName}
-          profilePicture={profilePicture}
-          setProfilePicture={setProfilePicture}
-        />
+        <h1 className="hidden md:block font-bold tracking-wide">Chats</h1>
+        <h1 className="block md:hidden font-bold tracking-wide">ChatHub</h1>
       </div>
-    </>
+
+      {/* Search bar */}
+      <SearchBar
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        handleChange={handleChange}
+      />
+
+      {/* Recipients list */}
+      <Users
+        isMobile={isMobile}
+        setWelcomeMessage={setWelcomeMessage}
+        setShowMessages={setShowMessages}
+        setShowProfile={setShowProfile}
+        setIsAccountSettings={setIsAccountSettings}
+        setProfile={setProfile}
+        setSearchTerm={setSearchTerm}
+        usersArray={
+          /* If search term is empty, display all users, else display filtered users */
+          searchTerm === "" ? users : filteredUsers
+        }
+      />
+
+      {/* Account */}
+      <Account
+        isMobile={isMobile}
+        welcomeMessage={welcomeMessage}
+        setShowMessages={setShowMessages}
+        showProfile={showProfile}
+        setShowProfile={setShowProfile}
+        setIsAccountSettings={setIsAccountSettings}
+        name={name}
+        setName={setName}
+        profilePicture={profilePicture}
+        setProfilePicture={setProfilePicture}
+      />
+    </div>
   );
 };

@@ -43,7 +43,7 @@ export default function MessageInput(props: {
   };
 
   return (
-    <div className="flex flex-row items-center p-5 space-x-2.5 border border-b-0">
+    <div className="flex flex-row items-center p-5 space-x-2.5 border border-b-0 bg-white">
       <input
         type="text"
         placeholder="Type a message..."

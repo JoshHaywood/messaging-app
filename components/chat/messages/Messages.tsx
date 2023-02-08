@@ -57,7 +57,7 @@ export default function Messages(props: {
             welcomeMessage && !showProfile
               ? "w-full lg:w-3/4"
               : "w-full lg:w-1/2"
-          } h-full flex flex-col`}
+          } flex flex-col fixed sm:relative bottom-0 sm:bottom-auto left-0 sm:left-auto right-0 sm:right-auto top-0 sm:top-auto`}
         >
           {/* If no recipient has been selected and welcome message is set to true, show the welcome message. Else show message data */}
           {welcomeMessage ? (
