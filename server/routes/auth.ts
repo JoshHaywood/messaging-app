@@ -110,7 +110,7 @@ router.get("/user", (req: Request, res: Response) => {
   if (req.session.email) {
     res.send({
       loggedIn: true,
-      firstName: req.session.lastName,
+      firstName: req.session.firstName,
       lastName: req.session.lastName,
       profilePicture: req.session.profilePicture,
       about: req.session.about,

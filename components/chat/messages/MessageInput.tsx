@@ -12,8 +12,10 @@ export default function MessageInput(props: {
 }) {
   const { profile, socket, message, setMessage, messageList, setMessageList } = props;
 
+  // Send message
   const sendMessage = () => {
-    const messageContent = {
+    // Message content
+    const messageContent: Message = {
       recipient: profile[0].first_name + " " + profile[0].last_name,
       content: {
         message: message,
@@ -21,9 +23,9 @@ export default function MessageInput(props: {
       },
     };
 
-    socket.emit("message", messageContent);
-    setMessageList([...messageList, messageContent]);
-    setMessage("");
+    socket.emit("send_message", messageContent); // Send message to server
+    setMessageList([...messageList, messageContent]); // Add message to message list
+    setMessage(""); // Clear input
   };
 
   return (
