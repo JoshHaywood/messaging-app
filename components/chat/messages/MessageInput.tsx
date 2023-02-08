@@ -4,18 +4,28 @@ import { Socket } from "socket.io-client";
 
 export default function MessageInput(props: {
   profile: User[];
+  name: string;
   socket: Socket;
   message: string;
   setMessage: React.Dispatch<React.SetStateAction<string>>;
   messageList: Message[];
   setMessageList: React.Dispatch<React.SetStateAction<Message[]>>;
 }) {
-  const { profile, socket, message, setMessage, messageList, setMessageList } = props;
+  const {
+    profile,
+    name,
+    socket,
+    message,
+    setMessage,
+    messageList,
+    setMessageList,
+  } = props;
 
   // Send message
   const sendMessage = () => {
     // Message content
     const messageContent: Message = {
+      sender: name,
       recipient: profile[0].first_name + " " + profile[0].last_name,
       content: {
         message: message,

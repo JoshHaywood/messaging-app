@@ -18,6 +18,7 @@ export default function Messages(props: {
   setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
   setIsAccountSettings: React.Dispatch<React.SetStateAction<boolean>>;
   profile: User[];
+  name: string;
 }) {
   const {
     isMobile,
@@ -28,6 +29,7 @@ export default function Messages(props: {
     setShowProfile,
     setIsAccountSettings,
     profile,
+    name,
   } = props;
 
   const socket = io.connect(`http://localhost:${process.env.NEXT_PUBLIC_PORT}`);
@@ -94,11 +96,13 @@ export default function Messages(props: {
                 setShowMessages={setShowMessages}
                 setShowProfile={setShowProfile}
                 setIsAccountSettings={setIsAccountSettings}
+                name={name}
                 messageList={messageList}
               />
 
               <MessageInput
                 profile={profile}
+                name={name}
                 socket={socket}
                 message={message}
                 setMessage={setMessage}

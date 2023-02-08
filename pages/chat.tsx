@@ -105,6 +105,7 @@ export default function Chat() {
             setShowProfile={setShowProfile}
             setIsAccountSettings={setIsAccountSettings}
             profile={profile}
+            name={name}
           />
 
           {/* Profile column */}
