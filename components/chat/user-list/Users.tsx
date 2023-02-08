@@ -1,14 +1,18 @@
 import Image from "next/image";
 import { useState } from "react";
 import { Socket } from "socket.io-client";
+import axios from "axios";
 
 import User from "@/interfaces/user";
+import Message from "@/interfaces/message";
 
 export default function Users(props: {
   socket: Socket;
   isMobile: boolean;
   setWelcomeMessage: React.Dispatch<React.SetStateAction<boolean>>;
   setShowMessages: React.Dispatch<React.SetStateAction<boolean>>;
+  messageList: Message[];
+  setMessageList: React.Dispatch<React.SetStateAction<Message[]>>;
   setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
   name: string;
   setIsAccountSettings: React.Dispatch<React.SetStateAction<boolean>>;
@@ -21,6 +25,8 @@ export default function Users(props: {
     isMobile,
     setWelcomeMessage,
     setShowMessages,
+    messageList,
+    setMessageList,
     setShowProfile,
     name,
     setIsAccountSettings,
@@ -28,13 +34,33 @@ export default function Users(props: {
     setSearchTerm,
     usersArray,
   } = props;
+  
   const [currentIndex, setCurrentIndex] = useState<number>(0); // Current index of user in usersArray
+  const [selectRecipient, setSelectRecipient] = useState<string>(""); // Current recipient
 
   // Join room
   const joinRoom = (user: User) => {
+    const recipient = user.first_name + " " + user.last_name;
+
+    // If recipient is equal to selectRecipient, return
+    if (selectRecipient === recipient) {
+      return;
+    };
+
+    setSelectRecipient(recipient); // Set selectRecipient to recipient
+
     socket.emit("join_room", {
-      recipient: user.first_name + " " + user.last_name,
+      recipient: recipient,
       sender: name,
+    });
+
+    axios.get("/message/get", {
+      params: {
+        sender: name,
+        recipient: recipient,
+      },
+    }).then((res) => {
+      setMessageList(res.data);
     });
   };
 

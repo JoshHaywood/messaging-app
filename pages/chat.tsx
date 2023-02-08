@@ -5,6 +5,8 @@ import axios from "axios";
 import * as io from "socket.io-client";
 
 import User from "@/interfaces/user";
+import Message from "@/interfaces/message";
+
 import UserList from "@/components/chat/user-list/UsersList";
 import Messages from "@/components/chat/messages/Messages";
 import Profile from "@/components/chat/profile/Profile";
@@ -17,6 +19,7 @@ export default function Chat() {
   
   const [welcomeMessage, setWelcomeMessage] = useState<boolean>(true); // Show or hide welcome message
   const [showMessages, setShowMessages] = useState<boolean>(false); // Show or hide messages column
+  const [messageList, setMessageList] = useState<Message[]>([]); // List of messages
 
   const [showProfile, setShowProfile] = useState<boolean>(false); // Show or hide profile column
   const [isAccountSettings, setIsAccountSettings] = useState<boolean>(false); // Show account settings or profile
@@ -89,6 +92,8 @@ export default function Chat() {
             setWelcomeMessage={setWelcomeMessage}
             showMessages={showMessages}
             setShowMessages={setShowMessages}
+            messageList={messageList}
+            setMessageList={setMessageList}
             showProfile={showProfile}
             setShowProfile={setShowProfile}
             setIsAccountSettings={setIsAccountSettings}
@@ -106,6 +111,8 @@ export default function Chat() {
             welcomeMessage={welcomeMessage}
             showMessages={showMessages}
             setShowMessages={setShowMessages}
+            messageList={messageList}
+            setMessageList={setMessageList}
             showProfile={showProfile}
             setShowProfile={setShowProfile}
             setIsAccountSettings={setIsAccountSettings}

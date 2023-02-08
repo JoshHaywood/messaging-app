@@ -15,6 +15,8 @@ export default function Messages(props: {
   welcomeMessage: boolean;
   showMessages: boolean;
   setShowMessages: React.Dispatch<React.SetStateAction<boolean>>;
+  messageList: Message[];
+  setMessageList: React.Dispatch<React.SetStateAction<Message[]>>;
   showProfile: boolean;
   setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
   setIsAccountSettings: React.Dispatch<React.SetStateAction<boolean>>;
@@ -27,6 +29,8 @@ export default function Messages(props: {
     welcomeMessage,
     showMessages,
     setShowMessages,
+    messageList,
+    setMessageList,
     showProfile,
     setShowProfile,
     setIsAccountSettings,
@@ -35,14 +39,16 @@ export default function Messages(props: {
   } = props;
 
   const [message, setMessage] = useState(""); // Message to be sent
-  const [messageList, setMessageList] = useState<Message[]>([]); // List of messages
 
   // On receiving a message, add it to the message list
   useEffect(() => {
     socket.on("receive_message", (data: Message) => {
-      setMessageList([...messageList, data]);
+      if (data.sender !== name) {
+        setMessageList((messageList) => [...messageList, data]);
+      };
     });
-  }, [socket, messageList]);
+  }, [socket, name, setMessageList]);
+
 
   return (
     <AnimatePresence>

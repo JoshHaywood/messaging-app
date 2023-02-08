@@ -33,11 +33,11 @@ export default function MessageList(props: {
                 {/* Message */}
                 <div className="max-w-[55%]">
                   <div className="flex justify-end mb-1 text-[10px] text-gray-400">
-                    {message.content.time}
+                    {message.time}
                   </div>
 
                   <div className="justify-end break-words p-2.5 text-[13px] rounded-xl rounded-tr-none text-white bg-blue-500">
-                    {message.content.message}
+                    {message.message}
                   </div>
                 </div>
 
@@ -50,10 +50,11 @@ export default function MessageList(props: {
                     height={35}
                     onClick={() =>
                       // If on mobile, show the account settings page
-                      isMobile &&
-                      (setShowMessages(false),
-                      setShowProfile(true),
-                      setIsAccountSettings(true))
+                      isMobile && (
+                        setShowMessages(false),
+                        setShowProfile(true),
+                        setIsAccountSettings(true)
+                      )
                     }
                     className="rounded-full border hover:cursor-pointer"
                   ></Image>
@@ -84,12 +85,12 @@ export default function MessageList(props: {
                       {message.sender}
                     </div>
                     <div className="text-[10px] text-gray-400">
-                      {message.content.time}
+                      {message.time}
                     </div>
                   </div>
 
                   <div className="break-words p-2.5 text-[13px] rounded-xl rounded-tl-none text-gray-700 bg-gray-100">
-                    {message.content.message}
+                    {message.message}
                   </div>
                 </div>
               </div>

@@ -4,6 +4,7 @@ import { Socket } from "socket.io-client";
 import Image from "next/image";
 
 import User from "@/interfaces/user";
+import Message from "@/interfaces/message";
 import SearchBar from "./SearchBar";
 import Users from "./Users";
 import Account from "./Account";
@@ -15,6 +16,8 @@ export default function UsersList(props: {
   setWelcomeMessage: React.Dispatch<React.SetStateAction<boolean>>;
   showMessages: boolean;
   setShowMessages: React.Dispatch<React.SetStateAction<boolean>>;
+  messageList: Message[];
+  setMessageList: React.Dispatch<React.SetStateAction<Message[]>>;
   showProfile: boolean;
   setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
   setIsAccountSettings: React.Dispatch<React.SetStateAction<boolean>>;
@@ -31,6 +34,8 @@ export default function UsersList(props: {
     setWelcomeMessage,
     showMessages,
     setShowMessages,
+    messageList,
+    setMessageList,
     showProfile,
     setShowProfile,
     setIsAccountSettings,
@@ -99,6 +104,8 @@ export default function UsersList(props: {
         isMobile={isMobile}
         setWelcomeMessage={setWelcomeMessage}
         setShowMessages={setShowMessages}
+        messageList={messageList}
+        setMessageList={setMessageList}
         setShowProfile={setShowProfile}
         setIsAccountSettings={setIsAccountSettings}
         name={name}

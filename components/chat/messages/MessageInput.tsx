@@ -28,26 +28,25 @@ export default function MessageInput(props: {
     const messageContent: Message = {
       sender: name,
       recipient: profile[0].first_name + " " + profile[0].last_name,
-      content: {
-        message: message,
-        time: new Date().toLocaleString('en-US', {
-          hour: '2-digit',
-          minute: '2-digit',
-          hour12: false,
-        }),      
-      },
+      message: message,
+      time: new Date().toLocaleString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      }),
     };
 
     // Store the message in the database
     axios.post("/message/store", {
       sender: name,
       recipient: messageContent.recipient,
-      message: messageContent.content.message,
-      time: messageContent.content.time,
+      message: messageContent.message,
+      time: messageContent.time,
     });
 
     socket.emit("send_message", messageContent); // Send message to server
-    setMessageList([...messageList, messageContent]); // Add message to message list
+    setMessageList([...messageList, messageContent]); // Update the state with the new message
+    
     setMessage(""); // Clear input
   };
 
