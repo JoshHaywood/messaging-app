@@ -81,7 +81,7 @@ export default function MessageList(props: {
                 <div className="max-w-[55%]">
                   <div className="flex flex-row items-baseline space-x-1.5 mb-1">
                     <div className="text-[12px] text-gray-700">
-                      {message.recipient}
+                      {message.sender}
                     </div>
                     <div className="text-[10px] text-gray-400">
                       {message.content.time}

@@ -29,7 +29,11 @@ export default function MessageInput(props: {
       recipient: profile[0].first_name + " " + profile[0].last_name,
       content: {
         message: message,
-        time: new Date().getHours() + ":" + new Date().getMinutes(),
+        time: new Date().toLocaleString('en-US', {
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false,
+        }),      
       },
     };
 
