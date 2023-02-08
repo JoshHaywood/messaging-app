@@ -1,6 +1,7 @@
-import Message from "@/interfaces/message";
-import User from "@/interfaces/user";
 import { Socket } from "socket.io-client";
+import User from "@/interfaces/user";
+import Message from "@/interfaces/message";
+import axios from "axios";
 
 export default function MessageInput(props: {
   socket: Socket;
@@ -36,6 +37,14 @@ export default function MessageInput(props: {
         }),      
       },
     };
+
+    // Store the message in the database
+    axios.post("/message/store", {
+      sender: name,
+      recipient: messageContent.recipient,
+      message: messageContent.content.message,
+      time: messageContent.content.time,
+    });
 
     socket.emit("send_message", messageContent); // Send message to server
     setMessageList([...messageList, messageContent]); // Add message to message list

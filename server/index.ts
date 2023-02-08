@@ -17,6 +17,7 @@ const socket = require("./lib/socket");
 
 const authRoutes = require("./routes/auth");
 const usersRoutes = require("./routes/users");
+const messageRoutes = require("./routes/message");
 
 app.prepare().then(() => {
   const app: Express = express();
@@ -39,6 +40,7 @@ app.prepare().then(() => {
   // Routes
   app.use("/auth", authRoutes);
   app.use("/users", usersRoutes);
+  app.use("/message", messageRoutes);
 
   // Next.js build serve
   app.get("*", (req: Request, res: Response) => {
