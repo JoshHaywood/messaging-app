@@ -2,6 +2,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import * as io from "socket.io-client";
 
 import User from "@/interfaces/user";
 import UserList from "@/components/chat/user-list/UsersList";
@@ -9,6 +10,8 @@ import Messages from "@/components/chat/messages/Messages";
 import Profile from "@/components/chat/profile/Profile";
 
 export default function Chat() {
+  const socket = io.connect(`http://localhost:${process.env.NEXT_PUBLIC_PORT}`);
+
   const router = useRouter();
   const [isMobile, setIsMobile] = useState(false); // Check if device is mobile
   
@@ -69,7 +72,7 @@ export default function Chat() {
       setShowProfile(true);
     };
   }, [welcomeMessage, isMobile, setShowProfile]);
-
+  
   return (
     <>
       <Head>
@@ -80,6 +83,7 @@ export default function Chat() {
         <div className="absolute left-0 right-0 top-0 bottom-0 m-0 lg:m-5 xl:m-10 flex flex-row lg:rounded-2xl bg-white">
           {/* Chats column */}
           <UserList
+            socket={socket}
             isMobile={isMobile}
             welcomeMessage={welcomeMessage}
             setWelcomeMessage={setWelcomeMessage}
@@ -97,6 +101,7 @@ export default function Chat() {
   
           {/* Messages column */}
           <Messages
+            socket={socket}
             isMobile={isMobile}
             welcomeMessage={welcomeMessage}
             showMessages={showMessages}

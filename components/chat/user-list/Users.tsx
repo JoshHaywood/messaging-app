@@ -1,29 +1,42 @@
 import Image from "next/image";
 import { useState } from "react";
+import { Socket } from "socket.io-client";
 
 import User from "@/interfaces/user";
 
 export default function Users(props: {
+  socket: Socket;
   isMobile: boolean;
   setWelcomeMessage: React.Dispatch<React.SetStateAction<boolean>>;
   setShowMessages: React.Dispatch<React.SetStateAction<boolean>>;
   setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
+  name: string;
   setIsAccountSettings: React.Dispatch<React.SetStateAction<boolean>>;
   setProfile: React.Dispatch<React.SetStateAction<User[]>>;
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
   usersArray: User[];
 }) {
   const {
+    socket,
     isMobile,
     setWelcomeMessage,
     setShowMessages,
     setShowProfile,
+    name,
     setIsAccountSettings,
     setProfile,
     setSearchTerm,
     usersArray,
   } = props;
   const [currentIndex, setCurrentIndex] = useState<number>(0); // Current index of user in usersArray
+
+  // Join room
+  const joinRoom = (user: User) => {
+    socket.emit("join_room", {
+      recipient: user.first_name + " " + user.last_name,
+      sender: name,
+    });
+  };
 
   return (
     /* Recipient profile */
@@ -40,6 +53,7 @@ export default function Users(props: {
               setShowMessages(true),
               setShowProfile(false)
             );
+            joinRoom(user); // Join room
             setWelcomeMessage(false); // Hide welcome message
             setIsAccountSettings(false); // Hide account settings
             setProfile([user]); // Set profile to current user

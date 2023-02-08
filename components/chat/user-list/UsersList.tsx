@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Socket } from "socket.io-client";
 import Image from "next/image";
 
 import User from "@/interfaces/user";
@@ -8,6 +9,7 @@ import Users from "./Users";
 import Account from "./Account";
 
 export default function UsersList(props: {
+  socket: Socket;
   isMobile: boolean;
   welcomeMessage: boolean;
   setWelcomeMessage: React.Dispatch<React.SetStateAction<boolean>>;
@@ -23,6 +25,7 @@ export default function UsersList(props: {
   setProfilePicture: React.Dispatch<React.SetStateAction<string>>;
 }) {
   const {
+    socket,
     isMobile,
     welcomeMessage,
     setWelcomeMessage,
@@ -92,11 +95,13 @@ export default function UsersList(props: {
 
       {/* Recipients list */}
       <Users
+        socket={socket}
         isMobile={isMobile}
         setWelcomeMessage={setWelcomeMessage}
         setShowMessages={setShowMessages}
         setShowProfile={setShowProfile}
         setIsAccountSettings={setIsAccountSettings}
+        name={name}
         setProfile={setProfile}
         setSearchTerm={setSearchTerm}
         usersArray={

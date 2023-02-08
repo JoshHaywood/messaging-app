@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import * as io from "socket.io-client";
+import { Socket } from "socket.io-client";
 import { AnimatePresence, motion } from "framer-motion";
 
 import User from "@/interfaces/user";
@@ -10,6 +10,7 @@ import MessageList from "./MessageList";
 import MessageInput from "./MessageInput";
 
 export default function Messages(props: {
+  socket: Socket;
   isMobile: boolean;
   welcomeMessage: boolean;
   showMessages: boolean;
@@ -21,6 +22,7 @@ export default function Messages(props: {
   name: string;
 }) {
   const {
+    socket,
     isMobile,
     welcomeMessage,
     showMessages,
@@ -32,11 +34,10 @@ export default function Messages(props: {
     name,
   } = props;
 
-  const socket = io.connect(`http://localhost:${process.env.NEXT_PUBLIC_PORT}`);
-
   const [message, setMessage] = useState(""); // Message to be sent
   const [messageList, setMessageList] = useState<Message[]>([]); // List of messages
 
+  // On receiving a message, add it to the message list
   useEffect(() => {
     socket.on("receive_message", (data: Message) => {
       setMessageList([...messageList, data]);
@@ -101,9 +102,9 @@ export default function Messages(props: {
               />
 
               <MessageInput
+                socket={socket}
                 profile={profile}
                 name={name}
-                socket={socket}
                 message={message}
                 setMessage={setMessage}
                 messageList={messageList}

@@ -3,9 +3,9 @@ import User from "@/interfaces/user";
 import { Socket } from "socket.io-client";
 
 export default function MessageInput(props: {
+  socket: Socket;
   profile: User[];
   name: string;
-  socket: Socket;
   message: string;
   setMessage: React.Dispatch<React.SetStateAction<string>>;
   messageList: Message[];
