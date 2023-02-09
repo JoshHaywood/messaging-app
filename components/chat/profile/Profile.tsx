@@ -2,8 +2,10 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import User from "@/interfaces/user";
-import Recipient from "./Recipient";
-import SessionUser from "./SessionUser";
+import SessionUser from "@/interfaces/sessionUser";
+
+import Contact from "./Contact";
+import Settings from "./Settings";
 
 export default function Profile(props: {
   isMobile: boolean;
@@ -13,10 +15,8 @@ export default function Profile(props: {
   setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
   isAccountSettings: boolean;
   setIsAccountSettings: React.Dispatch<React.SetStateAction<boolean>>;
-  profile: User[];
-  name: string;
-  profilePicture: string;
-  about: string;
+  contact: User[];
+  sessionUser: SessionUser;
 }) {
   const {
     isMobile,
@@ -26,10 +26,8 @@ export default function Profile(props: {
     setShowProfile,
     isAccountSettings,
     setIsAccountSettings,
-    profile,
-    name,
-    profilePicture,
-    about,
+    contact,
+    sessionUser,
   } = props;
 
   const [aboutToggle, setAboutToggle] = useState<boolean>(false); // Toggle about section
@@ -47,26 +45,24 @@ export default function Profile(props: {
         >
           {/* If the user is viewing their own profile show setting component else show recipient component */}
           {isAccountSettings ? (
-            <SessionUser
+            <Settings
               isMobile={isMobile}
               welcomeMessage={welcomeMessage}
               showProfile={showProfile}
               setShowProfile={setShowProfile}
               setIsAccountSettings={setIsAccountSettings}
-              name={name}
-              profilePicture={profilePicture}
-              about={about}
+              sessionUser={sessionUser}
               aboutToggle={aboutToggle}
               setAboutToggle={setAboutToggle}
             />
           ) : (
-            <Recipient
+            <Contact
               isMobile={isMobile}
               setShowMessages={setShowMessages}
               setShowProfile={setShowProfile}
-              profile={profile}
-              about={aboutToggle}
-              setAbout={setAboutToggle}
+              contact={contact}
+              aboutToggle={aboutToggle}
+              setAboutToggle={setAboutToggle}
             />
           )}
         </motion.div>

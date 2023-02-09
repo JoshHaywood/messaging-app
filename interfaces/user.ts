@@ -1,4 +1,4 @@
-// Users table interface
+// Non-Session User
 export default interface User {
   user_name: string;
   first_name: string;

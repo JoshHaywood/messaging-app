@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useRef, useEffect } from "react";
 
+import SessionUser from "@/interfaces/sessionUser";
 import Message from "@/interfaces/message";
 
 export default function MessageList(props: {
@@ -8,7 +9,7 @@ export default function MessageList(props: {
   setShowMessages: React.Dispatch<React.SetStateAction<boolean>>;
   setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
   setIsAccountSettings: React.Dispatch<React.SetStateAction<boolean>>;
-  name: string;
+  sessionUser: SessionUser;
   messageList: Message[];
 }) {
   const {
@@ -16,7 +17,7 @@ export default function MessageList(props: {
     setShowMessages,
     setShowProfile,
     setIsAccountSettings,
-    name,
+    sessionUser,
     messageList,
   } = props;
 
@@ -45,7 +46,7 @@ export default function MessageList(props: {
             )}
 
             {/* If the message is from the user, show it on the right side of the screen, else show it on the left */}
-            {name === message.sender ? (
+            {sessionUser.name === message.sender ? (
               /* Sender message */
               <div className="flex flex-row justify-end space-x-2.5">
                 {/* Message */}

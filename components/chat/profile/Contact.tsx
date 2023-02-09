@@ -55,21 +55,21 @@ const mediaContent = [
   },
 ];
 
-export default function Recipient(props: {
+export default function Contact(props: {
   isMobile: boolean;
   setShowMessages: React.Dispatch<React.SetStateAction<boolean>>;
   setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
-  profile: User[];
-  about: boolean;
-  setAbout: React.Dispatch<React.SetStateAction<boolean>>;
+  contact: User[];
+  aboutToggle: boolean;
+  setAboutToggle: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const {
     isMobile,
     setShowMessages,
     setShowProfile,
-    profile,
-    about,
-    setAbout,
+    contact,
+    aboutToggle,
+    setAboutToggle,
   } = props;
 
   const [media, setMedia] = useState<boolean>(true); // Toggle media section
@@ -109,13 +109,13 @@ export default function Recipient(props: {
         </div>
       )}
 
-      {/* Recipient profile */}
-      {profile.map((profile, index) => (
+      {/* Contact profile */}
+      {contact.map((contact, index) => (
         <div key={index} id="media-container" className="overflow-y-auto">
           {/* Profile picture */}
           <div className="mx-auto p-5 text-center">
             <Image
-              src={"/images/" + profile.profile_picture}
+              src={"/images/" + contact.profile_picture}
               alt="User profile picture"
               width={125}
               height={125}
@@ -123,7 +123,7 @@ export default function Recipient(props: {
             ></Image>
 
             <div className="mt-4 text-xl font-medium text-gray-700">
-              {profile.first_name + " " + profile.last_name}
+              {contact.first_name + " " + contact.last_name}
             </div>
 
             <div className="mt-1 text-xs text-green-400">Online</div>
@@ -133,7 +133,7 @@ export default function Recipient(props: {
           <div
             id="about"
             // Toggle about on click
-            onClick={() => setAbout(!about)}
+            onClick={() => setAboutToggle(!aboutToggle)}
             className="mt-4 px-5 py-3 border border-x-0 hover:cursor-pointer"
           >
             <div className="flex flex-row justify-between">
@@ -142,7 +142,7 @@ export default function Recipient(props: {
               </div>
 
               {/* If about is true, show the up arrow, else show the down arrow */}
-              {about ? (
+              {aboutToggle ? (
                 /* Attribution: https://heroicons.com/ */
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -178,8 +178,8 @@ export default function Recipient(props: {
             </div>
 
             {/* If about is true, show the about text */}
-            {about && (
-              <p className="mt-2 text-sm text-gray-400">{profile.about}</p>
+            {aboutToggle && (
+              <p className="mt-2 text-sm text-gray-400">{contact.about}</p>
             )}
           </div>
 

@@ -2,6 +2,8 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import axios from "axios";
 
+import SessionUser from "@/interfaces/sessionUser";
+
 export default function Account(props: {
   isMobile: boolean;
   welcomeMessage: boolean;
@@ -9,10 +11,8 @@ export default function Account(props: {
   showProfile: boolean;
   setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
   setIsAccountSettings: React.Dispatch<React.SetStateAction<boolean>>;
-  name: string;
-  setName: React.Dispatch<React.SetStateAction<string>>;
-  profilePicture: string;
-  setProfilePicture: React.Dispatch<React.SetStateAction<string>>;
+  sessionUser: SessionUser;
+  setSessionUser: React.Dispatch<React.SetStateAction<SessionUser>>;
 }) {
   const router = useRouter();
 
@@ -23,18 +23,19 @@ export default function Account(props: {
     showProfile,
     setShowProfile,
     setIsAccountSettings,
-    name,
-    setName,
-    profilePicture,
-    setProfilePicture,
+    sessionUser,
+    setSessionUser,
   } = props;
 
   // Logout
   const logoutHandler = () => {
     axios.post("/auth/logout").then((res) => {
       // Clear user data
-      setName("");
-      setProfilePicture("");
+      setSessionUser({
+        name: "",
+        about: "",
+        profilePicture: "",
+      });
 
       // Redirect to login page
       router.push("/");
@@ -50,7 +51,7 @@ export default function Account(props: {
       <div className="flex flex-row items-center my-3 space-x-4 rounded-lg">
         {/* Profile picture */}
         <Image
-          src={"/images/" + profilePicture}
+          src={"/images/" + sessionUser.profilePicture}
           alt="User profile picture"
           width={35}
           height={35}
@@ -80,7 +81,7 @@ export default function Account(props: {
             }}
             className="font-medium text-gray-700 hover:cursor-pointer"
           >
-            {name}
+            {sessionUser.name}
           </div>
 
           {/* Logout button */}

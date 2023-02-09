@@ -1,23 +1,24 @@
 import Image from "next/image";
 import { useState } from "react";
 import { Socket } from "socket.io-client";
+import axios from "axios";
 
 import User from "@/interfaces/user";
+import SessionUser from "@/interfaces/sessionUser";
 import Message from "@/interfaces/message";
-import axios from "axios";
 
 export default function MessageInput(props: {
   socket: Socket;
-  profile: User[];
-  name: string;
+  contact: User[];
+  sessionUser: SessionUser;
   message: string;
   setMessage: React.Dispatch<React.SetStateAction<string>>;
   messageList: Message[];
   setMessageList: React.Dispatch<React.SetStateAction<Message[]>>;
 }) {
   const {
-    profile,
-    name,
+    contact,
+    sessionUser,
     socket,
     message,
     setMessage,
@@ -67,8 +68,8 @@ export default function MessageInput(props: {
     if (messageType === "text") {
       // Message content
       const messageContent: Message = {
-        sender: name,
-        recipient: profile[0].first_name + " " + profile[0].last_name,
+        sender: sessionUser.name,
+        recipient: contact[0].first_name + " " + contact[0].last_name,
         message: message,
         time: new Date().toLocaleString("en-US", {
           hour: "2-digit",
@@ -84,7 +85,7 @@ export default function MessageInput(props: {
 
       // Store the message in the database
       axios.post("/message/store", {
-        sender: name,
+        sender: sessionUser.name,
         recipient: messageContent.recipient,
         message: messageContent.message,
         time: messageContent.time,

@@ -1,16 +1,16 @@
 import Image from "next/image";
 
-export default function SessionUser(props: {
+import SessionUser from "@/interfaces/sessionUser";
+
+export default function Settings(props: {
   isMobile: boolean;
   welcomeMessage: boolean;
   showProfile: boolean;
   setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
   setIsAccountSettings: React.Dispatch<React.SetStateAction<boolean>>;
+  sessionUser: SessionUser;
   aboutToggle: boolean;
   setAboutToggle: React.Dispatch<React.SetStateAction<boolean>>;
-  name: string;
-  profilePicture: string;
-  about: string;
 }) {
   const {
     isMobile,
@@ -20,9 +20,7 @@ export default function SessionUser(props: {
     setIsAccountSettings,
     aboutToggle,
     setAboutToggle,
-    name,
-    profilePicture,
-    about,
+    sessionUser,
   } = props;
 
   return (
@@ -59,14 +57,14 @@ export default function SessionUser(props: {
       {/* Profile picture */}
       <div className="mx-auto p-5 text-center">
         <Image
-          src={"/images/" + profilePicture}
+          src={"/images/" + sessionUser.profilePicture}
           alt="User profile picture"
           width={125}
           height={125}
           className="mx-auto rounded-full border"
         ></Image>
 
-        <div className="mt-4 text-xl font-medium text-gray-700">{name}</div>
+        <div className="mt-4 text-xl font-medium text-gray-700">{sessionUser.name}</div>
 
         <div className="mt-1 text-xs text-green-400">Online</div>
       </div>
@@ -119,7 +117,7 @@ export default function SessionUser(props: {
         </div>
 
         {/* If about is true, show the about text */}
-        {aboutToggle && <p className="mt-2 text-sm text-gray-400">{about}</p>}
+        {aboutToggle && <p className="mt-2 text-sm text-gray-400">{sessionUser.about}</p>}
       </div>
     </>
   );

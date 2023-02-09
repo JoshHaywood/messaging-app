@@ -4,19 +4,19 @@ import { Socket } from "socket.io-client";
 import axios from "axios";
 
 import User from "@/interfaces/user";
+import SessionUser from "@/interfaces/sessionUser";
 import Message from "@/interfaces/message";
 
-export default function Users(props: {
+export default function ContactList(props: {
   socket: Socket;
   isMobile: boolean;
   setWelcomeMessage: React.Dispatch<React.SetStateAction<boolean>>;
   setShowMessages: React.Dispatch<React.SetStateAction<boolean>>;
-  messageList: Message[];
   setMessageList: React.Dispatch<React.SetStateAction<Message[]>>;
   setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
-  name: string;
   setIsAccountSettings: React.Dispatch<React.SetStateAction<boolean>>;
-  setProfile: React.Dispatch<React.SetStateAction<User[]>>;
+  setContact: React.Dispatch<React.SetStateAction<User[]>>;
+  sessionUser: SessionUser;
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
   usersArray: User[];
 }) {
@@ -25,12 +25,11 @@ export default function Users(props: {
     isMobile,
     setWelcomeMessage,
     setShowMessages,
-    messageList,
     setMessageList,
     setShowProfile,
-    name,
     setIsAccountSettings,
-    setProfile,
+    setContact,
+    sessionUser,
     setSearchTerm,
     usersArray,
   } = props;
@@ -52,13 +51,13 @@ export default function Users(props: {
     // Join room
     socket.emit("join_room", {
       recipient: recipient,
-      sender: name,
+      sender: sessionUser.name,
     });
 
     // Get messages
     axios.get("/message/get", {
       params: {
-        sender: name,
+        sender: sessionUser.name,
         recipient: recipient,
       },
     }).then((res) => {
@@ -94,7 +93,7 @@ export default function Users(props: {
             joinRoom(user); // Join room
             setWelcomeMessage(false); // Hide welcome message
             setIsAccountSettings(false); // Hide account settings
-            setProfile([user]); // Set profile to current user
+            setContact([user]); // Set profile to current user
             setSearchTerm(""); // Clear search term
             setCurrentIndex(index); // Set current index to current user
           }}

@@ -4,28 +4,27 @@ import { Socket } from "socket.io-client";
 import Image from "next/image";
 
 import User from "@/interfaces/user";
+import SessionUser from "@/interfaces/sessionUser";
 import Message from "@/interfaces/message";
+
 import SearchBar from "./SearchBar";
-import Users from "./Users";
+import ContactList from "./ContactList";
 import Account from "./Account";
 
-export default function UsersList(props: {
+export default function Contacts(props: {
   socket: Socket;
   isMobile: boolean;
   welcomeMessage: boolean;
   setWelcomeMessage: React.Dispatch<React.SetStateAction<boolean>>;
   showMessages: boolean;
   setShowMessages: React.Dispatch<React.SetStateAction<boolean>>;
-  messageList: Message[];
   setMessageList: React.Dispatch<React.SetStateAction<Message[]>>;
   showProfile: boolean;
   setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
   setIsAccountSettings: React.Dispatch<React.SetStateAction<boolean>>;
-  setProfile: React.Dispatch<React.SetStateAction<User[]>>;
-  name: string;
-  setName: React.Dispatch<React.SetStateAction<string>>;
-  profilePicture: string;
-  setProfilePicture: React.Dispatch<React.SetStateAction<string>>;
+  setContact: React.Dispatch<React.SetStateAction<User[]>>;
+  sessionUser: SessionUser;
+  setSessionUser: React.Dispatch<React.SetStateAction<SessionUser>>;
 }) {
   const {
     socket,
@@ -34,16 +33,13 @@ export default function UsersList(props: {
     setWelcomeMessage,
     showMessages,
     setShowMessages,
-    messageList,
     setMessageList,
     showProfile,
     setShowProfile,
     setIsAccountSettings,
-    setProfile,
-    name,
-    setName,
-    profilePicture,
-    setProfilePicture,
+    setContact,
+    sessionUser,
+    setSessionUser,
   } = props;
   const [users, setUsers] = useState<User[]>([]); // Users array
 
@@ -55,12 +51,12 @@ export default function UsersList(props: {
     axios.get("/users/get").then((res) => {
       // Exclude session user
       const usersArray = res.data.filter((user: User) => {
-        return user.first_name + " " + user.last_name !== name;
+        return user.first_name + " " + user.last_name !== sessionUser.name;
       });
 
       setUsers(usersArray);
     });
-  }, [name]);
+  }, [sessionUser.name]);
 
   // Handle search bar input
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,7 +66,7 @@ export default function UsersList(props: {
     const filteredUsers = users.filter((user) => {
       return (
         user.first_name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-        user.first_name + " " + user.last_name !== name
+        user.first_name + " " + user.last_name !== sessionUser.name
       );
     });
     setFilteredUsers(filteredUsers);
@@ -99,17 +95,16 @@ export default function UsersList(props: {
       />
 
       {/* Recipients list */}
-      <Users
+      <ContactList
         socket={socket}
         isMobile={isMobile}
         setWelcomeMessage={setWelcomeMessage}
         setShowMessages={setShowMessages}
-        messageList={messageList}
         setMessageList={setMessageList}
         setShowProfile={setShowProfile}
         setIsAccountSettings={setIsAccountSettings}
-        name={name}
-        setProfile={setProfile}
+        setContact={setContact}
+        sessionUser={sessionUser}
         setSearchTerm={setSearchTerm}
         usersArray={
           /* If search term is empty, display all users, else display filtered users */
@@ -125,10 +120,8 @@ export default function UsersList(props: {
         showProfile={showProfile}
         setShowProfile={setShowProfile}
         setIsAccountSettings={setIsAccountSettings}
-        name={name}
-        setName={setName}
-        profilePicture={profilePicture}
-        setProfilePicture={setProfilePicture}
+        sessionUser={sessionUser}
+        setSessionUser={setSessionUser}
       />
     </div>
   );

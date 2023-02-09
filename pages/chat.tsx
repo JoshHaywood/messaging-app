@@ -5,9 +5,10 @@ import axios from "axios";
 import * as io from "socket.io-client";
 
 import User from "@/interfaces/user";
+import SessionUser from "@/interfaces/sessionUser";
 import Message from "@/interfaces/message";
 
-import UserList from "@/components/chat/user-list/UsersList";
+import Contacts from "@/components/chat/contacts/Contacts";
 import Messages from "@/components/chat/messages/Messages";
 import Profile from "@/components/chat/profile/Profile";
 
@@ -24,11 +25,14 @@ export default function Chat() {
   const [showProfile, setShowProfile] = useState<boolean>(false); // Show or hide profile column
   const [isAccountSettings, setIsAccountSettings] = useState<boolean>(false); // Show account settings or profile
   
-  const [profile, setProfile] = useState<User[]>([]); // User profile data
-  const [name, setName] = useState<string>(""); // Account name
-  const [profilePicture, setProfilePicture] = useState<string>(""); // Account profile picture
-  const [about, setAbout] = useState<string>(""); // Account about
-
+  const [contact, setContact] = useState<User[]>([]); // User profile data
+  // Session user data
+  const [sessionUser, setSessionUser] = useState<SessionUser>({
+    name: "",
+    profilePicture: "",
+    about: "",
+  });
+  
   // Check if user is logged in
   useEffect(() => {
     axios.get("/auth/user").then((res) => {
@@ -37,9 +41,11 @@ export default function Chat() {
         router.push("/");
         // Else, set user data
       } else {
-        setName(res.data.firstName + " " + res.data.lastName);
-        setProfilePicture(res.data.profilePicture);
-        setAbout(res.data.about);
+        setSessionUser({
+          name: res.data.firstName + " " + res.data.lastName,
+          profilePicture: res.data.profilePicture,
+          about: res.data.about,
+        });
       };
     });
   }, [router]);
@@ -85,23 +91,20 @@ export default function Chat() {
       <div className="w-screen h-screen relative bg-blue-200">
         <div className="absolute left-0 right-0 top-0 bottom-0 m-0 lg:m-5 xl:m-10 flex flex-row lg:rounded-2xl bg-white">
           {/* Chats column */}
-          <UserList
+          <Contacts
             socket={socket}
             isMobile={isMobile}
             welcomeMessage={welcomeMessage}
             setWelcomeMessage={setWelcomeMessage}
             showMessages={showMessages}
             setShowMessages={setShowMessages}
-            messageList={messageList}
             setMessageList={setMessageList}
             showProfile={showProfile}
             setShowProfile={setShowProfile}
             setIsAccountSettings={setIsAccountSettings}
-            setProfile={setProfile}
-            name={name}
-            setName={setName}
-            profilePicture={profilePicture}
-            setProfilePicture={setProfilePicture}
+            setContact={setContact}
+            sessionUser={sessionUser}
+            setSessionUser={setSessionUser}
           />
   
           {/* Messages column */}
@@ -116,8 +119,8 @@ export default function Chat() {
             showProfile={showProfile}
             setShowProfile={setShowProfile}
             setIsAccountSettings={setIsAccountSettings}
-            profile={profile}
-            name={name}
+            contact={contact}
+            sessionUser={sessionUser}
           />
 
           {/* Profile column */}
@@ -129,10 +132,8 @@ export default function Chat() {
             setShowProfile={setShowProfile}
             isAccountSettings={isAccountSettings}
             setIsAccountSettings={setIsAccountSettings}
-            profile={profile}
-            name={name}
-            profilePicture={profilePicture}
-            about={about} 
+            contact={contact}
+            sessionUser={sessionUser}
           />
         </div>
       </div>

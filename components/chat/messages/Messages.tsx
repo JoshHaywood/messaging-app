@@ -4,7 +4,9 @@ import { Socket } from "socket.io-client";
 import { AnimatePresence, motion } from "framer-motion";
 
 import User from "@/interfaces/user";
+import SessionUser from "@/interfaces/sessionUser";
 import Message from "@/interfaces/message";
+
 import Recipient from "./Recipient";
 import MessageList from "./MessageList";
 import MessageInput from "./MessageInput";
@@ -20,8 +22,8 @@ export default function Messages(props: {
   showProfile: boolean;
   setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
   setIsAccountSettings: React.Dispatch<React.SetStateAction<boolean>>;
-  profile: User[];
-  name: string;
+  contact: User[];
+  sessionUser: SessionUser;
 }) {
   const {
     socket,
@@ -34,8 +36,8 @@ export default function Messages(props: {
     showProfile,
     setShowProfile,
     setIsAccountSettings,
-    profile,
-    name,
+    contact,
+    sessionUser,
   } = props;
 
   const [message, setMessage] = useState(""); // Message to be sent
@@ -44,7 +46,7 @@ export default function Messages(props: {
   useEffect(() => {
     socket.on("receive_message", (data: Message) => {
       // If the message sender is not equal to the current user, add the message to the message list
-      if (data.sender !== name) {
+      if (data.sender !== sessionUser.name) {
         setMessageList(prevMessageList => [...prevMessageList, data].sort((a, b) => {
           // Sort by date
           if (a.date < b.date) return 1; // If a is greater than b list a first
@@ -56,7 +58,7 @@ export default function Messages(props: {
         }));
       }
     });
-  }, [socket, name, setMessageList]);
+  }, [socket, sessionUser.name, setMessageList]);
 
 
   return (
@@ -104,7 +106,7 @@ export default function Messages(props: {
                 isMobile={isMobile}
                 setShowMessages={setShowMessages}
                 setShowProfile={setShowProfile}
-                profile={profile}
+                contact={contact}
               />
 
               <MessageList 
@@ -112,14 +114,14 @@ export default function Messages(props: {
                 setShowMessages={setShowMessages}
                 setShowProfile={setShowProfile}
                 setIsAccountSettings={setIsAccountSettings}
-                name={name}
+                sessionUser={sessionUser}
                 messageList={messageList}
               />
 
               <MessageInput
                 socket={socket}
-                profile={profile}
-                name={name}
+                contact={contact}
+                sessionUser={sessionUser}
                 message={message}
                 setMessage={setMessage}
                 messageList={messageList}

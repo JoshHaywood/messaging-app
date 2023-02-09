@@ -6,9 +6,9 @@ export default function Recipient(props: {
   isMobile: boolean;
   setShowMessages: React.Dispatch<React.SetStateAction<boolean>>;
   setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
-  profile: User[];
+  contact: User[];
 }) {
-  const { isMobile, setShowMessages, setShowProfile, profile } = props;
+  const { isMobile, setShowMessages, setShowProfile, contact } = props;
 
   return (
     <div className="flex flex-row items-center p-4 space-x-4 border border-b-0">
@@ -37,12 +37,12 @@ export default function Recipient(props: {
         </svg>
       )}
 
-      {/* Recipient profile */}
-      {profile.map((profile, index) => (
+      {/* Contact profile */}
+      {contact.map((contact, index) => (
         <div key={index} className="flex flex-row items-center space-x-4">
           {/* Profile picture */}
           <Image
-            src={"/images/" + profile.profile_picture}
+            src={"/images/" + contact.profile_picture}
             alt="User profile picture"
             width={45}
             height={45}
@@ -59,7 +59,7 @@ export default function Recipient(props: {
           {/* User name and status */}
           <div>
             <div className="font-medium text-gray-700">
-              {profile.first_name + " " + profile.last_name}
+              {contact.first_name + " " + contact.last_name}
             </div>
 
             <div className="text-xs font-medium text-green-400">Online</div>
