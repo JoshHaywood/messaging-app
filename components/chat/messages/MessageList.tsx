@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useRef, useEffect } from "react";
 
 import Message from "@/interfaces/message";
 
@@ -19,6 +20,13 @@ export default function MessageList(props: {
     messageList,
   } = props;
 
+  const bottomRef = useRef<HTMLDivElement>(null);
+
+  // Scrolls to bottom of message list
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, [messageList]);
+
   return (
     <div
       id="messages-container"
@@ -36,7 +44,10 @@ export default function MessageList(props: {
                     {message.time}
                   </div>
 
-                  <div className="justify-end break-words p-2.5 text-[13px] rounded-xl rounded-tr-none text-white bg-blue-500">
+                  <div
+                    ref={bottomRef}
+                    className="inline-block justify-end break-words p-2.5 text-[13px] rounded-xl rounded-tr-none text-white bg-blue-500"
+                  >
                     {message.message}
                   </div>
                 </div>
@@ -50,11 +61,10 @@ export default function MessageList(props: {
                     height={35}
                     onClick={() =>
                       // If on mobile, show the account settings page
-                      isMobile && (
-                        setShowMessages(false),
-                        setShowProfile(true),
-                        setIsAccountSettings(true)
-                      )
+                      isMobile &&
+                      (setShowMessages(false),
+                      setShowProfile(true),
+                      setIsAccountSettings(true))
                     }
                     className="rounded-full border hover:cursor-pointer"
                   ></Image>
@@ -89,7 +99,10 @@ export default function MessageList(props: {
                     </div>
                   </div>
 
-                  <div className="break-words p-2.5 text-[13px] rounded-xl rounded-tl-none text-gray-700 bg-gray-100">
+                  <div
+                    ref={bottomRef}
+                    className="inline-block break-words p-2.5 text-[13px] rounded-xl rounded-tl-none text-gray-700 bg-gray-100"
+                  >
                     {message.message}
                   </div>
                 </div>

@@ -43,6 +43,7 @@ export default function Messages(props: {
   // On receiving a message, add it to the message list
   useEffect(() => {
     socket.on("receive_message", (data: Message) => {
+      // If the message sender is not equal to the current user, add the message to the message list
       if (data.sender !== name) {
         setMessageList((messageList) => [...messageList, data]);
       };

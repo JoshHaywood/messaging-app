@@ -19,19 +19,20 @@ router.post("/store", (req: Request, res: Response) => {
   );
 });
 
+// Get messages
 router.get("/get", (req: Request, res: Response) => {
-  const { sender, recipient } = req.query;
+  const { sender, recipient } = req.query; // Get sender and recipient from query
   const getSentMessages = "SELECT * FROM messages WHERE sender = ? AND recipient = ?"; // Gets all sent messages
   const getRecipientsMessages = "SELECT * FROM messages WHERE recipient = ? AND sender = ?"; // Gets all received messages
 
   // Get messages
   db.query(getSentMessages, [sender, recipient], (err: Error, sentRows: Message[]) => {
     if (err) throw err;
-    db.query(getRecipientsMessages, [sender, recipient], (err: Error, recievedRows: Message[]) => {
+    db.query(getRecipientsMessages, [sender, recipient], (err: Error, receivedRows: Message[]) => {
       if (err) throw err;
 
-      const rows = sentRows.concat(recievedRows);
-      res.send(rows);
+      const rows = sentRows.concat(receivedRows); // Combine sent and received messages
+      res.send(rows); // Send messages
     });
   });
 });

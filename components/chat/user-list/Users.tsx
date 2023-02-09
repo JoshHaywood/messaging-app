@@ -60,7 +60,8 @@ export default function Users(props: {
         recipient: recipient,
       },
     }).then((res) => {
-      setMessageList(res.data);
+      // Sort messages by time
+      setMessageList(res.data.sort((a: Message, b: Message) => a.time.localeCompare(b.time)));
     });
   };
 
