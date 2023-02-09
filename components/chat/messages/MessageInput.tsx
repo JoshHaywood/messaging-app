@@ -36,6 +36,11 @@ export default function MessageInput(props: {
         minute: '2-digit',
         hour12: false,
       }),
+      date: new Date().toLocaleDateString("en-US", {
+        weekday: "long",
+        month: "short",
+        day: "numeric",
+      }),
     };
 
     // Store the message in the database
@@ -44,6 +49,7 @@ export default function MessageInput(props: {
       recipient: messageContent.recipient,
       message: messageContent.message,
       time: messageContent.time,
+      date: messageContent.date,
     });
 
     socket.emit("send_message", messageContent); // Send message to server

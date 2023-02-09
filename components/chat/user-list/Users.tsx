@@ -49,11 +49,13 @@ export default function Users(props: {
 
     setSelectRecipient(recipient); // Set selectRecipient to recipient
 
+    // Join room
     socket.emit("join_room", {
       recipient: recipient,
       sender: name,
     });
 
+    // Get messages
     axios.get("/message/get", {
       params: {
         sender: name,
@@ -61,7 +63,16 @@ export default function Users(props: {
       },
     }).then((res) => {
       // Sort messages by time
-      setMessageList(res.data.sort((a: Message, b: Message) => a.time.localeCompare(b.time)));
+      setMessageList(res.data.sort((a: Message, b: Message) => {
+          // Sort by date
+          if (a.date < b.date) return 1; // If a is greater than b list a first
+          if (a.date > b.date) return -1; // If a is less than b list b first
+          // Sort by time
+          if (a.time < b.time) return 1; 
+          if (a.time > b.time) return -1;
+          return 0;
+        })
+      );
     });
   };
 

@@ -2,16 +2,15 @@ import express, { Request, Response } from "express";
 const router = express.Router();
 
 const db = require("../config/db");
-import User from "@/interfaces/user";
 import Message from "@/interfaces/message";
 
 // Store message in database
 router.post("/store", (req: Request, res: Response) => {
-  const { sender, recipient, message, time } = req.body;
-  const insertRow = "INSERT INTO messages (sender, recipient, message, time) VALUES(?, ?, ?, ?)"; // Inserts new row
+  const { sender, recipient, message, time, date } = req.body;
+  const insertRow = "INSERT INTO messages (sender, recipient, message, time, date) VALUES(?, ?, ?, ?, ?)"; // Inserts new row
 
   // Insert new row
-  db.query(insertRow, [sender, recipient, message, time], (err: Error, rows: User[]) => {
+  db.query(insertRow, [sender, recipient, message, time, date], (err: Error, rows: Message[]) => {
       if (err) throw err;
       
       res.send("Message stored");

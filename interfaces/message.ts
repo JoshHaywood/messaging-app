@@ -3,4 +3,5 @@ export default interface Message {
   recipient: string;
   message: string;
   time: string;
+  date: string;
 };

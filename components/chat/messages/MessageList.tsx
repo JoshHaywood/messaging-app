@@ -33,8 +33,18 @@ export default function MessageList(props: {
       className="h-full p-4 pt-8 space-y-5 overflow-y-scroll border"
     >
       {messageList.map((message, index) => {
+        const prevMessage = messageList[index - 1]; // Previous message
+        const showDate = prevMessage ? prevMessage.date !== message.date : true; // Show date if the previous message is not the same date
         return (
           <div key={index}>
+            {/* If the previous message is not the same date, show the date */}
+            {showDate && (
+              <div className="mt-4 text-sm font-medium italic text-center text-gray-400">
+                {message.date}
+              </div>
+            )}
+
+            {/* If the message is from the user, show it on the right side of the screen, else show it on the left */}
             {name === message.sender ? (
               /* Sender message */
               <div className="flex flex-row justify-end space-x-2.5">
