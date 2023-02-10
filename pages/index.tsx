@@ -9,23 +9,35 @@ import Input from "@/components/auth/Input";
 import ErrorMessage from "@/components/auth/ErrorMessage";
 import Button from "@mui/material/Button";
 
+import useFormData from "@/components/auth/useFormData";
+
 export default function Index() {
   const router = useRouter()
 
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const { formData, handleChange } = useFormData(); // Form data state
+  const [message, setMessage] = useState<string>(""); // Message state
 
-  const [message, setMessage] = useState<string>("");
+  // Get login data
+  useEffect(() => {
+    axios.get("/auth/user").then((res) => {
+      // If user is logged in
+      if (res.data.loggedIn === true) {
+        router.push("/chat"); // Redirect to chat page
+      };
+    });
+  }, [router]);
 
+  // Set register success message
   useEffect(() => {
     setMessage(router.query.message as string);
   }, [router.query.message]);
 
+  // Login user
   const validateRow = () => {
     // Validate user data
     axios.post("/auth/login", {
-      email: email,
-      password: password,
+      email: formData.email,
+      password: formData.password,
     }).then((res) => {
       setMessage(res.data);
 
@@ -86,8 +98,10 @@ export default function Index() {
             <Input
               label="Email Address"
               type="email"
+              name="email"
               placeholder="email@email.com"
-              setState={setEmail}
+              value={formData.email}
+              handleChange={handleChange}
               error={message === "Email does not exist" ? message : ""}
             />
 
@@ -97,8 +111,10 @@ export default function Index() {
             <Input 
               label="Password" 
               type="password" 
+              name="password"
               placeholder="Password123" 
-              setState={setPassword}
+              value={formData.password}
+              handleChange={handleChange}
               error={message === "Incorrect password" ? message : ""}
             />
 

@@ -4,31 +4,28 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import axios from "axios";
 
-import { ContainsCapital, ContainsNumber, ContainsSpecial } from "@/components/auth/inputFormatter";
 import Input from "@/components/auth/Input";
 import ErrorMessage from "@/components/auth/ErrorMessage";
 import Button from "@mui/material/Button";
 
+import useFormData from "@/components/auth/useFormData";
+import { ContainsCapital, ContainsNumber, ContainsSpecial } from "@/components/auth/inputFormatter";
+
 export default function Register() {
-  const [userName, setUserName] = useState<string>("");
-  const [firstName, setFirstName] = useState<string>("");
-  const [lastName, setLastName] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [confirmPassword, setConfirmPassword] = useState<string>("");
-
-  const [error, setError] = useState<string>("");
-
   const router = useRouter();
 
+  const { formData, handleChange } = useFormData(); // Form data state
+  const [error, setError] = useState<string>(""); // Error state
+
+  // Register user
   const insertRow = () => {
     // Insert users into database
     axios.post("/auth/register", {
-      userName: userName,
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      password: password,
+      userName: formData.userName,
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      email: formData.email,
+      password: formData.password,
     })
     .then((res) => {
       setError(res.data);
@@ -45,27 +42,27 @@ export default function Register() {
     setError(""); // Clear error
 
     // // If first or last name contain numbers or special characters
-    if (ContainsNumber(firstName) || ContainsSpecial(firstName) || ContainsNumber(lastName) || ContainsSpecial(lastName)) {
+    if (ContainsNumber(formData.firstName) || ContainsSpecial(formData.firstName) || ContainsNumber(formData.lastName) || ContainsSpecial(formData.lastName)) {
       return setError("Names may only contain alphabetic characters");    
     };
 
     // If password doesn't contain a capital
-    if (!ContainsCapital(password)) {
+    if (!ContainsCapital(formData.password)) {
       return setError("Password must contain at least one uppercase letter");
     };
 
     // If password doesn't contain a number
-    if (!ContainsNumber(password)) {
+    if (!ContainsNumber(formData.password)) {
       return setError("Password must contain at least one number");
     };
 
     // If password is less than 8 characters
-    if (password.length < 8) {
+    if (formData.password.length < 8) {
       return setError("Password must be at least 8 characters long");
     };
 
     // If passwords don't match
-    if (confirmPassword !== password) {
+    if (formData.confirmPassword !== formData.password) {
       return setError("Passwords do not match");
     };
 
@@ -107,8 +104,10 @@ export default function Register() {
             <Input
               label="Username"
               type="text"
+              name="userName"
               placeholder="Username"
-              setState={setUserName}
+              value={formData.userName}
+              handleChange={handleChange}
               error={error === "Username already exists" ? error : ""}
             />
 
@@ -120,8 +119,10 @@ export default function Register() {
               <Input
                 label="First name"
                 type="text"
+                name="firstName"
                 placeholder="John"
-                setState={setFirstName}
+                value={formData.firstName}
+                handleChange={handleChange}
                 error={error === "Names may only contain alphabetic characters" ? error : ""}
                 />
 
@@ -129,8 +130,10 @@ export default function Register() {
               <Input
                 label="Last name"
                 type="text"
+                name="lastName"
                 placeholder="Doe"
-                setState={setLastName}
+                value={formData.lastName}
+                handleChange={handleChange}
                 error={error === "Names may only contain alphabetic characters" ? error : ""}
                 />
             </div>
@@ -141,8 +144,10 @@ export default function Register() {
             <Input
               label="Email Address"
               type="email"
+              name="email"
               placeholder="email@email.com"
-              setState={setEmail}
+              value={formData.email}
+              handleChange={handleChange}
               error={error === "Email already exists" ? error : ""}
             />
 
@@ -152,8 +157,10 @@ export default function Register() {
             <Input 
               label="Password" 
               type="password" 
+              name="password"
               placeholder="Password123" 
-              setState={setPassword}
+              value={formData.password}
+              handleChange={handleChange}
               error={error === "Password must contain at least one uppercase letter" || error === "Password must contain at least one number" || error === "Password must be at least 8 characters long" ? error : ""}
             />
 
@@ -161,8 +168,10 @@ export default function Register() {
             <Input
               label="Confirm Password"
               type="password"
+              name="confirmPassword"
               placeholder="Password123"
-              setState={setConfirmPassword}
+              value={formData.confirmPassword}
+              handleChange={handleChange}
               error={error === "Passwords do not match" ? error : ""}
             />
 

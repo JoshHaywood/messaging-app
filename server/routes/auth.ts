@@ -115,10 +115,8 @@ router.get("/user", (req: Request, res: Response) => {
       profilePicture: req.session.profilePicture,
       about: req.session.about,
     });  
-  }
-
-  // Else user is not logged in, send false
-  else {
+    // Else user is not logged in, send false
+  } else {
       res.send({loggedIn: false});
   };
 });

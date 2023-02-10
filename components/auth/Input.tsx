@@ -1,39 +1,45 @@
 import { useState } from "react";
 
-interface Input {
+export default function Input(props: {
   label: string;
   type: string;
+  name: string;
   placeholder: string;
-  setState: React.Dispatch<React.SetStateAction<string>>;
+  value: string;
+  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   error: string;
-};
-
-export default function Input(props: Input) {
+}) {
   const [passwordShow, setPasswordShow] = useState<boolean>(false); // Password show state
   const [isFocused, setIsFocused] = useState<boolean>(false); // For input icon focus outline
+
+  const { label, type, name, placeholder, value, handleChange, error } = props;
 
   // Password toggle handler
   const togglePassword = () => {
     setPasswordShow(!passwordShow); // Toggle password show state
   };
 
-  return props.type === "password" ? (
+  return type === "password" ? (
     <div className="mb-8">
       <label className="block mb-2 text-sm font-normal text-gray-600">
-        {props.label}
+        {label}
       </label>
 
       <div className="w-full flex items-center">
         <input
-          type={passwordShow ? "text" : props.type}
+          value={value}
+          type={passwordShow ? "text" : type}
+          name={name}
           autoComplete="off"
-          placeholder={props.placeholder}
+          placeholder={placeholder}
           maxLength={64}
           required
           onFocus={() => setIsFocused(true)} // On focus add focus outline
           onBlur={() => setIsFocused(false)} // On click outside input remove focus outline
-          onChange={(e) => {props.setState(e.target.value)}}
-          className={`${props.error ? "border-red-500 rounded" : "border-gray-200"} w-full px-3 py-2.5 text-sm leading-tight border border-r-0 rounded-lg rounded-r-none focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-500 text-gray-400`}
+          onChange={handleChange}
+          className={`${
+            error ? "border-red-500 rounded" : "border-gray-200"
+          } w-full px-3 py-2.5 text-sm leading-tight border border-r-0 rounded-lg rounded-r-none focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-500 text-gray-400`}
         />
 
         {/* If password is shown, show the eye icon, else show the hide icon */}
@@ -73,17 +79,21 @@ export default function Input(props: Input) {
   ) : (
     <div className="mb-4">
       <label className="container block mb-2 text-sm font-normal text-gray-600">
-        {props.label}
+        {label}
       </label>
 
       <input
-        type={props.type}
+        value={value}
+        type={type}
+        name={name}
         autoComplete="off"
-        placeholder={props.placeholder}
+        placeholder={placeholder}
         required
         maxLength={50}
-        onChange={(e) => {props.setState(e.target.value)}} // Set state to input value
-        className={`${props.error ? "border-red-500 rounded" : "border-gray-200"} w-full px-3 py-2.5 mb-3 text-sm leading-tight border rounded-lg focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-500 text-gray-400`}
+        onChange={handleChange}
+        className={`${
+          error ? "border-red-500 rounded" : "border-gray-200"
+        } w-full px-3 py-2.5 mb-3 text-sm leading-tight border rounded-lg focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-500 text-gray-400`}
       />
     </div>
   );
