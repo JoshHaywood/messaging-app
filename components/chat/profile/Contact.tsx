@@ -125,7 +125,7 @@ export default function Contact(props: {
               width={125}
               height={125}
               className="mx-auto rounded-full border"
-            ></Image>
+            />
 
             <div className="mt-4 text-xl font-medium text-gray-700">
               {contact.first_name + " " + contact.last_name}
@@ -283,7 +283,7 @@ export default function Contact(props: {
                           width={120}
                           height={120}
                           className="w-full h-auto rounded"
-                        ></Image>
+                        />
                       ))}
                     </div>
                   </div>

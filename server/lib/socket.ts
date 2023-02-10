@@ -2,8 +2,14 @@ import http from "http";
 import { Server } from "socket.io";
 import crypto from "crypto";
 
-const socket = (server: http.Server) => {
-  const io = new Server(server);
+const socket = (server: http.Server, {}) => {
+  const io = new Server(server, {
+    cors: {
+      origin: process.env.CLIENT_URL,
+      methods: ["GET", "POST"],
+      credentials: true,
+    },
+  });
 
   // On connection
   io.on("connection", (socket) => {

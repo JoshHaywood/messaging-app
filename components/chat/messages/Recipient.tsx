@@ -62,7 +62,7 @@ export default function Recipient(props: {
               )
             }
             className="rounded-full border hover:cursor-pointer"
-          ></Image>
+          />
 
           {/* User name and status */}
           <div>

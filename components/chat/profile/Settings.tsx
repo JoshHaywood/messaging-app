@@ -67,7 +67,7 @@ export default function Settings(props: {
           width={125}
           height={125}
           className="mx-auto rounded-full border"
-        ></Image>
+        />
 
         <div className="mt-4 text-xl font-medium text-gray-700">{sessionUser.name}</div>
 

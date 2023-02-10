@@ -69,7 +69,7 @@ export default function Account(props: {
             }))};
           }}
           className="rounded-full border hover:cursor-pointer"
-        ></Image>
+        />
 
         {/* Account information */}
         <div className="w-full flex flex- row justify-between">

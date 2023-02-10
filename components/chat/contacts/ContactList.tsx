@@ -116,7 +116,7 @@ export default function ContactList(props: {
             width={45}
             height={45}
             className="rounded-full border"
-          ></Image>
+          />
 
           {/* User name and message preview */}
           <div className="w-full">

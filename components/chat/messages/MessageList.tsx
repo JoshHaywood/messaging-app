@@ -81,7 +81,7 @@ export default function MessageList(props: {
                       )
                     }
                     className="rounded-full border hover:cursor-pointer"
-                  ></Image>
+                  />
                 </div>
               </div>
             ) : (
@@ -105,7 +105,7 @@ export default function MessageList(props: {
                       )
                     }
                     className="rounded-full border hover:cursor-pointer"
-                  ></Image>
+                  />
                 </div>
 
                 {/* Message */}
