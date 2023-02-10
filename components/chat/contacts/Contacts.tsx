@@ -6,6 +6,7 @@ import Image from "next/image";
 import User from "@/interfaces/user";
 import SessionUser from "@/interfaces/sessionUser";
 import Message from "@/interfaces/message";
+import ShowComponent from "@/interfaces/showComponent";
 
 import SearchBar from "./SearchBar";
 import ContactList from "./ContactList";
@@ -14,32 +15,22 @@ import Account from "./Account";
 export default function Contacts(props: {
   socket: Socket;
   isMobile: boolean;
-  welcomeMessage: boolean;
-  setWelcomeMessage: React.Dispatch<React.SetStateAction<boolean>>;
-  showMessages: boolean;
-  setShowMessages: React.Dispatch<React.SetStateAction<boolean>>;
   setMessageList: React.Dispatch<React.SetStateAction<Message[]>>;
-  showProfile: boolean;
-  setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsAccountSettings: React.Dispatch<React.SetStateAction<boolean>>;
   setContact: React.Dispatch<React.SetStateAction<User[]>>;
   sessionUser: SessionUser;
   setSessionUser: React.Dispatch<React.SetStateAction<SessionUser>>;
+  showComponent: ShowComponent;
+  setShowComponent: React.Dispatch<React.SetStateAction<ShowComponent>>;
 }) {
   const {
     socket,
     isMobile,
-    welcomeMessage,
-    setWelcomeMessage,
-    showMessages,
-    setShowMessages,
     setMessageList,
-    showProfile,
-    setShowProfile,
-    setIsAccountSettings,
     setContact,
     sessionUser,
     setSessionUser,
+    showComponent,
+    setShowComponent,
   } = props;
   const [users, setUsers] = useState<User[]>([]); // Users array
 
@@ -76,7 +67,7 @@ export default function Contacts(props: {
     <div
       className={`${
         // Hide users list if mobile and messages or profile are shown
-        isMobile && showMessages || isMobile && showProfile ? "hidden" : "flex"
+        isMobile && showComponent.showMessages || isMobile && showComponent.showProfile ? "hidden" : "flex"
       } h-full w-full lg:w-1/4 flex-col pt-2.5 lg:pt-5 px-2.5 lg:px-5 pb-0`}
     >
       {/* Header */}
@@ -98,13 +89,11 @@ export default function Contacts(props: {
       <ContactList
         socket={socket}
         isMobile={isMobile}
-        setWelcomeMessage={setWelcomeMessage}
-        setShowMessages={setShowMessages}
         setMessageList={setMessageList}
-        setShowProfile={setShowProfile}
-        setIsAccountSettings={setIsAccountSettings}
         setContact={setContact}
         sessionUser={sessionUser}
+        showComponent={showComponent}
+        setShowComponent={setShowComponent}
         setSearchTerm={setSearchTerm}
         usersArray={
           /* If search term is empty, display all users, else display filtered users */
@@ -115,13 +104,10 @@ export default function Contacts(props: {
       {/* Account */}
       <Account
         isMobile={isMobile}
-        welcomeMessage={welcomeMessage}
-        setShowMessages={setShowMessages}
-        showProfile={showProfile}
-        setShowProfile={setShowProfile}
-        setIsAccountSettings={setIsAccountSettings}
         sessionUser={sessionUser}
         setSessionUser={setSessionUser}
+        showComponent={showComponent}
+        setShowComponent={setShowComponent}
       />
     </div>
   );

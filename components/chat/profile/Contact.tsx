@@ -2,6 +2,8 @@ import Image from "next/image";
 import { useState } from "react";
 
 import User from "@/interfaces/user";
+import ShowComponent from "@/interfaces/showComponent";
+
 import Button from "@mui/material/Button";
 
 const buttons = [
@@ -57,17 +59,17 @@ const mediaContent = [
 
 export default function Contact(props: {
   isMobile: boolean;
-  setShowMessages: React.Dispatch<React.SetStateAction<boolean>>;
-  setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
   contact: User[];
+  showComponent: ShowComponent;
+  setShowComponent: React.Dispatch<React.SetStateAction<ShowComponent>>;
   aboutToggle: boolean;
   setAboutToggle: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const {
     isMobile,
-    setShowMessages,
-    setShowProfile,
     contact,
+    showComponent,
+    setShowComponent,
     aboutToggle,
     setAboutToggle,
   } = props;
@@ -84,8 +86,11 @@ export default function Contact(props: {
           id="close-profile"
           onClick={() => {
             // Hide messages and profile to show chat list
-            setShowMessages(true);
-            setShowProfile(false);
+            setShowComponent(({
+              ...showComponent,
+              showMessages: true,
+              showProfile: false,
+            }));
           }}
           className="flex flex-row items-center p-5 space-x-2.5 bg-gray-50 hover:cursor-pointer"
         >

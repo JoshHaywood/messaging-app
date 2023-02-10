@@ -3,28 +3,23 @@ import Image from "next/image";
 import axios from "axios";
 
 import SessionUser from "@/interfaces/sessionUser";
+import ShowComponent from "@/interfaces/showComponent";
 
 export default function Account(props: {
   isMobile: boolean;
-  welcomeMessage: boolean;
-  setShowMessages: React.Dispatch<React.SetStateAction<boolean>>;
-  showProfile: boolean;
-  setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsAccountSettings: React.Dispatch<React.SetStateAction<boolean>>;
   sessionUser: SessionUser;
   setSessionUser: React.Dispatch<React.SetStateAction<SessionUser>>;
+  showComponent: ShowComponent;
+  setShowComponent: React.Dispatch<React.SetStateAction<ShowComponent>>;
 }) {
   const router = useRouter();
 
   const {
     isMobile,
-    welcomeMessage,
-    setShowMessages,
-    showProfile,
-    setShowProfile,
-    setIsAccountSettings,
     sessionUser,
     setSessionUser,
+    showComponent,
+    setShowComponent,
   } = props;
 
   // Logout
@@ -56,13 +51,22 @@ export default function Account(props: {
           width={35}
           height={35}
           onClick={() => {
-            // If mobile, close messages and open profile
-            {isMobile && 
-              setShowMessages(false);
-              setShowProfile(true);
-            };
-            {welcomeMessage && setShowProfile(!showProfile)} // If welcome message is showing, toggle profile
-            setIsAccountSettings(true); // Revert to recipient profile instead of account settings
+            // If mobile, close messages and open settings, else open settings 
+            {isMobile ? setShowComponent({
+              ...showComponent,
+              showProfile: true,
+              showMessages: false,
+              isAccountSettings: true,
+            }) : setShowComponent({
+              ...showComponent,
+              showProfile: true,
+              isAccountSettings: true,
+            })};  
+            // If welcome message is showing, toggle profile
+            {showComponent.welcomeMessage && setShowComponent(({
+              ...showComponent,
+              showProfile: !showComponent.showProfile, isAccountSettings: true,
+            }))};
           }}
           className="rounded-full border hover:cursor-pointer"
         ></Image>
@@ -71,13 +75,25 @@ export default function Account(props: {
         <div className="w-full flex flex- row justify-between">
           <div
             onClick={() => {
-            // If mobile, close messages and open profile
-            {isMobile && 
-              setShowMessages(false);
-              setShowProfile(true);
-            };
-            {welcomeMessage && setShowProfile(!showProfile)} // If welcome message is showing, toggle profile
-            setIsAccountSettings(true); // Revert to recipient profile instead of account settings
+              // If mobile, close messages and open profile
+              {isMobile && 
+                setShowComponent({
+                  ...showComponent,
+                  showMessages: false,
+                  showProfile: true,
+                })
+              };
+              // If welcome message is showing, toggle profile
+              {showComponent.welcomeMessage && setShowComponent(({
+                ...showComponent,
+                showProfile: !showComponent.showProfile,
+              }))};
+              // Revert to recipient profile instead of account settings
+              setShowComponent(({
+                ...showComponent,
+                isAccountSettings: true,
+              }));
+              console.log(showComponent);
             }}
             className="font-medium text-gray-700 hover:cursor-pointer"
           >

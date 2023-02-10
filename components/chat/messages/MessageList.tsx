@@ -3,22 +3,21 @@ import { useRef, useEffect } from "react";
 
 import SessionUser from "@/interfaces/sessionUser";
 import Message from "@/interfaces/message";
+import ShowComponent from "@/interfaces/showComponent";
 
 export default function MessageList(props: {
   isMobile: boolean;
-  setShowMessages: React.Dispatch<React.SetStateAction<boolean>>;
-  setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsAccountSettings: React.Dispatch<React.SetStateAction<boolean>>;
   sessionUser: SessionUser;
   messageList: Message[];
+  showComponent: ShowComponent;
+  setShowComponent: React.Dispatch<React.SetStateAction<ShowComponent>>;
 }) {
   const {
     isMobile,
-    setShowMessages,
-    setShowProfile,
-    setIsAccountSettings,
     sessionUser,
     messageList,
+    showComponent,
+    setShowComponent,
   } = props;
 
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -72,10 +71,14 @@ export default function MessageList(props: {
                     height={35}
                     onClick={() =>
                       // If on mobile, show the account settings page
-                      isMobile &&
-                      (setShowMessages(false),
-                      setShowProfile(true),
-                      setIsAccountSettings(true))
+                      isMobile && (
+                        setShowComponent(({
+                          ...showComponent,
+                          showMessages: false,
+                          showProfile: true,
+                          isAccountSettings: true,
+                        }))
+                      )
                     }
                     className="rounded-full border hover:cursor-pointer"
                   ></Image>
@@ -93,7 +96,13 @@ export default function MessageList(props: {
                     height={35}
                     onClick={() =>
                       // If the device is mobile, show the profile and hide the messages
-                      isMobile && (setShowMessages(false), setShowProfile(true))
+                      isMobile && (
+                        setShowComponent(({
+                          ...showComponent,
+                          showMessages: false,
+                          showProfile: true,
+                        }))
+                      )
                     }
                     className="rounded-full border hover:cursor-pointer"
                   ></Image>

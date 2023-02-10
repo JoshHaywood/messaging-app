@@ -7,6 +7,7 @@ import * as io from "socket.io-client";
 import User from "@/interfaces/user";
 import SessionUser from "@/interfaces/sessionUser";
 import Message from "@/interfaces/message";
+import ShowComponent from "@/interfaces/showComponent";
 
 import Contacts from "@/components/chat/contacts/Contacts";
 import Messages from "@/components/chat/messages/Messages";
@@ -16,21 +17,23 @@ export default function Chat() {
   const socket = io.connect(`http://localhost:${process.env.NEXT_PUBLIC_PORT}`);
 
   const router = useRouter();
-  const [isMobile, setIsMobile] = useState(false); // Check if device is mobile
+  const [isMobile, setIsMobile] = useState<boolean>(false); // Check if device is mobile
   
-  const [welcomeMessage, setWelcomeMessage] = useState<boolean>(true); // Show or hide welcome message
-  const [showMessages, setShowMessages] = useState<boolean>(false); // Show or hide messages column
   const [messageList, setMessageList] = useState<Message[]>([]); // List of messages
-
-  const [showProfile, setShowProfile] = useState<boolean>(false); // Show or hide profile column
-  const [isAccountSettings, setIsAccountSettings] = useState<boolean>(false); // Show account settings or profile
-  
   const [contact, setContact] = useState<User[]>([]); // User profile data
   // Session user data
   const [sessionUser, setSessionUser] = useState<SessionUser>({
     name: "",
     profilePicture: "",
     about: "",
+  });
+
+  // Show components
+  const [showComponent, setShowComponent] = useState<ShowComponent>({
+    welcomeMessage: true,
+    showMessages: false,
+    showProfile: false,
+    isAccountSettings: false,
   });
   
   // Check if user is logged in
@@ -56,31 +59,43 @@ export default function Chat() {
     if (typeof window !== 'undefined') {
       setIsMobile(window.innerWidth < 760);
     };
-    
+  }, []);
+
+  useEffect(() => {
     // If not on mobile, show messages and profile columns else hide them
     if (!isMobile) {
-      setShowMessages(true);
-      setShowProfile(false);
+      setShowComponent(prevShowComponent => ({
+        ...prevShowComponent,
+        showMessages: true,
+        showProfile: false,
+      }));
     } else {
-      setShowMessages(false);
-      setShowProfile(false);
+      setShowComponent(prevShowComponent => ({
+        ...prevShowComponent,
+        showMessages: false,
+      }));
     };
-    
+  
     // Re-assign isMobile on window resize
     function handleResize() {
       setIsMobile(window.innerWidth < 760);
     };
+  
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, [isMobile, setShowMessages]);
+  }, [isMobile, setIsMobile]);
 
   // Show profile column
   useEffect(() => {
     // If welcome message is false and not on mobile, show profile column
-    if (welcomeMessage === false && !isMobile) {
-      setShowProfile(true);
+    if (showComponent.welcomeMessage === false && !isMobile) {
+      setShowComponent(prevShowComponent => ({
+        ...prevShowComponent,
+        showProfile: true,
+      }));
     };
-  }, [welcomeMessage, isMobile, setShowProfile]);
+  }, [isMobile, showComponent.welcomeMessage]);
+
   
   return (
     <>
@@ -94,14 +109,9 @@ export default function Chat() {
           <Contacts
             socket={socket}
             isMobile={isMobile}
-            welcomeMessage={welcomeMessage}
-            setWelcomeMessage={setWelcomeMessage}
-            showMessages={showMessages}
-            setShowMessages={setShowMessages}
             setMessageList={setMessageList}
-            showProfile={showProfile}
-            setShowProfile={setShowProfile}
-            setIsAccountSettings={setIsAccountSettings}
+            showComponent={showComponent}
+            setShowComponent={setShowComponent}
             setContact={setContact}
             sessionUser={sessionUser}
             setSessionUser={setSessionUser}
@@ -111,14 +121,10 @@ export default function Chat() {
           <Messages
             socket={socket}
             isMobile={isMobile}
-            welcomeMessage={welcomeMessage}
-            showMessages={showMessages}
-            setShowMessages={setShowMessages}
             messageList={messageList}
             setMessageList={setMessageList}
-            showProfile={showProfile}
-            setShowProfile={setShowProfile}
-            setIsAccountSettings={setIsAccountSettings}
+            showComponent={showComponent}
+            setShowComponent={setShowComponent}
             contact={contact}
             sessionUser={sessionUser}
           />
@@ -126,14 +132,10 @@ export default function Chat() {
           {/* Profile column */}
           <Profile 
             isMobile={isMobile}
-            welcomeMessage={welcomeMessage}
-            setShowMessages={setShowMessages}
-            showProfile={showProfile}
-            setShowProfile={setShowProfile}
-            isAccountSettings={isAccountSettings}
-            setIsAccountSettings={setIsAccountSettings}
             contact={contact}
             sessionUser={sessionUser}
+            showComponent={showComponent}
+            setShowComponent={setShowComponent}
           />
         </div>
       </div>

@@ -1,26 +1,23 @@
 import Image from "next/image";
 
 import SessionUser from "@/interfaces/sessionUser";
+import ShowComponent from "@/interfaces/showComponent";
 
 export default function Settings(props: {
   isMobile: boolean;
-  welcomeMessage: boolean;
-  showProfile: boolean;
-  setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsAccountSettings: React.Dispatch<React.SetStateAction<boolean>>;
   sessionUser: SessionUser;
+  showComponent: ShowComponent;
+  setShowComponent: React.Dispatch<React.SetStateAction<ShowComponent>>;
   aboutToggle: boolean;
   setAboutToggle: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const {
     isMobile,
-    welcomeMessage,
-    showProfile,
-    setShowProfile,
-    setIsAccountSettings,
+    showComponent,
+    setShowComponent,
+    sessionUser,
     aboutToggle,
     setAboutToggle,
-    sessionUser,
   } = props;
 
   return (
@@ -29,9 +26,17 @@ export default function Settings(props: {
       <div
         id="close-profile"
         onClick={() => {
-          {isMobile && setShowProfile(false)} // If mobile, close profile
-          {welcomeMessage && setShowProfile(!showProfile)} // If welcome message is showing, toggle profile
-          setIsAccountSettings(false); // Revert to recipient profile instead of account settings
+          // If mobile, close profile
+          {isMobile ? setShowComponent(({
+            ...showComponent, showProfile: false
+          })) : setShowComponent(({
+            ...showComponent, isAccountSettings: false
+          }))}
+          // If welcome message is showing, toggle profile
+          {showComponent.welcomeMessage && setShowComponent(({
+            ...showComponent,
+            showProfile: !showComponent.showProfile, isAccountSettings: true,
+          }))};
         }}
         className="flex flex-row items-center p-5 space-x-2.5 bg-gray-50 hover:cursor-pointer"
       >

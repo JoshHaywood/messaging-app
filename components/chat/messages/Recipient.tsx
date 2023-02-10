@@ -1,14 +1,15 @@
 import Image from "next/image";
 
 import User from "@/interfaces/user";
+import ShowComponent from "@/interfaces/showComponent";
 
 export default function Recipient(props: {
   isMobile: boolean;
-  setShowMessages: React.Dispatch<React.SetStateAction<boolean>>;
-  setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
   contact: User[];
+  showComponent: ShowComponent;
+  setShowComponent: React.Dispatch<React.SetStateAction<ShowComponent>>;
 }) {
-  const { isMobile, setShowMessages, setShowProfile, contact } = props;
+  const { isMobile, contact, showComponent, setShowComponent } = props;
 
   return (
     <div className="flex flex-row items-center p-4 space-x-4 border border-b-0">
@@ -24,8 +25,11 @@ export default function Recipient(props: {
           stroke="currentColor"
           onClick={() => {
             // Hide messages and profile to show chat list
-            setShowMessages(false);
-            setShowProfile(false);
+            setShowComponent(({
+              ...showComponent,
+              showMessages: false,
+              showProfile: false,
+            }));
           }}
           className="w-5 h-5 text-gray-700 hover:text-gray-400 hover:cursor-pointer"
         >
@@ -49,8 +53,12 @@ export default function Recipient(props: {
             onClick={() =>
               // If is mobile, hide messages and show profile
               isMobile && (
-                setShowMessages(false),
-                setShowProfile(true)
+                setShowComponent(({
+                  ...showComponent,
+                  showMessages: false,
+                  showProfile: true,
+                  isAccountSettings: false,
+                }))
               )
             }
             className="rounded-full border hover:cursor-pointer"

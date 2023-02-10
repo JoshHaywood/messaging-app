@@ -6,30 +6,27 @@ import axios from "axios";
 import User from "@/interfaces/user";
 import SessionUser from "@/interfaces/sessionUser";
 import Message from "@/interfaces/message";
+import ShowComponent from "@/interfaces/showComponent";
 
 export default function ContactList(props: {
   socket: Socket;
   isMobile: boolean;
-  setWelcomeMessage: React.Dispatch<React.SetStateAction<boolean>>;
-  setShowMessages: React.Dispatch<React.SetStateAction<boolean>>;
   setMessageList: React.Dispatch<React.SetStateAction<Message[]>>;
-  setShowProfile: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsAccountSettings: React.Dispatch<React.SetStateAction<boolean>>;
   setContact: React.Dispatch<React.SetStateAction<User[]>>;
   sessionUser: SessionUser;
+  showComponent: ShowComponent;
+  setShowComponent: React.Dispatch<React.SetStateAction<ShowComponent>>;
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
   usersArray: User[];
 }) {
   const {
     socket,
     isMobile,
-    setWelcomeMessage,
-    setShowMessages,
     setMessageList,
-    setShowProfile,
-    setIsAccountSettings,
     setContact,
     sessionUser,
+    showComponent,
+    setShowComponent,
     setSearchTerm,
     usersArray,
   } = props;
@@ -86,13 +83,23 @@ export default function ContactList(props: {
           key={index}
           onClick={() => {
             // If is mobile, show messages and hide profile
-            isMobile && ( 
-              setShowMessages(true),
-              setShowProfile(false)
-            );
+            isMobile ? ( 
+              setShowComponent(({
+                ...showComponent,
+                welcomeMessage: false,
+                showMessages: true,
+                showProfile: false,
+              }))
+            ) : (
+              setShowComponent(({
+                ...showComponent,
+                welcomeMessage: false,
+                showProfile: true,
+                isAccountSettings: false,
+              }))
+            )
             joinRoom(user); // Join room
-            setWelcomeMessage(false); // Hide welcome message
-            setIsAccountSettings(false); // Hide account settings
+            // Hide welcome message, show profile, and hide account settings
             setContact([user]); // Set profile to current user
             setSearchTerm(""); // Clear search term
             setCurrentIndex(index); // Set current index to current user
