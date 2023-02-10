@@ -15,8 +15,8 @@ import Profile from "@/components/chat/profile/Profile";
 
 export default function Chat() {
   const socket = io.connect(`http://localhost:${process.env.NEXT_PUBLIC_PORT}`);
-
   const router = useRouter();
+
   const [isMobile, setIsMobile] = useState<boolean>(false); // Check if device is mobile
   
   const [messageList, setMessageList] = useState<Message[]>([]); // List of messages
@@ -27,7 +27,6 @@ export default function Chat() {
     profilePicture: "",
     about: "",
   });
-
   // Show components
   const [showComponent, setShowComponent] = useState<ShowComponent>({
     welcomeMessage: true,
@@ -59,9 +58,7 @@ export default function Chat() {
     if (typeof window !== 'undefined') {
       setIsMobile(window.innerWidth < 760);
     };
-  }, []);
 
-  useEffect(() => {
     // If not on mobile, show messages and profile columns else hide them
     if (!isMobile) {
       setShowComponent(prevShowComponent => ({
