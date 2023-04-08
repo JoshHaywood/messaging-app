@@ -29,8 +29,10 @@ export default function MessageInput(props: {
   const [messageType, setMessageType] = useState<string>("text"); // Message type
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
+  const [error, setError] = useState<string>(""); // Error message
+
   // File button click handler
-  const handleFileButtonClick = () => {
+  const handleFileUpload = () => {
     // Create a file input element
     const input = document.createElement("input");
     input.type = "file";
@@ -44,6 +46,12 @@ export default function MessageInput(props: {
         // If the file is an image
         if (inputElement.files && inputElement.files[0]) {
           const file = inputElement.files[0];
+          const fileSizeLimit = 20 * 1024 * 1024; // 20MB
+          // If the file size is too large
+          if (file.size > fileSizeLimit) {
+            setError("File size is too large. Maximum size is 20MB.");
+            return;
+          }
           const reader = new FileReader();
           reader.onload = (e) => {
             // If there is an event target
@@ -57,6 +65,7 @@ export default function MessageInput(props: {
     };
     input.click(); // Click the file input element
   };
+
 
   // Send message
   const sendMessage = () => {
@@ -140,7 +149,12 @@ export default function MessageInput(props: {
 
   return (
     <>
-      {/* Render the preview image if one is available */}
+      {/* Error message */}
+      {error && previewImage === null && (
+        <div className="p-5 italic text-red-500">{error}</div>
+      )}
+
+      {/* Preview image */}
       {previewImage && (
         <div className="w-full flex flex-row pt-2.5 space-x-1 bg-gray-100">
           <Image src={previewImage} alt="Preview" width={200} height={200} className="w-1/2 mx-2.5" />
@@ -153,7 +167,10 @@ export default function MessageInput(props: {
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
-            onClick={() => setPreviewImage(null)} // Clear the preview image
+            onClick={() => {
+              setPreviewImage(null)
+              setError("");
+            }}
             className="w-6 h-6 text-gray-700 hover:text-black hover:cursor-pointer"
           >
             <path
@@ -175,7 +192,7 @@ export default function MessageInput(props: {
           strokeWidth="1.5"
           stroke="currentColor"
           onClick={() => {
-            handleFileButtonClick();
+            handleFileUpload();
             setMessageType("image"); // Set message type to image
           }}
           className="w-8 h-8 text-gray-500 hover:text-blue-500 hover:cursor-pointer"
@@ -210,8 +227,9 @@ export default function MessageInput(props: {
           placeholder="Type a message..."
           value={message}
           onClick={() => {
-            setMessageType("text")
-            setPreviewImage(null)
+            setMessageType("text");
+            setPreviewImage(null);
+            setError("");
           }}
           onChange={(e) => setMessage(e.target.value)} // Set messages value as input
           onKeyDown={(e) => e.key === "Enter" && sendMessage()} // Send message on enter key
