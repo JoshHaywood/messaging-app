@@ -49,6 +49,7 @@ export default function Profile(props: {
           ) : (
             <Contact
               isMobile={isMobile}
+              sessionUser={sessionUser}
               contact={contact}
               showComponent={showComponent}
               setShowComponent={setShowComponent}

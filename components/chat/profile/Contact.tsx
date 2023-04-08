@@ -1,8 +1,11 @@
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 import User from "@/interfaces/user";
+import SessionUser from "@/interfaces/sessionUser";
 import ShowComponent from "@/interfaces/showComponent";
+import Message from "@/interfaces/message";
 
 import Button from "@mui/material/Button";
 
@@ -18,47 +21,9 @@ const buttons = [
   },
 ];
 
-const mediaContent = [
-  {
-    image: "default-profile.png",
-  },
-  {
-    image: "default-profile.png",
-  },
-  {
-    image: "default-profile.png",
-  },
-  {
-    image: "default-profile.png",
-  },
-  {
-    image: "default-profile.png",
-  },
-  {
-    image: "default-profile.png",
-  },
-  {
-    image: "default-profile.png",
-  },
-  {
-    image: "default-profile.png",
-  },
-  {
-    image: "default-profile.png",
-  },
-  {
-    image: "default-profile.png",
-  },
-  {
-    image: "default-profile.png",
-  },
-  {
-    image: "default-profile.png",
-  },
-];
-
 export default function Contact(props: {
   isMobile: boolean;
+  sessionUser: SessionUser;
   contact: User[];
   showComponent: ShowComponent;
   setShowComponent: React.Dispatch<React.SetStateAction<ShowComponent>>;
@@ -67,6 +32,7 @@ export default function Contact(props: {
 }) {
   const {
     isMobile,
+    sessionUser,
     contact,
     showComponent,
     setShowComponent,
@@ -74,8 +40,22 @@ export default function Contact(props: {
     setAboutToggle,
   } = props;
 
-  const [media, setMedia] = useState<boolean>(true); // Toggle media section
+  const [showMedia, setShowMedia] = useState<boolean>(true); // Toggle media section
   const [currentIndex, setCurrentIndex] = useState<number>(0); // Current index of media content
+
+  const [media, setMedia] = useState<Message[]>([]); // Images from recipient to sender
+
+  // Get images from recipient to sender
+  useEffect(() => {
+    axios.get("/message/get/images", {
+      params: { 
+        sender: sessionUser.name,
+        recipient: contact[0].first_name + " " + contact[0].last_name,
+      },
+    }).then((res) => {
+      setMedia(res.data);
+    });
+  }, [sessionUser.name, contact]);
 
   return (
     <>
@@ -191,10 +171,10 @@ export default function Contact(props: {
           {/* Media */}
           <div
             id="media"
-            className={`${media ? "border-0" : "border-b"} px-5 py-3`}
+            className={`${showMedia ? "border-0" : "border-b"} px-5 py-3`}
           >
             <div
-              onClick={() => setMedia(!media)}
+              onClick={() => setShowMedia(!showMedia)}
               className="flex flex-row justify-between hover:cursor-pointer"
             >
               <div className="font-medium text-gray-700">
@@ -202,7 +182,7 @@ export default function Contact(props: {
               </div>
 
               {/* If media is true, show the up arrow, else show the down arrow */}
-              {media ? (
+              {showMedia ? (
                 /* Attribution: https://heroicons.com/ */
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -238,7 +218,7 @@ export default function Contact(props: {
             </div>
 
             {/* If media is true, show the contents, else don't show anything */}
-            {media && (
+            {showMedia && (
               <>
                 {/* Buttons */}
                 <div className="flex flex-row mt-4 space-x-2.5 xl:space-x-5">
@@ -274,18 +254,25 @@ export default function Contact(props: {
                 {currentIndex === 0 && (
                   /* Media contents */
                   <div className="mt-4 pr-1">
-                    <div className="grid grid-cols-2 2xl:grid-cols-3 gap-1">
-                      {mediaContent.map((media, index) => (
-                        <Image
-                          key={index}
-                          src={"/images/" + media.image}
-                          alt="Chat media"
-                          width={120}
-                          height={120}
-                          className="w-full h-auto rounded"
-                        />
-                      ))}
-                    </div>
+                      {/* If there is no media, show text, else show the media */}
+                      {media.length === 0 ? (
+                        <div className="mt-5 text-sm sm:text-xs italic text-gray-400">Images your sent will appear here</div>
+                      ) : (
+                        <div className="grid grid-cols-2 2xl:grid-cols-3 gap-1">
+                          {media.map((media, index) => (
+                            media.image !== null && (
+                              <Image
+                                key={index}
+                                src={media.image}
+                                alt="Chat media"
+                                width={120}
+                                height={120}
+                                className="w-full h-auto rounded"
+                              />
+                            )
+                          ))}
+                      </div>
+                      )} 
                   </div>
                 )}
               </>

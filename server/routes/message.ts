@@ -36,4 +36,21 @@ router.get("/get", (req: Request, res: Response) => {
   });
 });
 
+// Get images from recipient to sender
+router.get("/get/images", (req: Request, res: Response) => {
+  const { sender, recipient } = req.query; // Get sender and recipient from query
+  const getImages = "SELECT image FROM messages WHERE sender = ? AND recipient = ? AND image IS NOT NULL"; // Gets all images
+
+  // Get images
+  db.query(getImages, [recipient, sender], (err: Error, rows: Message[]) => {
+    if (err) throw err;
+
+    res.send(rows); // Send images
+  });
+});
+
+
+
+
+
 module.exports = router;
