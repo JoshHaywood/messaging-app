@@ -93,7 +93,6 @@ export default function Account(props: {
                 ...showComponent,
                 isAccountSettings: true,
               }));
-              console.log(showComponent);
             }}
             className="font-medium text-gray-700 hover:cursor-pointer"
           >

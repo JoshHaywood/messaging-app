@@ -54,12 +54,27 @@ export default function MessageList(props: {
                     {message.time}
                   </div>
 
-                  <div
-                    ref={bottomRef}
-                    className="inline-block justify-end break-words p-2.5 text-[13px] rounded-xl rounded-tr-none text-white bg-blue-500"
-                  >
-                    {message.message}
-                  </div>
+                  {/* If the message is a text message, show it, else show the image */}
+                  {message.message !== null && message.image === null ? (
+                    <div
+                      ref={bottomRef}
+                      className="inline-block justify-end break-words p-2.5 text-[13px] rounded-xl rounded-tr-none text-white bg-blue-500"
+                    >
+                      {message.message}
+                    </div>
+                  ) : (
+                    message.image !== null && (
+                      <div ref={bottomRef}>
+                        <Image 
+                          src={message.image} 
+                          alt="Message image" 
+                          width={200} 
+                          height={200} 
+                          className="inline-block justify-end p-0.5 rounded-xl"
+                        />
+                      </div>
+                    )
+                  )}
                 </div>
 
                 {/* Profile picture */}
@@ -119,12 +134,27 @@ export default function MessageList(props: {
                     </div>
                   </div>
 
-                  <div
-                    ref={bottomRef}
-                    className="inline-block break-words p-2.5 text-[13px] rounded-xl rounded-tl-none text-gray-700 bg-gray-100"
-                  >
-                    {message.message}
-                  </div>
+                  {/* If the message is a text message, show it, else show the image */}
+                  {message.message !== null && message.image === null ? (
+                    <div
+                      ref={bottomRef}
+                      className="inline-block break-words p-2.5 text-[13px] rounded-xl rounded-tl-none text-gray-700 bg-gray-100"
+                    >
+                      {message.message}
+                    </div>
+                  ) : (
+                    message.image !== null && (
+                      <div ref={bottomRef}>
+                        <Image 
+                          src={message.image} 
+                          alt="Message image" 
+                          width={200} 
+                          height={200} 
+                          className="inline-block break-words p-0.5 rounded-xl"
+                        />
+                      </div>
+                    )
+                  )}
                 </div>
               </div>
             )}

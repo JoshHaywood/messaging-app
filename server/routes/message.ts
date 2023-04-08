@@ -6,11 +6,11 @@ import Message from "@/interfaces/message";
 
 // Store message in database
 router.post("/store", (req: Request, res: Response) => {
-  const { sender, recipient, message, time, date } = req.body;
-  const insertRow = "INSERT INTO messages (sender, recipient, message, time, date) VALUES(?, ?, ?, ?, ?)"; // Inserts new row
+  const { sender, recipient, message, image, time, date } = req.body;
+  const insertRow = "INSERT INTO messages (sender, recipient, message, image, time, date) VALUES(?, ?, ?, ?, ?, ?)"; // Inserts new row
 
   // Insert new row
-  db.query(insertRow, [sender, recipient, message, time, date], (err: Error, rows: Message[]) => {
+  db.query(insertRow, [sender, recipient, message, image, time, date], (err: Error, rows: Message[]) => {
       if (err) throw err;
       
       res.send("Message stored");

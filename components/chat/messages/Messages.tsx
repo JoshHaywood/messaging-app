@@ -49,7 +49,7 @@ export default function Messages(props: {
           if (a.time < b.time) return -1; 
           return 0;
         }));
-      }
+      };
     });
   }, [socket, sessionUser.name, setMessageList]);
 

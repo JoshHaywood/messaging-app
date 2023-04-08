@@ -31,8 +31,6 @@ export default function MessageInput(props: {
 
   // File button click handler
   const handleFileButtonClick = () => {
-    setMessageType("file");
-
     // Create a file input element
     const input = document.createElement("input");
     input.type = "file";
@@ -54,23 +52,24 @@ export default function MessageInput(props: {
             }
           };
           reader.readAsDataURL(file); // Read the file as a data URL
-        }
-      }
+        };
+      };
     };
     input.click(); // Click the file input element
   };
 
   // Send message
   const sendMessage = () => {
-    if (message === "") return; // If message is empty, return
-
     // If message type is text
     if (messageType === "text") {
+      if (message === "") return; // If message is empty, return
+
       // Message content
       const messageContent: Message = {
         sender: sessionUser.name,
         recipient: contact[0].first_name + " " + contact[0].last_name,
         message: message,
+        image: null,
         time: new Date().toLocaleString("en-US", {
           hour: "2-digit",
           minute: "2-digit",
@@ -94,7 +93,47 @@ export default function MessageInput(props: {
 
       socket.emit("send_message", messageContent); // Send message to server
       setMessageList([...messageList, messageContent]); // Update the state with the new message
-    };
+    } else if (messageType === "image") {
+      if (!previewImage) return; // If there is no preview image, return
+  
+      // Create a new FormData object
+      const formData = new FormData();
+  
+      // Append the image data to the FormData object
+      formData.append("image", previewImage);
+  
+      // Message content
+      const messageContent: Message = {
+        sender: sessionUser.name,
+        recipient: contact[0].first_name + " " + contact[0].last_name,
+        message: "",
+        image: previewImage,
+        time: new Date().toLocaleString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        }),
+        date: new Date().toLocaleDateString("en-US", {
+          weekday: "long",
+          month: "short",
+          day: "numeric",
+        }),
+      };
+  
+      // Store the message in the database
+      axios.post("/message/store", {
+        sender: sessionUser.name,
+        recipient: messageContent.recipient,
+        image: messageContent.image,
+        time: messageContent.time,
+        date: messageContent.date,
+      });
+
+      socket.emit("send_message", messageContent); // Send message to server
+      setMessageList([...messageList, messageContent]); // Update the state with the new message
+
+      setPreviewImage(null); // Clear the preview image
+    };  
 
     setMessage(""); // Clear input
   };
@@ -136,8 +175,8 @@ export default function MessageInput(props: {
           strokeWidth="1.5"
           stroke="currentColor"
           onClick={() => {
-            setMessageType("image"); // Set message type to image
             handleFileButtonClick();
+            setMessageType("image"); // Set message type to image
           }}
           className="w-8 h-8 text-gray-500 hover:text-blue-500 hover:cursor-pointer"
         >
@@ -170,7 +209,10 @@ export default function MessageInput(props: {
           type="text"
           placeholder="Type a message..."
           value={message}
-          onClick={() => setMessageType("text")} // Set message type to text
+          onClick={() => {
+            setMessageType("text")
+            setPreviewImage(null)
+          }}
           onChange={(e) => setMessage(e.target.value)} // Set messages value as input
           onKeyDown={(e) => e.key === "Enter" && sendMessage()} // Send message on enter key
           className="w-full p-2.5 text-sm rounded-lg text-gray-700 bg-gray-100 focus:ring-opacity-50 focus:outline-none focus:ring focus:ring-blue-500"
