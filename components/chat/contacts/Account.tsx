@@ -46,7 +46,7 @@ export default function Account(props: {
       <div className="flex flex-row items-center my-3 space-x-4 rounded-lg">
         {/* Profile picture */}
         <Image
-          src={"/images/" + sessionUser.profilePicture}
+          src={sessionUser.profilePicture}
           alt="User profile picture"
           width={35}
           height={35}
