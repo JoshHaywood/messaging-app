@@ -46,7 +46,7 @@ export default function Recipient(props: {
         <div key={index} className="flex flex-row items-center space-x-4">
           {/* Profile picture */}
           <Image
-            src={"/images/" + contact.profile_picture}
+            src={contact.profile_picture}
             alt="User profile picture"
             width={45}
             height={45}

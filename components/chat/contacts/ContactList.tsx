@@ -107,11 +107,11 @@ export default function ContactList(props: {
           className={`${
             // If current index is equal to index, set background color to gray
             index === currentIndex ? "bg-gray-100" : "bg-none"
-          } mb-2.5 px-1 lg:px-2.5 flex flex-row items-center py-2 space-x-4 rounded-lg`}
+          } mb-2.5 pr-1 lg:pr-2.5 flex flex-row items-center py-2 space-x-4 rounded-lg`}
         >
           {/* Profile picture */}
           <Image
-            src={"/images/" + user.profile_picture}
+            src={user.profile_picture}
             alt="User profile picture"
             width={45}
             height={45}

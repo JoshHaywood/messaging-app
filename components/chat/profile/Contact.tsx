@@ -100,7 +100,7 @@ export default function Contact(props: {
           {/* Profile picture */}
           <div className="mx-auto p-5 text-center">
             <Image
-              src={"/images/" + contact.profile_picture}
+              src={contact.profile_picture}
               alt="User profile picture"
               width={125}
               height={125}
