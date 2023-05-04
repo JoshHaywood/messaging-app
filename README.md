@@ -50,6 +50,8 @@ This will start the back-end and front-end together
 - PEPPER
 - SECRET
 
+- DEFAULT_PROFILE_PICTURE
+
 - DB_HOST
 - DB_USER
 - DB_PORT
