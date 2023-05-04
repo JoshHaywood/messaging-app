@@ -22,7 +22,7 @@ const selectEmail = "SELECT * FROM users WHERE email = ?"; // Selects all emails
 // Registering
 router.post("/register", (req: Request, res: Response) => {
   const { userName, firstName, lastName, email, password } = req.body;
-  const profilePicture = "default-profile.png";
+  const profilePicture = process.env.DEFAULT_PROFILE_PICTURE;
 
   const selectUsername = "SELECT * FROM users WHERE user_name = ?"; // Selects all usernames
   const insertRow = "INSERT INTO users (user_name, first_name, last_name, email, password, salt, profile_picture) VALUES(?, ?, ?, ?, ?, ?, ?)"; // Inserts new row

@@ -1,12 +1,14 @@
 import Image from "next/image";
 import { useRef, useEffect } from "react";
 
+import User from "@/interfaces/user";
 import SessionUser from "@/interfaces/sessionUser";
 import Message from "@/interfaces/message";
 import ShowComponent from "@/interfaces/showComponent";
 
 export default function MessageList(props: {
   isMobile: boolean;
+  contact: User[];
   sessionUser: SessionUser;
   messageList: Message[];
   showComponent: ShowComponent;
@@ -14,6 +16,7 @@ export default function MessageList(props: {
 }) {
   const {
     isMobile,
+    contact,
     sessionUser,
     messageList,
     showComponent,
@@ -80,7 +83,7 @@ export default function MessageList(props: {
                 {/* Profile picture */}
                 <div className="h-full">
                   <Image
-                    src="/images/default-profile.png"
+                    src={sessionUser.profilePicture}
                     alt="User profile picture"
                     width={35}
                     height={35}
@@ -105,7 +108,7 @@ export default function MessageList(props: {
                 {/* Profile picture */}
                 <div className="h-full">
                   <Image
-                    src="/images/default-profile.png"
+                    src={contact[0].profile_picture}
                     alt="User profile picture"
                     width={35}
                     height={35}
