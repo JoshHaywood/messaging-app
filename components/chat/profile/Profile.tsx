@@ -12,10 +12,11 @@ export default function Profile(props: {
   isMobile: boolean;
   contact: User[];
   sessionUser: SessionUser;
+  setSessionUser: React.Dispatch<React.SetStateAction<SessionUser>>;
   showComponent: ShowComponent;
   setShowComponent: React.Dispatch<React.SetStateAction<ShowComponent>>;
 }) {
-  const { isMobile, contact, sessionUser, showComponent, setShowComponent } =
+  const { isMobile, contact, sessionUser, setSessionUser, showComponent, setShowComponent } =
     props;
 
   return (
@@ -34,6 +35,7 @@ export default function Profile(props: {
             <Settings
               isMobile={isMobile}
               sessionUser={sessionUser}
+              setSessionUser={setSessionUser}
               showComponent={showComponent}
               setShowComponent={setShowComponent}
             />

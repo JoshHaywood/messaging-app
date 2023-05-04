@@ -131,6 +131,7 @@ export default function Chat() {
             isMobile={isMobile}
             contact={contact}
             sessionUser={sessionUser}
+            setSessionUser={setSessionUser}
             showComponent={showComponent}
             setShowComponent={setShowComponent}
           />

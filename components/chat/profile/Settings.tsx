@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import axios from "axios";
 
 import SessionUser from "@/interfaces/sessionUser";
 import ShowComponent from "@/interfaces/showComponent";
@@ -7,12 +8,35 @@ import ShowComponent from "@/interfaces/showComponent";
 export default function Settings(props: {
   isMobile: boolean;
   sessionUser: SessionUser;
+  setSessionUser: React.Dispatch<React.SetStateAction<SessionUser>>;
   showComponent: ShowComponent;
   setShowComponent: React.Dispatch<React.SetStateAction<ShowComponent>>;
 }) {
-  const { isMobile, showComponent, setShowComponent, sessionUser } = props;
+  const {
+    isMobile,
+    sessionUser,
+    setSessionUser,
+    showComponent,
+    setShowComponent,
+  } = props;
 
-  const [isEditing, setIsEditing] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+
+  const handleEdit = () => {
+    axios
+      .put("/settings/about", {
+        about: textareaRef.current?.value,
+      })
+      .then((res) => {
+        setSessionUser({
+          ...sessionUser,
+          about: res.data,
+        });
+      });
+
+    setIsEditing(false);
+  };
 
   return (
     <>
@@ -108,6 +132,7 @@ export default function Settings(props: {
         <div className="flex flex-row justify-between">
           <div className="font-medium text-gray-700">About</div>
 
+          {/* If not editing, show edit icon, else show editing icons */}
           {!isEditing ? (
             /* Attribution: https://heroicons.com/ */
             <svg
@@ -134,7 +159,7 @@ export default function Settings(props: {
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                onClick={() => {setIsEditing(false)}}
+                onClick={() => {handleEdit()}}
                 className=" w-6 h-6 stroke-blue-500 hover:stroke-blue-700 hover:cursor-pointer"
               >
                 <path
@@ -143,37 +168,24 @@ export default function Settings(props: {
                   d="M4.5 12.75l6 6 9-13.5"
                 />
               </svg>
-
-              {/* Attribution: https://heroicons.com/ */}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                onClick={() => {setIsEditing(false)}}
-                className="w-6 h-6 stroke-blue-500 hover:stroke-blue-700 hover:cursor-pointer"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
             </div>
           )}
         </div>
 
-        <textarea
-          rows={5}
-          maxLength={150}
-          readOnly={!isEditing}
-          className={`mt-2 w-full resize-none text-sm text-gray-400 ${
-            !isEditing && "caret-transparent"
-          } focus:outline-0`}
-        >
-          {sessionUser.about}
-        </textarea>
+        {/* If not editing display text else display editable textarea */}
+        {!isEditing ? (
+          <p className="mt-2 w-full resize-none text-sm text-gray-400  focus:outline-0">
+            {sessionUser.about}
+          </p>
+        ) : (
+          <textarea
+            rows={5}
+            maxLength={150}
+            defaultValue={sessionUser.about}
+            ref={textareaRef}
+            className="mt-2 w-full resize-none text-sm text-gray-400 border-b border-blue-500 focus:outline-0"
+          />
+        )}
       </div>
     </>
   );
