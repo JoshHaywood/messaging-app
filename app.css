@@ -49,10 +49,6 @@ h1, h2, h3, h4, h5, h6 {
   background-color: #d1d5db;
 }
 
-#about:hover svg, #media:hover svg {
-  color: #3b82f6;
-}
-
 #close-profile:hover svg, #close-profile:hover div {
   color: #6b7280;
 }

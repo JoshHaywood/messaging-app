@@ -15,21 +15,14 @@ export default function Profile(props: {
   showComponent: ShowComponent;
   setShowComponent: React.Dispatch<React.SetStateAction<ShowComponent>>;
 }) {
-  const {
-    isMobile,
-    contact,
-    sessionUser,
-    showComponent,
-    setShowComponent,
-  } = props;
-
-  const [aboutToggle, setAboutToggle] = useState<boolean>(false); // Toggle about section
+  const { isMobile, contact, sessionUser, showComponent, setShowComponent } =
+    props;
 
   return (
     <AnimatePresence>
       {/* If profile is open show profile component else show nothing */}
       {showComponent.showProfile && (
-        <motion.div 
+        <motion.div
           initial={isMobile && { y: "100%" }}
           animate={isMobile && { y: 0 }}
           exit={isMobile ? { position: "absolute", y: "100%" } : {}}
@@ -43,8 +36,6 @@ export default function Profile(props: {
               sessionUser={sessionUser}
               showComponent={showComponent}
               setShowComponent={setShowComponent}
-              aboutToggle={aboutToggle}
-              setAboutToggle={setAboutToggle}
             />
           ) : (
             <Contact
@@ -53,12 +44,10 @@ export default function Profile(props: {
               contact={contact}
               showComponent={showComponent}
               setShowComponent={setShowComponent}
-              aboutToggle={aboutToggle}
-              setAboutToggle={setAboutToggle}
             />
           )}
         </motion.div>
       )}
     </AnimatePresence>
   );
-};
+}
