@@ -27,6 +27,8 @@ export default function Contact(props: {
   contact: User[];
   showComponent: ShowComponent;
   setShowComponent: React.Dispatch<React.SetStateAction<ShowComponent>>;
+  aboutToggle: boolean;
+  setAboutToggle: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const {
     isMobile,
@@ -36,6 +38,8 @@ export default function Contact(props: {
     setShowComponent,
   } = props;
 
+  const [aboutToggle, setAboutToggle] = useState<boolean>(false); // Toggle about section
+  
   const [showMedia, setShowMedia] = useState<boolean>(true); // Toggle media section
   const [currentIndex, setCurrentIndex] = useState<number>(0); // Current index of media content
 
@@ -113,13 +117,55 @@ export default function Contact(props: {
           {/* About */}
           <div
             id="about"
-            className="mt-4 px-5 py-3 border border-x-0"
+            // Toggle about on click
+            onClick={() => setAboutToggle(!aboutToggle)}
+            className="mt-4 px-5 py-3 border border-x-0 hover:cursor-pointer"
           >
-            <div className="flex flex-row justify-between font-medium text-gray-700">
-              About
+            <div className="flex flex-row justify-between">
+              <div className="font-medium text-gray-700 hover:cursor-pointer">
+                About
+              </div>
+
+              {/* If about is true, show the up arrow, else show the down arrow */}
+              {aboutToggle ? (
+                /* Attribution: https://heroicons.com/ */
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-6 h-6 transition-colors duration-300 ease-in-out"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4.5 15.75l7.5-7.5 7.5 7.5"
+                  />
+                </svg>
+              ) : (
+                /* Attribution: https://heroicons.com/ */
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-6 h-6 transition-colors duration-300 ease-in-out"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                  />
+                </svg>
+              )}
             </div>
 
-            <p className="mt-2 text-sm text-gray-400">{contact.about}</p>
+            {/* If about is true, show the about text */}
+            {aboutToggle && (
+              <p className="mt-2 text-sm text-gray-400">{contact.about}</p>
+            )}
           </div>
 
           {/* Media */}
