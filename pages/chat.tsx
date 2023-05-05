@@ -14,7 +14,7 @@ import Messages from "@/components/chat/messages/Messages";
 import Profile from "@/components/chat/profile/Profile";
 
 export default function Chat() {
-  const socket = io.connect(`http://localhost:${process.env.NEXT_PUBLIC_PORT}`);
+  const socket = io.connect(process.env.NEXT_CLIENT_URL as string);
   const router = useRouter();
 
   const [isMobile, setIsMobile] = useState<boolean>(false); // Check if device is mobile
