@@ -68,7 +68,7 @@ export default function Account(props: {
               showProfile: !showComponent.showProfile, isAccountSettings: true,
             }))};
           }}
-          className="rounded-full border hover:cursor-pointer"
+          className="aspect-square rounded-full border hover:cursor-pointer"
         />
 
         {/* Account information */}

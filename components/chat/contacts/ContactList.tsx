@@ -115,7 +115,7 @@ export default function ContactList(props: {
             alt="User profile picture"
             width={45}
             height={45}
-            className="rounded-full border"
+            className="aspect-square rounded-full border"
           />
 
           {/* User name and message preview */}

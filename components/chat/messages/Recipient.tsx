@@ -61,7 +61,7 @@ export default function Recipient(props: {
                 }))
               )
             }
-            className="rounded-full border hover:cursor-pointer"
+            className="aspect-square rounded-full border hover:cursor-pointer"
           />
 
           {/* User name and status */}

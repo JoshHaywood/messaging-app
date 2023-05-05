@@ -104,7 +104,7 @@ export default function Contact(props: {
               alt="User profile picture"
               width={125}
               height={125}
-              className="mx-auto rounded-full border"
+              className="aspect-square mx-auto rounded-full border"
             />
 
             <div className="mt-4 text-xl font-medium text-gray-700">

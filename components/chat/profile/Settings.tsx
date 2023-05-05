@@ -111,7 +111,7 @@ export default function Settings(props: {
             alt="User profile picture"
             width={125}
             height={125}
-            className="mx-auto rounded-full border"
+            className="aspect-square mx-auto rounded-full border"
           />
 
           {/* Attribution: https://heroicons.com/ */}
@@ -203,7 +203,7 @@ export default function Settings(props: {
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 handleEdit();
-              }
+              };
             }}
             className="mt-2 w-full resize-none text-sm text-gray-400 border-b border-blue-500 focus:outline-0"
           />

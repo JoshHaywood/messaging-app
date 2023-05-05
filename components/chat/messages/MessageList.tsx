@@ -98,7 +98,7 @@ export default function MessageList(props: {
                         }))
                       )
                     }
-                    className="rounded-full border hover:cursor-pointer"
+                    className="aspect-square rounded-full border hover:cursor-pointer"
                   />
                 </div>
               </div>
@@ -122,7 +122,7 @@ export default function MessageList(props: {
                         }))
                       )
                     }
-                    className="rounded-full border hover:cursor-pointer"
+                    className="aspect-square rounded-full border hover:cursor-pointer"
                   />
                 </div>
 
