@@ -45,31 +45,33 @@ export default function Account(props: {
       {/* User profile */}
       <div className="flex flex-row items-center my-3 space-x-4 rounded-lg">
         {/* Profile picture */}
-        <Image
-          src={sessionUser.profilePicture}
-          alt="User profile picture"
-          width={35}
-          height={35}
-          onClick={() => {
-            // If mobile, close messages and open settings, else open settings 
-            {isMobile ? setShowComponent({
-              ...showComponent,
-              showProfile: true,
-              showMessages: false,
-              isAccountSettings: true,
-            }) : setShowComponent({
-              ...showComponent,
-              showProfile: true,
-              isAccountSettings: true,
-            })};  
-            // If welcome message is showing, toggle profile
-            {showComponent.welcomeMessage && setShowComponent(({
-              ...showComponent,
-              showProfile: !showComponent.showProfile, isAccountSettings: true,
-            }))};
-          }}
-          className="aspect-square rounded-full border hover:cursor-pointer"
-        />
+        {sessionUser.profilePicture && (
+          <Image
+            src={sessionUser.profilePicture}
+            alt="User profile picture"
+            width={35}
+            height={35}
+            onClick={() => {
+              // If mobile, close messages and open settings, else open settings 
+              {isMobile ? setShowComponent({
+                ...showComponent,
+                showProfile: true,
+                showMessages: false,
+                isAccountSettings: true,
+              }) : setShowComponent({
+                ...showComponent,
+                showProfile: true,
+                isAccountSettings: true,
+              })};  
+              // If welcome message is showing, toggle profile
+              {showComponent.welcomeMessage && setShowComponent(({
+                ...showComponent,
+                showProfile: !showComponent.showProfile, isAccountSettings: true,
+              }))};
+            }}
+            className="aspect-square rounded-full border hover:cursor-pointer"
+          />
+        )}
 
         {/* Account information */}
         <div className="w-full flex flex- row justify-between">

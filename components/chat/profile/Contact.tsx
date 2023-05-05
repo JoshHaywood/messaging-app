@@ -27,8 +27,6 @@ export default function Contact(props: {
   contact: User[];
   showComponent: ShowComponent;
   setShowComponent: React.Dispatch<React.SetStateAction<ShowComponent>>;
-  aboutToggle: boolean;
-  setAboutToggle: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const {
     isMobile,
