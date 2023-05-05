@@ -4,6 +4,7 @@ import axios from "axios";
 
 import SessionUser from "@/interfaces/sessionUser";
 import ShowComponent from "@/interfaces/showComponent";
+import createFileInputHandler from "@/components/utils/createFileInputHandler";
 
 export default function Settings(props: {
   isMobile: boolean;
@@ -24,53 +25,19 @@ export default function Settings(props: {
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
   // Change profile picture handler
-  const handleProfilePicture = () => {
-    // Create a file input element
-    const input = document.createElement("input");
-    input.type = "file";
-    input.accept = "image/*";
-
-    // When the file is selected, read it and set the preview image
-    input.onchange = (event) => {
-      // If there is an event target
-      if (event.target) {
-        const inputElement = event.target as HTMLInputElement;
-
-        // If the file is an image
-        if (inputElement.files && inputElement.files[0]) {
-          const file = inputElement.files[0];
-          const fileSizeLimit = 20 * 1024 * 1024; // 20MB
-          // If the file size is too large
-          if (file.size > fileSizeLimit) {
-            alert("This image is too large. Maximum size is 20MB.");
-            return;
-          }
-          const reader = new FileReader();
-          reader.onload = (e) => {
-            // If there is an event target
-            if (e.target) {
-              // Upload the image
-              axios
-                .put("/settings/profile-picture", {
-                  profilePicture: e.target.result,
-                })
-                .then((res) => {
-                  setSessionUser({
-                    ...sessionUser,
-                    profilePicture: res.data,
-                  });
-                });
-
-              console.log(e.target.result);
-            }
-          };
-          reader.readAsDataURL(file);
-        };
-      };
-    };
-
-    input.click();
-  };
+  const handleProfilePicture = createFileInputHandler((result) => {
+    axios
+      .put("/settings/profile-picture", {
+        profilePicture: result,
+      })
+      .then((res) => {
+        setSessionUser({
+          ...sessionUser,
+          profilePicture: res.data,
+        });
+      });
+  });
+  
 
   // Edit button handler
   const handleEdit = () => {

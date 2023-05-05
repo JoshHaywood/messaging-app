@@ -6,6 +6,7 @@ import axios from "axios";
 import User from "@/interfaces/user";
 import SessionUser from "@/interfaces/sessionUser";
 import Message from "@/interfaces/message";
+import createFileInputHandler from "@/components/utils/createFileInputHandler";
 
 export default function MessageInput(props: {
   socket: Socket;
@@ -32,40 +33,12 @@ export default function MessageInput(props: {
   const [error, setError] = useState<string>(""); // Error message
 
   // File button click handler
-  const handleFileUpload = () => {
-    // Create a file input element
-    const input = document.createElement("input");
-    input.type = "file";
-    input.accept = "image/*";
-
-    // When the file is selected, read it and set the preview image
-    input.onchange = (event) => {
-      // If there is an event target
-      if (event.target) {
-        const inputElement = event.target as HTMLInputElement;
-        // If the file is an image
-        if (inputElement.files && inputElement.files[0]) {
-          const file = inputElement.files[0];
-          const fileSizeLimit = 20 * 1024 * 1024; // 20MB
-          // If the file size is too large
-          if (file.size > fileSizeLimit) {
-            setError("File size is too large. Maximum size is 20MB.");
-            return;
-          }
-          const reader = new FileReader();
-          reader.onload = (e) => {
-            // If there is an event target
-            if (e.target) {
-              setPreviewImage(e.target.result as string); // Set the preview image
-            }
-          };
-          reader.readAsDataURL(file); // Read the file as a data URL
-        };
-      };
+  const handleFileUpload = createFileInputHandler((result: string | null) => {
+    if (result) {
+      setPreviewImage(result);
     };
-    input.click(); // Click the file input element
-  };
-
+  });
+  
 
   // Send message
   const sendMessage = () => {
