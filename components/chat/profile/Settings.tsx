@@ -24,11 +24,15 @@ export default function Settings(props: {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
+  const [field, setField] = useState<string>("");
+
   // Change profile picture handler
   const handleProfilePicture = createFileInputHandler((result) => {
+    setField("profilePicture");
+
     axios
-      .put("/settings/profile-picture", {
-        profilePicture: result,
+      .put(`/settings/profile_picture`, {
+        value: result,
       })
       .then((res) => {
         setSessionUser({
@@ -37,13 +41,14 @@ export default function Settings(props: {
         });
       });
   });
-  
 
   // Edit button handler
   const handleEdit = () => {
+    setField("about");
+
     axios
-      .put("/settings/about", {
-        about: textareaRef.current?.value,
+      .put(`/settings/about`, {
+        value: textareaRef.current?.value,
       })
       .then((res) => {
         setSessionUser({

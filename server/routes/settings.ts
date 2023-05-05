@@ -1,32 +1,30 @@
 import express, { Request, Response } from "express";
+import { Session } from "express-session";
 const router = express.Router();
 
 const db = require("../config/db");
 import User from "@/interfaces/user";
 
-// Update profile picture
-router.put("/profile-picture", (req: Request, res: Response) => {
-  const { profilePicture } = req.body;
-  const updateProfilePicture = "UPDATE users SET profile_picture = ? WHERE user_name = ?"; // Updates profile picture
+// Cast session property to CustomSession type
+interface CustomSession extends Session {
+  [key: string]: any;
+}
 
-  db.query(updateProfilePicture, [profilePicture, req.session.userName], (err: Error, rows: User[]) => {
+// Update user profile
+router.put("/:field", (req: Request, res: Response) => {
+  const { field } = req.params;
+  const { value } = req.body;
+
+  const updateProfile = `UPDATE users SET ${field} = ? WHERE user_name = ?`;
+
+  db.query(updateProfile, [value, req.session.userName], (err: Error, rows: User[]) => {
     if (err) throw err;
 
-    req.session.profilePicture = profilePicture; // Update session
-    res.send(profilePicture);
-  });
-});
+    // Update session
+    const customSession = req.session as CustomSession;
+    customSession[field] = value;
 
-// Update about section
-router.put("/about", (req: Request, res: Response) => {
-  const { about } = req.body;
-  const updateAbout = "UPDATE users SET about = ? WHERE user_name = ?"; // Updates about section
-
-  db.query(updateAbout, [about, req.session.userName], (err: Error, rows: User[]) => {
-    if (err) throw err;
-
-    req.session.about = about; // Update session
-    res.send(about);
+    res.send(value);
   });
 });
 
