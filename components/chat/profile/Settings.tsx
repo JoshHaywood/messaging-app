@@ -24,12 +24,8 @@ export default function Settings(props: {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
-  const [field, setField] = useState<string>("");
-
   // Change profile picture handler
   const handleProfilePicture = createFileInputHandler((result) => {
-    setField("profilePicture");
-
     axios
       .put(`/settings/profile_picture`, {
         value: result,
@@ -44,8 +40,6 @@ export default function Settings(props: {
 
   // Edit button handler
   const handleEdit = () => {
-    setField("about");
-
     axios
       .put(`/settings/about`, {
         value: textareaRef.current?.value,
@@ -182,9 +176,7 @@ export default function Settings(props: {
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                onClick={() => {
-                  handleEdit();
-                }}
+                onClick={() => handleEdit()}
                 className=" w-6 h-6 stroke-blue-500 hover:stroke-blue-700 hover:cursor-pointer"
               >
                 <path
@@ -208,6 +200,11 @@ export default function Settings(props: {
             maxLength={150}
             defaultValue={sessionUser.about}
             ref={textareaRef}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleEdit();
+              }
+            }}
             className="mt-2 w-full resize-none text-sm text-gray-400 border-b border-blue-500 focus:outline-0"
           />
         )}
