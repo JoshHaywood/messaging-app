@@ -23,6 +23,56 @@ export default function Settings(props: {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
+  // Change profile picture handler
+  const handleProfilePicture = () => {
+    // Create a file input element
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+
+    // When the file is selected, read it and set the preview image
+    input.onchange = (event) => {
+      // If there is an event target
+      if (event.target) {
+        const inputElement = event.target as HTMLInputElement;
+
+        // If the file is an image
+        if (inputElement.files && inputElement.files[0]) {
+          const file = inputElement.files[0];
+          const fileSizeLimit = 20 * 1024 * 1024; // 20MB
+          // If the file size is too large
+          if (file.size > fileSizeLimit) {
+            alert("This image is too large. Maximum size is 20MB.");
+            return;
+          }
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            // If there is an event target
+            if (e.target) {
+              // Upload the image
+              axios
+                .put("/settings/profile-picture", {
+                  profilePicture: e.target.result,
+                })
+                .then((res) => {
+                  setSessionUser({
+                    ...sessionUser,
+                    profilePicture: res.data,
+                  });
+                });
+
+              console.log(e.target.result);
+            }
+          };
+          reader.readAsDataURL(file);
+        };
+      };
+    };
+
+    input.click();
+  };
+
+  // Edit button handler
   const handleEdit = () => {
     axios
       .put("/settings/about", {
@@ -105,6 +155,7 @@ export default function Settings(props: {
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
+            onClick={handleProfilePicture}
             className="w-8 h-8 absolute bottom-1 right-1 p-1 rounded-full bg-blue-500 hover:bg-blue-700 fill-white stroke-blue-500 hover:cursor-pointer"
           >
             <path
@@ -159,7 +210,9 @@ export default function Settings(props: {
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                onClick={() => {handleEdit()}}
+                onClick={() => {
+                  handleEdit();
+                }}
                 className=" w-6 h-6 stroke-blue-500 hover:stroke-blue-700 hover:cursor-pointer"
               >
                 <path
