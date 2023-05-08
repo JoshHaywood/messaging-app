@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 
-import Button from '@mui/material/Button';
+import Button from "@mui/material/Button";
 
 export default function Custom404() {
   const router = useRouter()

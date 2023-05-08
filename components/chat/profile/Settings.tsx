@@ -22,20 +22,27 @@ export default function Settings(props: {
   } = props;
 
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const [editingSection, setEditingSection] = useState<string>("");
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
   // Change profile picture handler
   const handleProfilePicture = createFileInputHandler((result) => {
-    axios
-      .put(`/settings/profile_picture`, {
-        value: result,
-      })
-      .then((res) => {
-        setSessionUser({
-          ...sessionUser,
-          profilePicture: res.data,
+    // If a file has been selected
+    if (result) {
+      axios
+        .put(`/settings/profile_picture`, {
+          value: result,
+        })
+        .then((res) => {
+          setSessionUser({
+            ...sessionUser,
+            profilePicture: res.data,
+          });
+
+          setIsEditing(true);
+          setEditingSection("profilePicture");
         });
-      });
+    }
   });
 
   // Edit button handler
@@ -49,9 +56,10 @@ export default function Settings(props: {
           ...sessionUser,
           about: res.data,
         });
-      });
 
-    setIsEditing(false);
+        setIsEditing(false);
+        setEditingSection("");
+      });
   };
 
   return (
@@ -145,29 +153,12 @@ export default function Settings(props: {
       </div>
 
       {/* About */}
-      <div className="mt-4 px-5 py-3 border border-x-0">
+      <div className="px-5 py-3 border border-x-0">
         <div className="flex flex-row justify-between">
           <div className="font-medium text-gray-700">About</div>
 
           {/* If not editing, show edit icon, else show editing icons */}
-          {!isEditing ? (
-            /* Attribution: https://heroicons.com/ */
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              onClick={() => setIsEditing(true)}
-              className="w-5 h-5 stroke-blue-500 hover:stroke-blue-700 hover:cursor-pointer"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"
-              />
-            </svg>
-          ) : (
+          {isEditing && editingSection === "about" ? (
             <div className="flex flex-row">
               {/* Attribution: https://heroicons.com/ */}
               <svg
@@ -186,15 +177,31 @@ export default function Settings(props: {
                 />
               </svg>
             </div>
+          ) : (
+            /* Attribution: https://heroicons.com/ */
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              onClick={() => {
+                setIsEditing(true);
+                setEditingSection("about");
+              }}
+              className="w-5 h-5 stroke-blue-500 hover:stroke-blue-700 hover:cursor-pointer"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"
+              />
+            </svg>
           )}
         </div>
 
         {/* If not editing display text else display editable textarea */}
-        {!isEditing ? (
-          <p className="mt-2 w-full resize-none text-sm text-gray-400  focus:outline-0">
-            {sessionUser.about}
-          </p>
-        ) : (
+        {isEditing && editingSection === "about" ? (
           <textarea
             rows={5}
             maxLength={150}
@@ -203,10 +210,14 @@ export default function Settings(props: {
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 handleEdit();
-              };
+              }
             }}
             className="mt-2 w-full resize-none text-sm text-gray-400 border-b border-blue-500 focus:outline-0"
           />
+        ) : (
+          <p className="mt-2 w-full resize-none text-sm text-gray-400  focus:outline-0">
+            {sessionUser.about}
+          </p>
         )}
       </div>
     </>
