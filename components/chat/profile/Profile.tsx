@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import User from "@/interfaces/user";
@@ -6,7 +5,7 @@ import SessionUser from "@/interfaces/sessionUser";
 import ShowComponent from "@/interfaces/showComponent";
 
 import Contact from "./Contact";
-import Settings from "./Settings";
+import Settings from "./settings/Settings";
 
 export default function Profile(props: {
   isMobile: boolean;
