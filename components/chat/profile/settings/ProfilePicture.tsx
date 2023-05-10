@@ -25,23 +25,17 @@ export default function ProfilePicture(props: {
     editingSection,
     setEditingSection,
   } = props;
+
+  const [croppedImage, setCroppedImage] = useState<string>("");
+
   // Change profile picture handler
   const handleProfilePicture = createFileInputHandler((result) => {
     // If a file has been selected
     if (result) {
-      axios
-        .put(`/settings/profile_picture`, {
-          value: result,
-        })
-        .then((res) => {
-          setSessionUser({
-            ...sessionUser,
-            profilePicture: res.data,
-          });
+      setCroppedImage(result);
 
-          setIsEditing(true);
-          setEditingSection("profilePicture");
-        });
+      setIsEditing(true);
+      setEditingSection("profilePicture");
     }
   });
 
@@ -54,10 +48,27 @@ export default function ProfilePicture(props: {
     []
   );
 
+  // Crop image handler
+  const cropHandler = () => {
+    axios
+      .put(`/settings/profile_picture`, {
+        value: croppedImage,
+      })
+      .then((res) => {
+        setSessionUser({
+          ...sessionUser,
+          profilePicture: res.data,
+        });
+
+        setIsEditing(false);
+        setEditingSection("");
+      });
+  };
+
   return (
     <>
       {/* If editing and editing section is profile picture show image editing */}
-      {isEditing && editingSection === "profilePicture" ? (
+      {isEditing && editingSection === "profilePicture" && (
         <div className="fixed inset-0 z-10 flex items-center justify-center">
           <div className="fixed inset-0 bg-gray-800 opacity-75"></div>
 
@@ -69,7 +80,7 @@ export default function ProfilePicture(props: {
             {/* Image cropper */}
             <div className="w-full h-[450px] mt-2.5 px-3">
               <Cropper
-                image={sessionUser.profilePicture}
+                image={croppedImage}
                 crop={crop}
                 zoom={zoom}
                 aspect={1}
@@ -160,6 +171,7 @@ export default function ProfilePicture(props: {
 
               <Button
                 variant="contained"
+                onClick={cropHandler}
                 sx={{
                   borderRadius: "0.25rem",
                   textTransform: "none",
@@ -173,47 +185,47 @@ export default function ProfilePicture(props: {
             </div>
           </div>
         </div>
-      ) : ( // If not editing, display the profile picture
-        <div className="mx-auto p-5 text-center">
-          <div className="relative inline-block">
-            <Image
-              src={sessionUser.profilePicture}
-              alt="User profile picture"
-              width={125}
-              height={125}
-              className="aspect-square mx-auto rounded-full border"
-            />
-
-            {/* Attribution: https://heroicons.com/ */}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              onClick={() => handleProfilePicture()}
-              className="w-8 h-8 absolute bottom-1 right-1 p-1 rounded-full bg-blue-500 hover:bg-blue-700 fill-white stroke-blue-500 hover:cursor-pointer"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z"
-              />
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z"
-              />
-            </svg>
-          </div>
-
-          <div className="mt-4 text-xl font-medium text-gray-700">
-            {sessionUser.name}
-          </div>
-
-          <div className="mt-1 text-xs text-green-400">Online</div>
-        </div>
       )}
+
+      <div className="mx-auto p-5 text-center">
+        <div className="relative inline-block">
+          <Image
+            src={sessionUser.profilePicture}
+            alt="User profile picture"
+            width={125}
+            height={125}
+            className="aspect-square mx-auto rounded-full border"
+          />
+
+          {/* Attribution: https://heroicons.com/ */}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+            onClick={() => handleProfilePicture()}
+            className="w-8 h-8 absolute bottom-1 right-1 p-1 rounded-full bg-blue-500 hover:bg-blue-700 fill-white stroke-blue-500 hover:cursor-pointer"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z"
+            />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z"
+            />
+          </svg>
+        </div>
+
+        <div className="mt-4 text-xl font-medium text-gray-700">
+          {sessionUser.name}
+        </div>
+
+        <div className="mt-1 text-xs text-green-400">Online</div>
+      </div>
     </>
   );
-};
+}
