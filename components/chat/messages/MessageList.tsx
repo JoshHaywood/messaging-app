@@ -47,7 +47,7 @@ export default function MessageList(props: {
           <div key={index}>
             {/* If the previous message is not the same date, show the date */}
             {showDate && (
-              <div className="mt-4 text-sm font-medium italic text-center text-gray-400">
+              <div className="mt-4 mb-4 text-sm font-medium italic text-center text-gray-400">
                 {message.date}
               </div>
             )}
