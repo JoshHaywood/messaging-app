@@ -35,6 +35,11 @@ export default function MessageList(props: {
       id="messages-container"
       className="h-full p-4 pt-8 space-y-5 overflow-y-scroll border"
     >
+      <div className="text-sm italic text-center text-gray-400">
+        This is the beginning of you conversation with{" "}
+        {contact[0].first_name + " " + contact[0].last_name}.
+      </div>
+
       {messageList.map((message, index) => {
         const prevMessage = messageList[index - 1]; // Previous message
         const showDate = prevMessage ? prevMessage.date !== message.date : true; // Show date if the previous message is not the same date

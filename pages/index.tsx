@@ -12,7 +12,7 @@ import Button from "@mui/material/Button";
 import useFormData from "@/components/auth/useFormData";
 
 export default function Index() {
-  const router = useRouter()
+  const router = useRouter();
 
   const { formData, handleChange } = useFormData(); // Form data state
   const [message, setMessage] = useState<string>(""); // Message state
@@ -23,7 +23,7 @@ export default function Index() {
       // If user is logged in
       if (res.data.loggedIn === true) {
         router.push("/chat"); // Redirect to chat page
-      };
+      }
     });
   }, [router]);
 
@@ -35,17 +35,19 @@ export default function Index() {
   // Login user
   const validateRow = () => {
     // Validate user data
-    axios.post("/auth/login", {
-      email: formData.email,
-      password: formData.password,
-    }).then((res) => {
-      setMessage(res.data);
+    axios
+      .post("/auth/login", {
+        email: formData.email,
+        password: formData.password,
+      })
+      .then((res) => {
+        setMessage(res.data);
 
-      // If validation passed
-      if (res.data === "Login successful") {
-        router.push("/chat");
-      };
-    });
+        // If validation passed
+        if (res.data === "Login successful") {
+          router.push("/chat");
+        }
+      });
   };
 
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
@@ -65,12 +67,7 @@ export default function Index() {
         <div className="w-full sm:w-auto flex flex-col justify-center mx-5 sm:mx-0 p-5 sm:p-12 shadow-lg bg-white">
           {/* Heading */}
           <div className="pt-4 mb-4 mx-auto">
-            <Image 
-              src="/images/logo.png" 
-              alt="logo" 
-              width={75} 
-              height={75} 
-            />
+            <Image src="/images/logo.png" alt="logo" width={75} height={75} />
           </div>
 
           <h1 className="mb-3 text-center font-bold text-3xl tracking-wide text-black">
@@ -82,16 +79,18 @@ export default function Index() {
           </div>
 
           {/* Registration form */}
-          <form 
+          <form
             onSubmit={submitHandler} // Submit form on submit
             onKeyDown={(e) => {
-              e.key === 'Enter' && submitHandler; //Submit form on enter
-            }} 
+              e.key === "Enter" && submitHandler; //Submit form on enter
+            }}
             className="sm:w-[400px] py-8"
           >
             {/* Registered message */}
             {message === "Successfully registered, please login" && (
-              <p className="mb-8 p-4 rounded font-medium text-xs text-green-700 bg-green-300">Successfully registered, please login</p>
+              <p className="mb-8 p-4 rounded font-medium text-xs text-green-700 bg-green-300">
+                Successfully registered, please login
+              </p>
             )}
 
             {/* Email */}
@@ -105,20 +104,24 @@ export default function Index() {
               error={message === "Email does not exist" ? message : ""}
             />
 
-            <ErrorMessage error={message === "Email does not exist" ? message : ""} />
+            <ErrorMessage
+              error={message === "Email does not exist" ? message : ""}
+            />
 
             {/* Password */}
-            <Input 
-              label="Password" 
-              type="password" 
+            <Input
+              label="Password"
+              type="password"
               name="password"
-              placeholder="Password123" 
+              placeholder="Password123"
               value={formData.password}
               handleChange={handleChange}
               error={message === "Incorrect password" ? message : ""}
             />
 
-            <ErrorMessage error={message === "Incorrect password" ? message : ""} />
+            <ErrorMessage
+              error={message === "Incorrect password" ? message : ""}
+            />
 
             {/* Submit button */}
             <div className="mb-6 mt-10 text-center">
@@ -157,4 +160,4 @@ export default function Index() {
       </div>
     </>
   );
-};
+}
