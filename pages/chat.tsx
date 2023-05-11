@@ -18,12 +18,13 @@ export default function Chat() {
   const router = useRouter();
 
   const [isMobile, setIsMobile] = useState<boolean>(false); // Check if device is mobile
-  
+
   const [messageList, setMessageList] = useState<Message[]>([]); // List of messages
   const [contact, setContact] = useState<User[]>([]); // User profile data
   // Session user data
   const [sessionUser, setSessionUser] = useState<SessionUser>({
     name: "",
+    userName: "",
     profilePicture: "",
     about: "",
   });
@@ -34,7 +35,7 @@ export default function Chat() {
     showProfile: false,
     isAccountSettings: false,
   });
-  
+
   // Check if user is logged in
   useEffect(() => {
     axios.get("/auth/user").then((res) => {
@@ -45,39 +46,40 @@ export default function Chat() {
       } else {
         setSessionUser({
           name: res.data.firstName + " " + res.data.lastName,
+          userName: res.data.userName,
           profilePicture: res.data.profilePicture,
           about: res.data.about,
         });
-      };
+      }
     });
   }, [router]);
 
   // Show messages column
   useEffect(() => {
     // Prevent type error
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       setIsMobile(window.innerWidth < 760);
-    };
+    }
 
     // If not on mobile, show messages and profile columns else hide them
     if (!isMobile) {
-      setShowComponent(prevShowComponent => ({
+      setShowComponent((prevShowComponent) => ({
         ...prevShowComponent,
         showMessages: true,
         showProfile: false,
       }));
     } else {
-      setShowComponent(prevShowComponent => ({
+      setShowComponent((prevShowComponent) => ({
         ...prevShowComponent,
         showMessages: false,
       }));
-    };
-  
+    }
+
     // Re-assign isMobile on window resize
     function handleResize() {
       setIsMobile(window.innerWidth < 760);
-    };
-  
+    }
+
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, [isMobile, setIsMobile]);
@@ -86,14 +88,13 @@ export default function Chat() {
   useEffect(() => {
     // If welcome message is false and not on mobile, show profile column
     if (showComponent.welcomeMessage === false && !isMobile) {
-      setShowComponent(prevShowComponent => ({
+      setShowComponent((prevShowComponent) => ({
         ...prevShowComponent,
         showProfile: true,
       }));
-    };
+    }
   }, [isMobile, showComponent.welcomeMessage]);
 
-  
   return (
     <>
       <Head>
@@ -113,7 +114,7 @@ export default function Chat() {
             sessionUser={sessionUser}
             setSessionUser={setSessionUser}
           />
-  
+
           {/* Messages column */}
           <Messages
             socket={socket}
@@ -127,7 +128,7 @@ export default function Chat() {
           />
 
           {/* Profile column */}
-          <Profile 
+          <Profile
             isMobile={isMobile}
             contact={contact}
             sessionUser={sessionUser}
@@ -139,4 +140,4 @@ export default function Chat() {
       </div>
     </>
   );
-};
+}

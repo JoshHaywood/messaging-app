@@ -224,7 +224,11 @@ export default function ProfilePicture(props: {
           {sessionUser.name}
         </div>
 
-        <div className="mt-1 text-xs text-green-400">Online</div>
+        <div className="text-sm font-medium text-gray-300">
+          {sessionUser.userName}
+        </div>
+
+        <div className="mt-2 text-xs text-green-400">Online</div>
       </div>
     </>
   );
