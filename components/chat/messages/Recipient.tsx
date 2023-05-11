@@ -1,15 +1,15 @@
 import Image from "next/image";
 
-import User from "@/interfaces/user";
-import ShowComponent from "@/interfaces/showComponent";
+import Contact from "@/interfaces/contactTypes";
+import ShowComponentTypes from "@/interfaces/showComponentTypes";
 
 export default function Recipient(props: {
   isMobile: boolean;
-  contact: User[];
-  showComponent: ShowComponent;
-  setShowComponent: React.Dispatch<React.SetStateAction<ShowComponent>>;
+  contact: Contact[];
+  showComponentTypes: ShowComponentTypes;
+  setShowComponent: React.Dispatch<React.SetStateAction<ShowComponentTypes>>;
 }) {
-  const { isMobile, contact, showComponent, setShowComponent } = props;
+  const { isMobile, contact, showComponentTypes, setShowComponent } = props;
 
   return (
     <div className="flex flex-row items-center p-4 space-x-4 border border-b-0">
@@ -26,7 +26,7 @@ export default function Recipient(props: {
           onClick={() => {
             // Hide messages and profile to show chat list
             setShowComponent({
-              ...showComponent,
+              ...showComponentTypes,
               showMessages: false,
               showProfile: false,
             });
@@ -54,7 +54,7 @@ export default function Recipient(props: {
               // If is mobile, hide messages and show profile
               isMobile &&
               setShowComponent({
-                ...showComponent,
+                ...showComponentTypes,
                 showMessages: false,
                 showProfile: true,
                 isAccountSettings: false,

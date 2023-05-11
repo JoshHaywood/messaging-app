@@ -1,25 +1,25 @@
 import Image from "next/image";
 import { useRef, useEffect } from "react";
 
-import User from "@/interfaces/user";
-import SessionUser from "@/interfaces/sessionUser";
-import Message from "@/interfaces/message";
-import ShowComponent from "@/interfaces/showComponent";
+import Contact from "@/interfaces/contactTypes";
+import SessionUser from "@/interfaces/sessionUserTypes";
+import Message from "@/interfaces/messageTypes";
+import ShowComponentTypes from "@/interfaces/showComponentTypes";
 
 export default function MessageList(props: {
   isMobile: boolean;
-  contact: User[];
+  contact: Contact[];
   sessionUser: SessionUser;
   messageList: Message[];
-  showComponent: ShowComponent;
-  setShowComponent: React.Dispatch<React.SetStateAction<ShowComponent>>;
+  showComponentTypes: ShowComponentTypes;
+  setShowComponent: React.Dispatch<React.SetStateAction<ShowComponentTypes>>;
 }) {
   const {
     isMobile,
     contact,
     sessionUser,
     messageList,
-    showComponent,
+    showComponentTypes,
     setShowComponent,
   } = props;
 
@@ -91,7 +91,7 @@ export default function MessageList(props: {
                       // If on mobile, show the account settings page
                       isMobile &&
                       setShowComponent({
-                        ...showComponent,
+                        ...showComponentTypes,
                         showMessages: false,
                         showProfile: true,
                         isAccountSettings: true,
@@ -115,7 +115,7 @@ export default function MessageList(props: {
                       // If the device is mobile, show the profile and hide the messages
                       isMobile &&
                       setShowComponent({
-                        ...showComponent,
+                        ...showComponentTypes,
                         showMessages: false,
                         showProfile: true,
                       })

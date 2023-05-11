@@ -2,10 +2,10 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-import User from "@/interfaces/user";
-import SessionUser from "@/interfaces/sessionUser";
-import ShowComponent from "@/interfaces/showComponent";
-import Message from "@/interfaces/message";
+import ContactTypes from "@/interfaces/contactTypes";
+import SessionUser from "@/interfaces/sessionUserTypes";
+import ShowComponentTypes from "@/interfaces/showComponentTypes";
+import Message from "@/interfaces/messageTypes";
 
 import Button from "@mui/material/Button";
 
@@ -24,12 +24,17 @@ const buttons = [
 export default function Contact(props: {
   isMobile: boolean;
   sessionUser: SessionUser;
-  contact: User[];
-  showComponent: ShowComponent;
-  setShowComponent: React.Dispatch<React.SetStateAction<ShowComponent>>;
+  contact: ContactTypes[];
+  showComponentTypes: ShowComponentTypes;
+  setShowComponent: React.Dispatch<React.SetStateAction<ShowComponentTypes>>;
 }) {
-  const { isMobile, sessionUser, contact, showComponent, setShowComponent } =
-    props;
+  const {
+    isMobile,
+    sessionUser,
+    contact,
+    showComponentTypes,
+    setShowComponent,
+  } = props;
 
   const [aboutToggle, setAboutToggle] = useState<boolean>(false); // Toggle about section
 
@@ -62,7 +67,7 @@ export default function Contact(props: {
           onClick={() => {
             // Hide messages and profile to show chat list
             setShowComponent({
-              ...showComponent,
+              ...showComponentTypes,
               showMessages: true,
               showProfile: false,
             });

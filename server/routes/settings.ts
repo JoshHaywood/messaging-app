@@ -3,7 +3,7 @@ import { Session } from "express-session";
 const router = express.Router();
 
 const db = require("../config/db");
-import User from "@/interfaces/user";
+import Contact from "@/interfaces/contactTypes";
 
 // Cast session property to CustomSession type
 interface CustomSession extends Session {
@@ -20,7 +20,7 @@ router.put("/:field", (req: Request, res: Response) => {
   db.query(
     updateProfile,
     [value, req.session.userName],
-    (err: Error, rows: User[]) => {
+    (err: Error, rows: Contact[]) => {
       if (err) throw err;
 
       // Update session

@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 const router = express.Router();
 
 const db = require("../config/db");
-import Message from "@/interfaces/message";
+import Message from "@/interfaces/messageTypes";
 
 // Store message in database
 router.post("/store", (req: Request, res: Response) => {

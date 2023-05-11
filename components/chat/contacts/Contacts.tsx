@@ -3,10 +3,10 @@ import axios from "axios";
 import { Socket } from "socket.io-client";
 import Image from "next/image";
 
-import User from "@/interfaces/user";
-import SessionUser from "@/interfaces/sessionUser";
-import Message from "@/interfaces/message";
-import ShowComponent from "@/interfaces/showComponent";
+import Contact from "@/interfaces/contactTypes";
+import SessionUser from "@/interfaces/sessionUserTypes";
+import Message from "@/interfaces/messageTypes";
+import ShowComponentTypes from "@/interfaces/showComponentTypes";
 
 import SearchBar from "./header/Header";
 import ContactList from "./ContactList";
@@ -16,11 +16,11 @@ export default function Contacts(props: {
   socket: Socket;
   isMobile: boolean;
   setMessageList: React.Dispatch<React.SetStateAction<Message[]>>;
-  setContact: React.Dispatch<React.SetStateAction<User[]>>;
+  setContact: React.Dispatch<React.SetStateAction<Contact[]>>;
   sessionUser: SessionUser;
   setSessionUser: React.Dispatch<React.SetStateAction<SessionUser>>;
-  showComponent: ShowComponent;
-  setShowComponent: React.Dispatch<React.SetStateAction<ShowComponent>>;
+  showComponentTypes: ShowComponentTypes;
+  setShowComponent: React.Dispatch<React.SetStateAction<ShowComponentTypes>>;
 }) {
   const {
     socket,
@@ -29,19 +29,19 @@ export default function Contacts(props: {
     setContact,
     sessionUser,
     setSessionUser,
-    showComponent,
+    showComponentTypes,
     setShowComponent,
   } = props;
-  const [users, setUsers] = useState<User[]>([]); // Users array
+  const [users, setUsers] = useState<Contact[]>([]); // Users array
 
   const [searchTerm, setSearchTerm] = useState<string>(""); // Search term
-  const [filteredUsers, setFilteredUsers] = useState<User[]>([]); // Filtered users array
+  const [filteredUsers, setFilteredUsers] = useState<Contact[]>([]); // Filtered users array
 
   // Get users from users table
   useEffect(() => {
-    axios.get("/users/get").then((res) => {
+    axios.get("/contacts/get").then((res) => {
       // Exclude session user
-      const usersArray = res.data.filter((user: User) => {
+      const usersArray = res.data.filter((user: Contact) => {
         return user.first_name + " " + user.last_name !== sessionUser.name;
       });
 
@@ -67,8 +67,8 @@ export default function Contacts(props: {
     <div
       className={`${
         // Hide users list if mobile and messages or profile are shown
-        (isMobile && showComponent.showMessages) ||
-        (isMobile && showComponent.showProfile)
+        (isMobile && showComponentTypes.showMessages) ||
+        (isMobile && showComponentTypes.showProfile)
           ? "hidden"
           : "flex"
       } h-full w-full lg:w-1/4 flex-col pt-2.5 lg:pt-5 px-2.5 lg:px-5 pb-0`}
@@ -95,7 +95,7 @@ export default function Contacts(props: {
         setMessageList={setMessageList}
         setContact={setContact}
         sessionUser={sessionUser}
-        showComponent={showComponent}
+        showComponentTypes={showComponentTypes}
         setShowComponent={setShowComponent}
         setSearchTerm={setSearchTerm}
         usersArray={
@@ -109,7 +109,7 @@ export default function Contacts(props: {
         isMobile={isMobile}
         sessionUser={sessionUser}
         setSessionUser={setSessionUser}
-        showComponent={showComponent}
+        showComponentTypes={showComponentTypes}
         setShowComponent={setShowComponent}
       />
     </div>

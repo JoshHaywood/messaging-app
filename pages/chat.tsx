@@ -4,10 +4,10 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import * as io from "socket.io-client";
 
-import User from "@/interfaces/user";
-import SessionUser from "@/interfaces/sessionUser";
-import Message from "@/interfaces/message";
-import ShowComponent from "@/interfaces/showComponent";
+import Contact from "@/interfaces/contactTypes";
+import SessionUser from "@/interfaces/sessionUserTypes";
+import Message from "@/interfaces/messageTypes";
+import ShowComponentTypes from "@/interfaces/showComponentTypes";
 
 import Contacts from "@/components/chat/contacts/Contacts";
 import Messages from "@/components/chat/messages/Messages";
@@ -20,7 +20,7 @@ export default function Chat() {
   const [isMobile, setIsMobile] = useState<boolean>(false); // Check if device is mobile
 
   const [messageList, setMessageList] = useState<Message[]>([]); // List of messages
-  const [contact, setContact] = useState<User[]>([]); // User profile data
+  const [contact, setContact] = useState<Contact[]>([]); // User profile data
   // Session user data
   const [sessionUser, setSessionUser] = useState<SessionUser>({
     name: "",
@@ -29,7 +29,7 @@ export default function Chat() {
     about: "",
   });
   // Show components
-  const [showComponent, setShowComponent] = useState<ShowComponent>({
+  const [showComponentTypes, setShowComponent] = useState<ShowComponentTypes>({
     welcomeMessage: true,
     showMessages: false,
     showProfile: false,
@@ -87,13 +87,13 @@ export default function Chat() {
   // Show profile column
   useEffect(() => {
     // If welcome message is false and not on mobile, show profile column
-    if (showComponent.welcomeMessage === false && !isMobile) {
+    if (showComponentTypes.welcomeMessage === false && !isMobile) {
       setShowComponent((prevShowComponent) => ({
         ...prevShowComponent,
         showProfile: true,
       }));
     }
-  }, [isMobile, showComponent.welcomeMessage]);
+  }, [isMobile, showComponentTypes.welcomeMessage]);
 
   return (
     <>
@@ -108,7 +108,7 @@ export default function Chat() {
             socket={socket}
             isMobile={isMobile}
             setMessageList={setMessageList}
-            showComponent={showComponent}
+            showComponentTypes={showComponentTypes}
             setShowComponent={setShowComponent}
             setContact={setContact}
             sessionUser={sessionUser}
@@ -121,7 +121,7 @@ export default function Chat() {
             isMobile={isMobile}
             messageList={messageList}
             setMessageList={setMessageList}
-            showComponent={showComponent}
+            showComponentTypes={showComponentTypes}
             setShowComponent={setShowComponent}
             contact={contact}
             sessionUser={sessionUser}
@@ -133,7 +133,7 @@ export default function Chat() {
             contact={contact}
             sessionUser={sessionUser}
             setSessionUser={setSessionUser}
-            showComponent={showComponent}
+            showComponentTypes={showComponentTypes}
             setShowComponent={setShowComponent}
           />
         </div>

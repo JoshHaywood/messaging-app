@@ -1,5 +1,5 @@
 // Non-Session User
-export default interface User {
+export default interface ContactTypes {
   user_name: string;
   first_name: string;
   last_name: string;
@@ -8,4 +8,4 @@ export default interface User {
   about: string;
   password: string;
   salt: string;
-};
+}
