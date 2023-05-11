@@ -15,7 +15,7 @@ declare module "express-session" {
     profilePicture: string;
     about: string;
   }
-};
+}
 
 const selectEmail = "SELECT * FROM users WHERE email = ?"; // Selects all emails
 
@@ -25,7 +25,8 @@ router.post("/register", (req: Request, res: Response) => {
   const profilePicture = process.env.DEFAULT_PROFILE_PICTURE;
 
   const selectUsername = "SELECT * FROM users WHERE user_name = ?"; // Selects all usernames
-  const insertRow = "INSERT INTO users (user_name, first_name, last_name, email, password, salt, profile_picture) VALUES(?, ?, ?, ?, ?, ?, ?)"; // Inserts new row
+  const insertRow =
+    "INSERT INTO users (user_name, first_name, last_name, email, password, salt, profile_picture) VALUES(?, ?, ?, ?, ?, ?, ?)"; // Inserts new row
 
   // Check if email already exists
   db.query(selectEmail, [email], (err: Error, rows: User[]) => {
@@ -35,7 +36,7 @@ router.post("/register", (req: Request, res: Response) => {
     if (rows.length > 0) {
       res.send("Email already exists");
       return;
-    };
+    }
 
     // Check if username already exists
     db.query(selectUsername, [userName], (err: Error, rows: User[]) => {
@@ -52,12 +53,26 @@ router.post("/register", (req: Request, res: Response) => {
         const hashedPassword = HashPassword(password, salt); // Hash password
 
         // Insert new row
-        db.query(insertRow, [userName, firstName, lastName, email, hashedPassword, salt, profilePicture], (err: Error, rows: User[]) => {
-          if (err) throw err;
+        db.query(
+          insertRow,
+          [
+            userName,
+            firstName,
+            lastName,
+            email,
+            hashedPassword,
+            salt,
+            profilePicture,
+          ],
+          (err: Error, rows: User[]) => {
+            if (err) throw err;
 
-          console.log("Registered: \n" + "User:" + userName + "\n" + "Email:" + email);
-          res.send("Successfully registered, please login");
-        });
+            console.log(
+              "Registered: \n" + "User:" + userName + "\n" + "Email:" + email
+            );
+            res.send("Successfully registered, please login");
+          }
+        );
       }
     });
   });
@@ -91,7 +106,7 @@ router.post("/login", (req: Request, res: Response) => {
             req.session.lastName +
             "\n" +
             req.session.email
-        );        
+        );
         res.send("Login successful");
         // Else incorrect password
       } else {
@@ -100,12 +115,12 @@ router.post("/login", (req: Request, res: Response) => {
       // Else email does not exist
     } else {
       res.send("Email does not exist");
-    };
+    }
   });
 });
 
 // Get session user
-router.get("/user", (req: Request, res: Response) => {    
+router.get("/user", (req: Request, res: Response) => {
   // If user is logged in, send user data
   if (req.session.email) {
     res.send({
@@ -114,11 +129,11 @@ router.get("/user", (req: Request, res: Response) => {
       lastName: req.session.lastName,
       profilePicture: req.session.profilePicture,
       about: req.session.about,
-    });  
+    });
     // Else user is not logged in, send false
   } else {
-      res.send({loggedIn: false});
-  };
+    res.send({ loggedIn: false });
+  }
 });
 
 // Logout

@@ -52,22 +52,30 @@ export default function Account(props: {
             width={35}
             height={35}
             onClick={() => {
-              // If mobile, close messages and open settings, else open settings 
-              {isMobile ? setShowComponent({
-                ...showComponent,
-                showProfile: true,
-                showMessages: false,
-                isAccountSettings: true,
-              }) : setShowComponent({
-                ...showComponent,
-                showProfile: true,
-                isAccountSettings: true,
-              })};  
+              // If mobile, close messages and open settings, else open settings
+              {
+                isMobile
+                  ? setShowComponent({
+                      ...showComponent,
+                      showProfile: true,
+                      showMessages: false,
+                      isAccountSettings: true,
+                    })
+                  : setShowComponent({
+                      ...showComponent,
+                      showProfile: true,
+                      isAccountSettings: true,
+                    });
+              }
               // If welcome message is showing, toggle profile
-              {showComponent.welcomeMessage && setShowComponent(({
-                ...showComponent,
-                showProfile: !showComponent.showProfile, isAccountSettings: true,
-              }))};
+              {
+                showComponent.welcomeMessage &&
+                  setShowComponent({
+                    ...showComponent,
+                    showProfile: !showComponent.showProfile,
+                    isAccountSettings: true,
+                  });
+              }
             }}
             className="aspect-square rounded-full border hover:cursor-pointer"
           />
@@ -78,23 +86,27 @@ export default function Account(props: {
           <div
             onClick={() => {
               // If mobile, close messages and open profile
-              {isMobile && 
-                setShowComponent({
-                  ...showComponent,
-                  showMessages: false,
-                  showProfile: true,
-                })
-              };
+              {
+                isMobile &&
+                  setShowComponent({
+                    ...showComponent,
+                    showMessages: false,
+                    showProfile: true,
+                  });
+              }
               // If welcome message is showing, toggle profile
-              {showComponent.welcomeMessage && setShowComponent(({
-                ...showComponent,
-                showProfile: !showComponent.showProfile,
-              }))};
+              {
+                showComponent.welcomeMessage &&
+                  setShowComponent({
+                    ...showComponent,
+                    showProfile: !showComponent.showProfile,
+                  });
+              }
               // Revert to recipient profile instead of account settings
-              setShowComponent(({
+              setShowComponent({
                 ...showComponent,
                 isAccountSettings: true,
-              }));
+              });
             }}
             className="font-medium text-gray-700 hover:cursor-pointer"
           >
@@ -122,4 +134,4 @@ export default function Account(props: {
       </div>
     </div>
   );
-};
+}

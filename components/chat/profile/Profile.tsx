@@ -15,8 +15,14 @@ export default function Profile(props: {
   showComponent: ShowComponent;
   setShowComponent: React.Dispatch<React.SetStateAction<ShowComponent>>;
 }) {
-  const { isMobile, contact, sessionUser, setSessionUser, showComponent, setShowComponent } =
-    props;
+  const {
+    isMobile,
+    contact,
+    sessionUser,
+    setSessionUser,
+    showComponent,
+    setShowComponent,
+  } = props;
 
   return (
     <AnimatePresence>

@@ -36,9 +36,8 @@ export default function MessageInput(props: {
   const handleFileUpload = createFileInputHandler((result: string | null) => {
     if (result) {
       setPreviewImage(result);
-    };
+    }
   });
-  
 
   // Send message
   const sendMessage = () => {
@@ -77,13 +76,13 @@ export default function MessageInput(props: {
       setMessageList([...messageList, messageContent]); // Update the state with the new message
     } else if (messageType === "image") {
       if (!previewImage) return; // If there is no preview image, return
-  
+
       // Create a new FormData object
       const formData = new FormData();
-  
+
       // Append the image data to the FormData object
       formData.append("image", previewImage);
-  
+
       // Message content
       const messageContent: Message = {
         sender: sessionUser.name,
@@ -101,7 +100,7 @@ export default function MessageInput(props: {
           day: "numeric",
         }),
       };
-  
+
       // Store the message in the database
       axios.post("/message/store", {
         sender: sessionUser.name,
@@ -115,7 +114,7 @@ export default function MessageInput(props: {
       setMessageList([...messageList, messageContent]); // Update the state with the new message
 
       setPreviewImage(null); // Clear the preview image
-    };  
+    }
 
     setMessage(""); // Clear input
   };
@@ -130,7 +129,13 @@ export default function MessageInput(props: {
       {/* Preview image */}
       {previewImage && (
         <div className="w-full flex flex-row pt-2.5 space-x-1 bg-gray-100">
-          <Image src={previewImage} alt="Preview" width={200} height={200} className="w-1/2 mx-2.5" />
+          <Image
+            src={previewImage}
+            alt="Preview"
+            width={200}
+            height={200}
+            className="w-1/2 mx-2.5"
+          />
 
           {/* Remove button */}
           {/* Attribution: https://heroicons.com/ */}
@@ -141,7 +146,7 @@ export default function MessageInput(props: {
             strokeWidth="1.5"
             stroke="currentColor"
             onClick={() => {
-              setPreviewImage(null)
+              setPreviewImage(null);
               setError("");
             }}
             className="w-6 h-6 text-gray-700 hover:text-black hover:cursor-pointer"
@@ -229,4 +234,4 @@ export default function MessageInput(props: {
       </div>
     </>
   );
-};
+}

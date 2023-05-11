@@ -25,11 +25,11 @@ export default function Recipient(props: {
           stroke="currentColor"
           onClick={() => {
             // Hide messages and profile to show chat list
-            setShowComponent(({
+            setShowComponent({
               ...showComponent,
               showMessages: false,
               showProfile: false,
-            }));
+            });
           }}
           className="w-5 h-5 text-gray-700 hover:text-gray-400 hover:cursor-pointer"
         >
@@ -52,14 +52,13 @@ export default function Recipient(props: {
             height={45}
             onClick={() =>
               // If is mobile, hide messages and show profile
-              isMobile && (
-                setShowComponent(({
-                  ...showComponent,
-                  showMessages: false,
-                  showProfile: true,
-                  isAccountSettings: false,
-                }))
-              )
+              isMobile &&
+              setShowComponent({
+                ...showComponent,
+                showMessages: false,
+                showProfile: true,
+                isAccountSettings: false,
+              })
             }
             className="aspect-square rounded-full border hover:cursor-pointer"
           />
@@ -76,4 +75,4 @@ export default function Recipient(props: {
       ))}
     </div>
   );
-};
+}

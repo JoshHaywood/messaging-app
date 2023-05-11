@@ -17,18 +17,18 @@ export default function createFileInputHandler(
           if (file.size > fileSizeLimit) {
             alert("This image is too large. Maximum size is 20MB.");
             return;
-          };
+          }
           const reader = new FileReader();
           reader.onload = (e) => {
             if (e.target) {
               behavior(e.target.result as string);
-            };
+            }
           };
           reader.readAsDataURL(file);
-        };
-      };
+        }
+      }
     };
 
     input.click();
   };
-};
+}

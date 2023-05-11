@@ -50,4 +50,4 @@ export default function SearchBar(props: {
       </div>
     </div>
   );
-};
+}

@@ -17,15 +17,19 @@ router.put("/:field", (req: Request, res: Response) => {
 
   const updateProfile = `UPDATE users SET ${field} = ? WHERE user_name = ?`;
 
-  db.query(updateProfile, [value, req.session.userName], (err: Error, rows: User[]) => {
-    if (err) throw err;
+  db.query(
+    updateProfile,
+    [value, req.session.userName],
+    (err: Error, rows: User[]) => {
+      if (err) throw err;
 
-    // Update session
-    const customSession = req.session as CustomSession;
-    customSession[field] = value;
+      // Update session
+      const customSession = req.session as CustomSession;
+      customSession[field] = value;
 
-    res.send(value);
-  });
+      res.send(value);
+    }
+  );
 });
 
 module.exports = router;

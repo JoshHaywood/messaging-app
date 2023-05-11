@@ -67,7 +67,10 @@ export default function Contacts(props: {
     <div
       className={`${
         // Hide users list if mobile and messages or profile are shown
-        isMobile && showComponent.showMessages || isMobile && showComponent.showProfile ? "hidden" : "flex"
+        (isMobile && showComponent.showMessages) ||
+        (isMobile && showComponent.showProfile)
+          ? "hidden"
+          : "flex"
       } h-full w-full lg:w-1/4 flex-col pt-2.5 lg:pt-5 px-2.5 lg:px-5 pb-0`}
     >
       {/* Header */}
@@ -111,4 +114,4 @@ export default function Contacts(props: {
       />
     </div>
   );
-};
+}

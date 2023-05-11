@@ -40,19 +40,20 @@ export default function Messages(props: {
     socket.on("receive_message", (data: Message) => {
       // If the message sender is not equal to the current user, add the message to the message list
       if (data.sender !== sessionUser.name) {
-        setMessageList(prevMessageList => [...prevMessageList, data].sort((a, b) => {
-          // Sort by date
-          if (a.date > b.date) return -1; // If a is greater than b list a first
-          if (a.date < b.date) return 1; // If a is less than b list b first
-          // Sort by time
-          if (a.time > b.time) return -1;
-          if (a.time < b.time) return 1; 
-          return 0;
-        }));
-      };
+        setMessageList((prevMessageList) =>
+          [...prevMessageList, data].sort((a, b) => {
+            // Sort by date
+            if (a.date > b.date) return -1; // If a is greater than b list a first
+            if (a.date < b.date) return 1; // If a is less than b list b first
+            // Sort by time
+            if (a.time > b.time) return -1;
+            if (a.time < b.time) return 1;
+            return 0;
+          })
+        );
+      }
     });
   }, [socket, sessionUser.name, setMessageList]);
-
 
   return (
     <AnimatePresence>
@@ -102,7 +103,7 @@ export default function Messages(props: {
                 setShowComponent={setShowComponent}
               />
 
-              <MessageList 
+              <MessageList
                 isMobile={isMobile}
                 contact={contact}
                 sessionUser={sessionUser}
@@ -126,4 +127,4 @@ export default function Messages(props: {
       )}
     </AnimatePresence>
   );
-};
+}

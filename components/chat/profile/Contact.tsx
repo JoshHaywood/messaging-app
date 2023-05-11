@@ -28,16 +28,11 @@ export default function Contact(props: {
   showComponent: ShowComponent;
   setShowComponent: React.Dispatch<React.SetStateAction<ShowComponent>>;
 }) {
-  const {
-    isMobile,
-    sessionUser,
-    contact,
-    showComponent,
-    setShowComponent,
-  } = props;
+  const { isMobile, sessionUser, contact, showComponent, setShowComponent } =
+    props;
 
   const [aboutToggle, setAboutToggle] = useState<boolean>(false); // Toggle about section
-  
+
   const [showMedia, setShowMedia] = useState<boolean>(true); // Toggle media section
   const [currentIndex, setCurrentIndex] = useState<number>(0); // Current index of media content
 
@@ -45,14 +40,16 @@ export default function Contact(props: {
 
   // Get images from recipient to sender
   useEffect(() => {
-    axios.get("/message/get/images", {
-      params: { 
-        sender: sessionUser.name,
-        recipient: contact[0].first_name + " " + contact[0].last_name,
-      },
-    }).then((res) => {
-      setMedia(res.data);
-    });
+    axios
+      .get("/message/get/images", {
+        params: {
+          sender: sessionUser.name,
+          recipient: contact[0].first_name + " " + contact[0].last_name,
+        },
+      })
+      .then((res) => {
+        setMedia(res.data);
+      });
   }, [sessionUser.name, contact]);
 
   return (
@@ -64,11 +61,11 @@ export default function Contact(props: {
           id="close-profile"
           onClick={() => {
             // Hide messages and profile to show chat list
-            setShowComponent(({
+            setShowComponent({
               ...showComponent,
               showMessages: true,
               showProfile: false,
-            }));
+            });
           }}
           className="flex flex-row items-center p-5 space-x-2.5 bg-gray-50 hover:cursor-pointer"
         >
@@ -252,12 +249,15 @@ export default function Contact(props: {
                 {currentIndex === 0 && (
                   /* Media contents */
                   <div className="mt-4 pr-1">
-                      {/* If there is no media, show text, else show the media */}
-                      {media.length === 0 ? (
-                        <div className="mt-5 text-sm sm:text-xs italic text-gray-400">Images your sent will appear here</div>
-                      ) : (
-                        <div className="grid grid-cols-2 2xl:grid-cols-3 gap-1">
-                          {media.map((media, index) => (
+                    {/* If there is no media, show text, else show the media */}
+                    {media.length === 0 ? (
+                      <div className="mt-5 text-sm sm:text-xs italic text-gray-400">
+                        Images your sent will appear here
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-2 2xl:grid-cols-3 gap-1">
+                        {media.map(
+                          (media, index) =>
                             media.image !== null && (
                               <Image
                                 key={index}
@@ -268,9 +268,9 @@ export default function Contact(props: {
                                 className="w-full h-auto rounded"
                               />
                             )
-                          ))}
+                        )}
                       </div>
-                      )} 
+                    )}
                   </div>
                 )}
               </>
@@ -280,4 +280,4 @@ export default function Contact(props: {
       ))}
     </>
   );
-};
+}

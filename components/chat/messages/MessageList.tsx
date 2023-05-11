@@ -68,11 +68,11 @@ export default function MessageList(props: {
                   ) : (
                     message.image !== null && (
                       <div ref={bottomRef}>
-                        <Image 
-                          src={message.image} 
-                          alt="Message image" 
-                          width={200} 
-                          height={200} 
+                        <Image
+                          src={message.image}
+                          alt="Message image"
+                          width={200}
+                          height={200}
                           className="inline-block justify-end p-0.5 rounded-xl"
                         />
                       </div>
@@ -89,14 +89,13 @@ export default function MessageList(props: {
                     height={35}
                     onClick={() =>
                       // If on mobile, show the account settings page
-                      isMobile && (
-                        setShowComponent(({
-                          ...showComponent,
-                          showMessages: false,
-                          showProfile: true,
-                          isAccountSettings: true,
-                        }))
-                      )
+                      isMobile &&
+                      setShowComponent({
+                        ...showComponent,
+                        showMessages: false,
+                        showProfile: true,
+                        isAccountSettings: true,
+                      })
                     }
                     className="aspect-square rounded-full border hover:cursor-pointer"
                   />
@@ -114,13 +113,12 @@ export default function MessageList(props: {
                     height={35}
                     onClick={() =>
                       // If the device is mobile, show the profile and hide the messages
-                      isMobile && (
-                        setShowComponent(({
-                          ...showComponent,
-                          showMessages: false,
-                          showProfile: true,
-                        }))
-                      )
+                      isMobile &&
+                      setShowComponent({
+                        ...showComponent,
+                        showMessages: false,
+                        showProfile: true,
+                      })
                     }
                     className="aspect-square rounded-full border hover:cursor-pointer"
                   />
@@ -148,11 +146,11 @@ export default function MessageList(props: {
                   ) : (
                     message.image !== null && (
                       <div ref={bottomRef}>
-                        <Image 
-                          src={message.image} 
-                          alt="Message image" 
-                          width={200} 
-                          height={200} 
+                        <Image
+                          src={message.image}
+                          alt="Message image"
+                          width={200}
+                          height={200}
                           className="inline-block break-words p-0.5 rounded-xl"
                         />
                       </div>
@@ -166,4 +164,4 @@ export default function MessageList(props: {
       })}
     </div>
   );
-};
+}

@@ -2,7 +2,7 @@ import crypto from "crypto";
 
 // Hashing algorithm parameters
 const salt = crypto.randomBytes(256).toString("hex");
-const iterations = 1000; 
+const iterations = 1000;
 const hashSize = 64;
 const hashAlgorithm = "sha256";
 
@@ -14,6 +14,6 @@ function HashPassword(password: string, salt: string) {
   return crypto
     .pbkdf2Sync(password, salt + pepper, iterations, hashSize, hashAlgorithm)
     .toString("hex");
-};
+}
 
 module.exports = { HashPassword, salt };

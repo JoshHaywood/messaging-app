@@ -35,6 +35,6 @@ function generateRoomName(recipient: string, sender: string) {
   const hash = crypto.createHash("sha256"); // Create hash
   hash.update(users.join("")); // Join users
   return hash.digest("hex"); // Return hash
-};
+}
 
 module.exports = socket;

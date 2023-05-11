@@ -30,7 +30,7 @@ export default function ContactList(props: {
     setSearchTerm,
     usersArray,
   } = props;
-  
+
   const [currentIndex, setCurrentIndex] = useState<number>(0); // Current index of user in usersArray
   const [selectRecipient, setSelectRecipient] = useState<string>(""); // Current recipient
 
@@ -41,7 +41,7 @@ export default function ContactList(props: {
     // If recipient is equal to selectRecipient, return
     if (selectRecipient === recipient) {
       return;
-    };
+    }
 
     setSelectRecipient(recipient); // Set selectRecipient to recipient
 
@@ -52,24 +52,27 @@ export default function ContactList(props: {
     });
 
     // Get messages
-    axios.get("/message/get", {
-      params: {
-        sender: sessionUser.name,
-        recipient: recipient,
-      },
-    }).then((res) => {
-      // Sort messages by time
-      setMessageList(res.data.sort((a: Message, b: Message) => {
-          // Sort by date
-          if (a.date > b.date) return 1; // If a is greater than b list a first
-          if (a.date < b.date) return -1; // If a is less than b list b first
-          // Sort by time
-          if (a.time > b.time) return 1; 
-          if (a.time < b.time) return -1;
-          return 0;
-        })
-      );
-    });
+    axios
+      .get("/message/get", {
+        params: {
+          sender: sessionUser.name,
+          recipient: recipient,
+        },
+      })
+      .then((res) => {
+        // Sort messages by time
+        setMessageList(
+          res.data.sort((a: Message, b: Message) => {
+            // Sort by date
+            if (a.date > b.date) return 1; // If a is greater than b list a first
+            if (a.date < b.date) return -1; // If a is less than b list b first
+            // Sort by time
+            if (a.time > b.time) return 1;
+            if (a.time < b.time) return -1;
+            return 0;
+          })
+        );
+      });
   };
 
   return (
@@ -83,21 +86,19 @@ export default function ContactList(props: {
           key={index}
           onClick={() => {
             // If is mobile, show messages and hide profile
-            isMobile ? ( 
-              setShowComponent(({
-                ...showComponent,
-                welcomeMessage: false,
-                showMessages: true,
-                showProfile: false,
-              }))
-            ) : (
-              setShowComponent(({
-                ...showComponent,
-                welcomeMessage: false,
-                showProfile: true,
-                isAccountSettings: false,
-              }))
-            )
+            isMobile
+              ? setShowComponent({
+                  ...showComponent,
+                  welcomeMessage: false,
+                  showMessages: true,
+                  showProfile: false,
+                })
+              : setShowComponent({
+                  ...showComponent,
+                  welcomeMessage: false,
+                  showProfile: true,
+                  isAccountSettings: false,
+                });
             joinRoom(user); // Join room
             // Hide welcome message, show profile, and hide account settings
             setContact([user]); // Set profile to current user
@@ -143,4 +144,4 @@ export default function ContactList(props: {
       ))}
     </div>
   );
-};
+}

@@ -25,11 +25,13 @@ app.prepare().then(() => {
   const server = http.createServer(app);
 
   // Cors
-  app.use(cors({
-    origin: process.env.CLIENT_URL,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  }));
+  app.use(
+    cors({
+      origin: process.env.CLIENT_URL,
+      methods: ["GET", "POST", "PUT", "DELETE"],
+      credentials: true,
+    })
+  );
 
   // Body parser
   app.use(bodyParser.json({ limit: "20mb" }));

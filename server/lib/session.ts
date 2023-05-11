@@ -9,7 +9,8 @@ app.use(cookieParser());
 const secret = crypto.randomBytes(256).toString("hex");
 
 // Session setup
-app.use(session({
+app.use(
+  session({
     name: "user_id",
     secret: process.env.SECRET || secret,
     resave: false,
