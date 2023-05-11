@@ -8,7 +8,7 @@ import SessionUser from "@/interfaces/sessionUser";
 import Message from "@/interfaces/message";
 import ShowComponent from "@/interfaces/showComponent";
 
-import SearchBar from "./SearchBar";
+import SearchBar from "./header/Header";
 import ContactList from "./ContactList";
 import Account from "./Account";
 
