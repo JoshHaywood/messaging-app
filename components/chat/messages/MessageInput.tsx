@@ -3,14 +3,14 @@ import { useState } from "react";
 import { Socket } from "socket.io-client";
 import axios from "axios";
 
-import Contact from "@/interfaces/contactTypes";
-import SessionUser from "@/interfaces/sessionUserTypes";
-import Message from "@/interfaces/messageTypes";
+import User from "@/interfaces/user";
+import SessionUser from "@/interfaces/sessionUser";
+import Message from "@/interfaces/message";
 import createFileInputHandler from "@/components/utils/createFileInputHandler";
 
 export default function MessageInput(props: {
   socket: Socket;
-  contact: Contact[];
+  contact: User[];
   sessionUser: SessionUser;
   message: string;
   setMessage: React.Dispatch<React.SetStateAction<string>>;

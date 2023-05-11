@@ -16,7 +16,7 @@ const session = require("./lib/session");
 const socket = require("./lib/socket");
 
 const authRoutes = require("./routes/auth");
-const contactRoutes = require("./routes/contacts");
+const usersRoutes = require("./routes/users");
 const messageRoutes = require("./routes/message");
 const settingsRoutes = require("./routes/settings");
 
@@ -41,7 +41,7 @@ app.prepare().then(() => {
 
   // Routes
   app.use("/auth", authRoutes);
-  app.use("/contacts", contactRoutes);
+  app.use("/users", usersRoutes);
   app.use("/message", messageRoutes);
   app.use("/settings", settingsRoutes);
 

@@ -1,5 +1,5 @@
 // Session User
-export default interface SessionUserTypes {
+export default interface SessionUser {
   name: string;
   userName: string;
   profilePicture: string;

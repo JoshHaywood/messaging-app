@@ -1,22 +1,22 @@
 import { useState, useRef } from "react";
 import axios from "axios";
 
-import SessionUser from "@/interfaces/sessionUserTypes";
-import ShowComponentTypes from "@/interfaces/showComponentTypes";
+import SessionUser from "@/interfaces/sessionUser";
+import ShowComponent from "@/interfaces/showComponent";
 import ProfilePicture from "./ProfilePicture";
 
 export default function Settings(props: {
   isMobile: boolean;
   sessionUser: SessionUser;
   setSessionUser: React.Dispatch<React.SetStateAction<SessionUser>>;
-  showComponentTypes: ShowComponentTypes;
-  setShowComponent: React.Dispatch<React.SetStateAction<ShowComponentTypes>>;
+  showComponent: ShowComponent;
+  setShowComponent: React.Dispatch<React.SetStateAction<ShowComponent>>;
 }) {
   const {
     isMobile,
     sessionUser,
     setSessionUser,
-    showComponentTypes,
+    showComponent,
     setShowComponent,
   } = props;
 
@@ -51,20 +51,20 @@ export default function Settings(props: {
           {
             isMobile
               ? setShowComponent({
-                  ...showComponentTypes,
+                  ...showComponent,
                   showProfile: false,
                 })
               : setShowComponent({
-                  ...showComponentTypes,
+                  ...showComponent,
                   isAccountSettings: false,
                 });
           }
           // If welcome message is showing, toggle profile
           {
-            showComponentTypes.welcomeMessage &&
+            showComponent.welcomeMessage &&
               setShowComponent({
-                ...showComponentTypes,
-                showProfile: !showComponentTypes.showProfile,
+                ...showComponent,
+                showProfile: !showComponent.showProfile,
                 isAccountSettings: true,
               });
           }

@@ -1,33 +1,33 @@
 import { AnimatePresence, motion } from "framer-motion";
 
-import ContactTypes from "@/interfaces/contactTypes";
-import SessionUser from "@/interfaces/sessionUserTypes";
-import ShowComponentTypes from "@/interfaces/showComponentTypes";
+import User from "@/interfaces/user";
+import SessionUser from "@/interfaces/sessionUser";
+import ShowComponent from "@/interfaces/showComponent";
 
 import Contact from "./Contact";
 import Settings from "./settings/Settings";
 
 export default function Profile(props: {
   isMobile: boolean;
-  contact: ContactTypes[];
+  contact: User[];
   sessionUser: SessionUser;
   setSessionUser: React.Dispatch<React.SetStateAction<SessionUser>>;
-  showComponentTypes: ShowComponentTypes;
-  setShowComponent: React.Dispatch<React.SetStateAction<ShowComponentTypes>>;
+  showComponent: ShowComponent;
+  setShowComponent: React.Dispatch<React.SetStateAction<ShowComponent>>;
 }) {
   const {
     isMobile,
     contact,
     sessionUser,
     setSessionUser,
-    showComponentTypes,
+    showComponent,
     setShowComponent,
   } = props;
 
   return (
     <AnimatePresence>
       {/* If profile is open show profile component else show nothing */}
-      {showComponentTypes.showProfile && (
+      {showComponent.showProfile && (
         <motion.div
           initial={isMobile && { y: "100%" }}
           animate={isMobile && { y: 0 }}
@@ -36,12 +36,12 @@ export default function Profile(props: {
           className="w-full lg:w-1/4 h-full flex flex-col"
         >
           {/* If the user is viewing their own profile show setting component else show recipient component */}
-          {showComponentTypes.isAccountSettings ? (
+          {showComponent.isAccountSettings ? (
             <Settings
               isMobile={isMobile}
               sessionUser={sessionUser}
               setSessionUser={setSessionUser}
-              showComponentTypes={showComponentTypes}
+              showComponent={showComponent}
               setShowComponent={setShowComponent}
             />
           ) : (
@@ -49,7 +49,7 @@ export default function Profile(props: {
               isMobile={isMobile}
               sessionUser={sessionUser}
               contact={contact}
-              showComponentTypes={showComponentTypes}
+              showComponent={showComponent}
               setShowComponent={setShowComponent}
             />
           )}

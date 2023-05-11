@@ -2,15 +2,15 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import axios from "axios";
 
-import SessionUser from "@/interfaces/sessionUserTypes";
-import ShowComponentTypes from "@/interfaces/showComponentTypes";
+import SessionUser from "@/interfaces/sessionUser";
+import ShowComponent from "@/interfaces/showComponent";
 
 export default function Account(props: {
   isMobile: boolean;
   sessionUser: SessionUser;
   setSessionUser: React.Dispatch<React.SetStateAction<SessionUser>>;
-  showComponentTypes: ShowComponentTypes;
-  setShowComponent: React.Dispatch<React.SetStateAction<ShowComponentTypes>>;
+  showComponent: ShowComponent;
+  setShowComponent: React.Dispatch<React.SetStateAction<ShowComponent>>;
 }) {
   const router = useRouter();
 
@@ -18,7 +18,7 @@ export default function Account(props: {
     isMobile,
     sessionUser,
     setSessionUser,
-    showComponentTypes,
+    showComponent,
     setShowComponent,
   } = props;
 
@@ -57,23 +57,23 @@ export default function Account(props: {
               {
                 isMobile
                   ? setShowComponent({
-                      ...showComponentTypes,
+                      ...showComponent,
                       showProfile: true,
                       showMessages: false,
                       isAccountSettings: true,
                     })
                   : setShowComponent({
-                      ...showComponentTypes,
+                      ...showComponent,
                       showProfile: true,
                       isAccountSettings: true,
                     });
               }
               // If welcome message is showing, toggle profile
               {
-                showComponentTypes.welcomeMessage &&
+                showComponent.welcomeMessage &&
                   setShowComponent({
-                    ...showComponentTypes,
-                    showProfile: !showComponentTypes.showProfile,
+                    ...showComponent,
+                    showProfile: !showComponent.showProfile,
                     isAccountSettings: true,
                   });
               }
@@ -90,22 +90,22 @@ export default function Account(props: {
               {
                 isMobile &&
                   setShowComponent({
-                    ...showComponentTypes,
+                    ...showComponent,
                     showMessages: false,
                     showProfile: true,
                   });
               }
               // If welcome message is showing, toggle profile
               {
-                showComponentTypes.welcomeMessage &&
+                showComponent.welcomeMessage &&
                   setShowComponent({
-                    ...showComponentTypes,
-                    showProfile: !showComponentTypes.showProfile,
+                    ...showComponent,
+                    showProfile: !showComponent.showProfile,
                   });
               }
               // Revert to recipient profile instead of account settings
               setShowComponent({
-                ...showComponentTypes,
+                ...showComponent,
                 isAccountSettings: true,
               });
             }}

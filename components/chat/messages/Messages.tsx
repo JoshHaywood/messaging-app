@@ -3,10 +3,10 @@ import { useState, useEffect } from "react";
 import { Socket } from "socket.io-client";
 import { AnimatePresence, motion } from "framer-motion";
 
-import Contact from "@/interfaces/contactTypes";
-import SessionUser from "@/interfaces/sessionUserTypes";
-import Message from "@/interfaces/messageTypes";
-import ShowComponentTypes from "@/interfaces/showComponentTypes";
+import User from "@/interfaces/user";
+import SessionUser from "@/interfaces/sessionUser";
+import Message from "@/interfaces/message";
+import ShowComponent from "@/interfaces/showComponent";
 
 import Recipient from "./Recipient";
 import MessageList from "./MessageList";
@@ -17,10 +17,10 @@ export default function Messages(props: {
   isMobile: boolean;
   messageList: Message[];
   setMessageList: React.Dispatch<React.SetStateAction<Message[]>>;
-  contact: Contact[];
+  contact: User[];
   sessionUser: SessionUser;
-  showComponentTypes: ShowComponentTypes;
-  setShowComponent: React.Dispatch<React.SetStateAction<ShowComponentTypes>>;
+  showComponent: ShowComponent;
+  setShowComponent: React.Dispatch<React.SetStateAction<ShowComponent>>;
 }) {
   const {
     socket,
@@ -29,7 +29,7 @@ export default function Messages(props: {
     setMessageList,
     contact,
     sessionUser,
-    showComponentTypes,
+    showComponent,
     setShowComponent,
   } = props;
 
@@ -58,7 +58,7 @@ export default function Messages(props: {
   return (
     <AnimatePresence>
       {/* If showMessages is set to true, show the messages */}
-      {showComponentTypes.showMessages && (
+      {showComponent.showMessages && (
         <motion.div
           initial={isMobile && { y: "100%" }}
           animate={isMobile && { y: 0 }}
@@ -66,13 +66,13 @@ export default function Messages(props: {
           transition={{ duration: 0.2, ease: "easeInOut" }}
           className={`${
             // If the welcome message is displayed and the profile isn't displayed allow the message to take up full screen width else account for profiles width
-            showComponentTypes.welcomeMessage && !showComponentTypes.showProfile
+            showComponent.welcomeMessage && !showComponent.showProfile
               ? "w-full lg:w-3/4"
               : "w-full lg:w-1/2"
           } flex flex-col fixed sm:relative bottom-0 sm:bottom-auto left-0 sm:left-auto right-0 sm:right-auto top-0 sm:top-auto`}
         >
           {/* If no recipient has been selected and welcome message is set to true, show the welcome message. Else show message data */}
-          {showComponentTypes.welcomeMessage ? (
+          {showComponent.welcomeMessage ? (
             /* Welcome message */
             <div className="h-full flex flex-col justify-center items-center p-5 border">
               <Image
@@ -99,7 +99,7 @@ export default function Messages(props: {
               <Recipient
                 isMobile={isMobile}
                 contact={contact}
-                showComponentTypes={showComponentTypes}
+                showComponent={showComponent}
                 setShowComponent={setShowComponent}
               />
 
@@ -108,7 +108,7 @@ export default function Messages(props: {
                 contact={contact}
                 sessionUser={sessionUser}
                 messageList={messageList}
-                showComponentTypes={showComponentTypes}
+                showComponent={showComponent}
                 setShowComponent={setShowComponent}
               />
 

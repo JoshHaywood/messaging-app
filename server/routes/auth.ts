@@ -3,7 +3,7 @@ const router = express.Router();
 
 const db = require("../config/db");
 const { HashPassword, salt } = require("../lib/security");
-import Contact from "@/interfaces/contactTypes";
+import User from "@/interfaces/user";
 
 // Session data
 declare module "express-session" {
@@ -29,7 +29,7 @@ router.post("/register", (req: Request, res: Response) => {
     "INSERT INTO users (user_name, first_name, last_name, email, password, salt, profile_picture) VALUES(?, ?, ?, ?, ?, ?, ?)"; // Inserts new row
 
   // Check if email already exists
-  db.query(selectEmail, [email], (err: Error, rows: Contact[]) => {
+  db.query(selectEmail, [email], (err: Error, rows: User[]) => {
     if (err) throw err;
 
     // If email exists
@@ -49,18 +49,14 @@ router.post("/register", (req: Request, res: Response) => {
       uniqueUsername = `${userName}#${formattedNum}`;
 
       // Check if username already exists
-      db.query(
-        selectUsername,
-        [uniqueUsername],
-        (err: Error, rows: Contact[]) => {
-          if (err) throw err;
+      db.query(selectUsername, [uniqueUsername], (err: Error, rows: User[]) => {
+        if (err) throw err;
 
-          // If username exists, generate a new number and try again
-          if (rows.length > 0) {
-            uniqueUsername = "";
-          }
+        // If username exists, generate a new number and try again
+        if (rows.length > 0) {
+          uniqueUsername = "";
         }
-      );
+      });
     } while (uniqueUsername === "");
 
     // Hash password
@@ -78,7 +74,7 @@ router.post("/register", (req: Request, res: Response) => {
         salt,
         profilePicture,
       ],
-      (err: Error, rows: Contact[]) => {
+      (err: Error, rows: User[]) => {
         if (err) throw err;
 
         console.log(
@@ -95,7 +91,7 @@ router.post("/login", (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   // Check if email exists
-  db.query(selectEmail, [email], (err: Error, rows: Contact[]) => {
+  db.query(selectEmail, [email], (err: Error, rows: User[]) => {
     if (err) throw err;
 
     // If email exists

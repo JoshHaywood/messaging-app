@@ -3,21 +3,21 @@ import { useState } from "react";
 import { Socket } from "socket.io-client";
 import axios from "axios";
 
-import Contact from "@/interfaces/contactTypes";
-import SessionUser from "@/interfaces/sessionUserTypes";
-import Message from "@/interfaces/messageTypes";
-import ShowComponentTypes from "@/interfaces/showComponentTypes";
+import User from "@/interfaces/user";
+import SessionUser from "@/interfaces/sessionUser";
+import Message from "@/interfaces/message";
+import ShowComponent from "@/interfaces/showComponent";
 
 export default function ContactList(props: {
   socket: Socket;
   isMobile: boolean;
   setMessageList: React.Dispatch<React.SetStateAction<Message[]>>;
-  setContact: React.Dispatch<React.SetStateAction<Contact[]>>;
+  setContact: React.Dispatch<React.SetStateAction<User[]>>;
   sessionUser: SessionUser;
-  showComponentTypes: ShowComponentTypes;
-  setShowComponent: React.Dispatch<React.SetStateAction<ShowComponentTypes>>;
+  showComponent: ShowComponent;
+  setShowComponent: React.Dispatch<React.SetStateAction<ShowComponent>>;
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
-  usersArray: Contact[];
+  usersArray: User[];
 }) {
   const {
     socket,
@@ -25,7 +25,7 @@ export default function ContactList(props: {
     setMessageList,
     setContact,
     sessionUser,
-    showComponentTypes,
+    showComponent,
     setShowComponent,
     setSearchTerm,
     usersArray,
@@ -35,7 +35,7 @@ export default function ContactList(props: {
   const [selectRecipient, setSelectRecipient] = useState<string>(""); // Current recipient
 
   // Join room
-  const joinRoom = (user: Contact) => {
+  const joinRoom = (user: User) => {
     const recipient = user.first_name + " " + user.last_name;
 
     // If recipient is equal to selectRecipient, return
@@ -88,13 +88,13 @@ export default function ContactList(props: {
             // If is mobile, show messages and hide profile
             isMobile
               ? setShowComponent({
-                  ...showComponentTypes,
+                  ...showComponent,
                   welcomeMessage: false,
                   showMessages: true,
                   showProfile: false,
                 })
               : setShowComponent({
-                  ...showComponentTypes,
+                  ...showComponent,
                   welcomeMessage: false,
                   showProfile: true,
                   isAccountSettings: false,
