@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 
 import Button from "@mui/material/Button";
-import { autocompleteClasses } from "@mui/material";
 
 export default function AddContact() {
+  const [isSmallMobile, setIsSmallMobile] = useState<boolean>(false);
   const [showModel, setShowModel] = useState(false);
 
-  const [isSmallMobile, setIsSmallMobile] = useState<boolean>(false); // Check if device is mobile
+  const [username, setUsername] = useState<string>("");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -21,6 +22,23 @@ export default function AddContact() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  // Register user
+  const insertRow = () => {
+    axios
+      .post("/contacts/request", {
+        recipient: username,
+      })
+      .then((res) => {
+        console.log(res.data);
+      });
+  };
+
+  const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    insertRow();
+  };
 
   return (
     <>
@@ -96,17 +114,23 @@ export default function AddContact() {
                 </Button>
               </div>
             ) : (
-              <div
+              <form
                 id="add-contact-container"
+                onSubmit={submitHandler}
+                onKeyDown={(e) => {
+                  e.key === "Enter" && submitHandler; //Submit form on enter
+                }}
                 className="mt-5 flex flex-row justify-between border rounded-lg"
               >
                 <input
                   placeholder="Enter a Username#0000"
                   required
+                  onChange={(e) => setUsername(e.target.value)}
                   className="px-2 w-2/3 lg:w-3/4 text-gray-500 focus:outline-none"
                 />
 
                 <Button
+                  type="submit"
                   variant="contained"
                   sx={{
                     margin: "0.5rem",
@@ -119,7 +143,7 @@ export default function AddContact() {
                 >
                   Add contact
                 </Button>
-              </div>
+              </form>
             )}
           </div>
         </div>
