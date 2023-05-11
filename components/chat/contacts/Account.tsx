@@ -28,6 +28,7 @@ export default function Account(props: {
       // Clear user data
       setSessionUser({
         name: "",
+        userName: "",
         about: "",
         profilePicture: "",
       });
