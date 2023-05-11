@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Socket } from "socket.io-client";
 import axios from "axios";
 
@@ -34,6 +34,52 @@ export default function ContactList(props: {
   const [currentIndex, setCurrentIndex] = useState<number>(0); // Current index of user in usersArray
   const [selectRecipient, setSelectRecipient] = useState<string>(""); // Current recipient
 
+  const [recentMessages, setRecentMessages] = useState<{
+    [key: string]: string;
+  }>({});
+
+  // Get all messages for session user
+  useEffect(() => {
+    axios
+      .get("/message/get/recent", {
+        params: {
+          sender: sessionUser.name,
+        },
+      })
+      .then((res) => {
+        const messages = res.data;
+
+        // Get recent messages
+        const recentMessages = messages.reduce(
+          // Reduce messages array to object with key as other user and value as message
+          (acc: { [key: string]: string }, message: Message) => {
+            const isMessageFromUser = message.sender === sessionUser.name; // Check if message is from session user
+            const otherUser = isMessageFromUser // Set other user as recipient if message is from session user, else set other user as sender
+              ? message.recipient
+              : message.sender;
+            const currentMessage = message.message;
+
+            // If other user is not in recentMessages object or message date is greater than other user's message date, set other user's message as current message
+            if (
+              !acc[otherUser] ||
+              message.date >
+                messages.find(
+                  (m: Message) =>
+                    m.sender === otherUser || m.recipient === otherUser
+                )?.date
+            ) {
+              acc[otherUser] = currentMessage as string;
+            }
+
+            return acc;
+          },
+          {}
+        );
+
+        setRecentMessages(recentMessages);
+      });
+  }, [sessionUser.name]);
+
   // Join room
   const joinRoom = (user: User) => {
     const recipient = user.first_name + " " + user.last_name;
@@ -53,7 +99,7 @@ export default function ContactList(props: {
 
     // Get messages
     axios
-      .get("/message/get", {
+      .get("/message/get/conversation", {
         params: {
           sender: sessionUser.name,
           recipient: recipient,
@@ -100,7 +146,6 @@ export default function ContactList(props: {
                   isAccountSettings: false,
                 });
             joinRoom(user); // Join room
-            // Hide welcome message, show profile, and hide account settings
             setContact([user]); // Set profile to current user
             setSearchTerm(""); // Clear search term
             setCurrentIndex(index); // Set current index to current user
@@ -134,11 +179,14 @@ export default function ContactList(props: {
             {/* Placeholder text used instead of div to prevent overflow */}
             <input
               type="text"
-              placeholder="Lorem ipsum vestibulum vitae mi venenatis eleifend mauris iaculis pulvinar est, eu sagittis dolor malesuada et"
+              placeholder={
+                recentMessages[user.first_name + " " + user.last_name] ||
+                "No messages"
+              }
               readOnly
               disabled
               className="w-full inline-block ellipsis overflow-hidden overflow-ellipsis whitespace-nowrap outline-none pointer-events-none text-sm text-gray-400 bg-transparent"
-            ></input>
+            />
           </div>
         </div>
       ))}

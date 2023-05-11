@@ -4,26 +4,26 @@ const router = express.Router();
 const db = require("../config/db");
 import Message from "@/interfaces/message";
 
-// Store message in database
-router.post("/store", (req: Request, res: Response) => {
-  const { sender, recipient, message, image, time, date } = req.body;
-  const insertRow =
-    "INSERT INTO messages (sender, recipient, message, image, time, date) VALUES(?, ?, ?, ?, ?, ?)"; // Inserts new row
+// Get most recent message from each conversation
+router.get("/get/recent", (req: Request, res: Response) => {
+  const { sender } = req.query; // Get sender from query
+  const getRecentMessages =
+    "SELECT * FROM messages WHERE id IN (SELECT MAX(id) FROM messages WHERE sender = ? OR recipient = ? GROUP BY sender, recipient) ORDER BY id DESC"; // Gets most recent message from each conversation
 
-  // Insert new row
+  // Get most recent messages
   db.query(
-    insertRow,
-    [sender, recipient, message, image, time, date],
+    getRecentMessages,
+    [sender, sender],
     (err: Error, rows: Message[]) => {
       if (err) throw err;
 
-      res.send("Message stored");
+      res.send(rows); // Send most recent messages
     }
   );
 });
 
-// Get messages
-router.get("/get", (req: Request, res: Response) => {
+// Get conversation between two users
+router.get("/get/conversation", (req: Request, res: Response) => {
   const { sender, recipient } = req.query; // Get sender and recipient from query
   const getSentMessages =
     "SELECT * FROM messages WHERE sender = ? AND recipient = ?"; // Gets all sent messages
@@ -62,6 +62,24 @@ router.get("/get/images", (req: Request, res: Response) => {
 
     res.send(rows); // Send images
   });
+});
+
+// Store message in database
+router.post("/store", (req: Request, res: Response) => {
+  const { sender, recipient, message, image, time, date } = req.body;
+  const insertRow =
+    "INSERT INTO messages (sender, recipient, message, image, time, date) VALUES(?, ?, ?, ?, ?, ?)"; // Inserts new row
+
+  // Insert new row
+  db.query(
+    insertRow,
+    [sender, recipient, message, image, time, date],
+    (err: Error, rows: Message[]) => {
+      if (err) throw err;
+
+      res.send("Message stored");
+    }
+  );
 });
 
 module.exports = router;
