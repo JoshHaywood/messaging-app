@@ -43,11 +43,11 @@ export default function Messages(props: {
         setMessageList((prevMessageList) =>
           [...prevMessageList, data].sort((a, b) => {
             // Sort by date
-            if (a.date > b.date) return -1; // If a is greater than b list a first
-            if (a.date < b.date) return 1; // If a is less than b list b first
+            if (a.date > b.date) return 1; // If a is greater than b list b first
+            if (a.date < b.date) return -1; // If a is less than b list a first
             // Sort by time
-            if (a.time > b.time) return -1;
-            if (a.time < b.time) return 1;
+            if (a.time > b.time) return 1;
+            if (a.time < b.time) return -1;
             return 0;
           })
         );

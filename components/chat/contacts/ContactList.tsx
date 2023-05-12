@@ -38,10 +38,6 @@ export default function ContactList(props: {
     [key: string]: string;
   }>({});
 
-  //To do
-  // Create socket so list updates in real time
-  // If not a text message set placeholder to image or file
-
   // Get all messages for session user
   useEffect(() => {
     axios
@@ -99,10 +95,33 @@ export default function ContactList(props: {
             (m: Message) => m.sender === otherUser || m.recipient === otherUser
           )?.date
       ) {
-        setRecentMessages({
-          ...recentMessages,
+        setRecentMessages((prevRecentMessages) => ({
+          ...prevRecentMessages,
           [otherUser]: currentMessage as string,
-        });
+        }));
+      }
+    });
+
+    // Update recent messages when message is received
+    socket.on("receive_message", (message: Message) => {
+      const isMessageFromUser = message.sender === sessionUser.name; // Check if message is from session user
+      const otherUser = isMessageFromUser // Set other user as recipient if message is from session user, else set other user as sender
+        ? message.recipient
+        : message.sender;
+      const currentMessage = message.message;
+
+      // If other user is not in recentMessages object or message date is greater than other user's message date, set other user's message as current message
+      if (
+        !recentMessages[otherUser] ||
+        message.date >
+          recentMessages.find(
+            (m: Message) => m.sender === otherUser || m.recipient === otherUser
+          )?.date
+      ) {
+        setRecentMessages((prevRecentMessages) => ({
+          ...prevRecentMessages,
+          [otherUser]: currentMessage as string,
+        }));
       }
     });
   }, [sessionUser.name, socket]);
