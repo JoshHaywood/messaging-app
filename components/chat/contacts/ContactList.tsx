@@ -78,53 +78,73 @@ export default function ContactList(props: {
 
         setRecentMessages(recentMessages);
       });
+  }, [sessionUser.name]);
 
-    // Update recent messages when message is sent
-    socket.on("send_message", (message: Message) => {
-      const isMessageFromUser = message.sender === sessionUser.name; // Check if message is from session user
-      const otherUser = isMessageFromUser // Set other user as recipient if message is from session user, else set other user as sender
-        ? message.recipient
-        : message.sender;
-      const currentMessage = message.message;
+  // Update recent messages when message is sent or received
+  useEffect(() => {
+    const updateRecentMessages = (message: Message) => {
+      const { sender, recipient, message: currentMessage, date } = message;
+      const isMessageFromUser = sender === sessionUser.name;
+      const otherUser = isMessageFromUser ? recipient : sender;
 
-      // If other user is not in recentMessages object or message date is greater than other user's message date, set other user's message as current message
-      if (
-        !recentMessages[otherUser] ||
-        message.date >
-          recentMessages.find(
-            (m: Message) => m.sender === otherUser || m.recipient === otherUser
-          )?.date
-      ) {
-        setRecentMessages((prevRecentMessages) => ({
-          ...prevRecentMessages,
-          [otherUser]: currentMessage as string,
-        }));
-      }
-    });
-
-    // Update recent messages when message is received
-    socket.on("receive_message", (message: Message) => {
-      const isMessageFromUser = message.sender === sessionUser.name; // Check if message is from session user
-      const otherUser = isMessageFromUser // Set other user as recipient if message is from session user, else set other user as sender
-        ? message.recipient
-        : message.sender;
-      const currentMessage = message.message;
+      const recentMessagesArray = Object.values(
+        recentMessages
+      ) as unknown as Message[];
+      const mostRecentMessage = recentMessagesArray.find(
+        (m: Message) => m.sender === otherUser || m.recipient === otherUser
+      );
 
       // If other user is not in recentMessages object or message date is greater than other user's message date, set other user's message as current message
       if (
         !recentMessages[otherUser] ||
-        message.date >
-          recentMessages.find(
-            (m: Message) => m.sender === otherUser || m.recipient === otherUser
-          )?.date
+        (mostRecentMessage?.date && date > mostRecentMessage.date)
       ) {
-        setRecentMessages((prevRecentMessages) => ({
-          ...prevRecentMessages,
-          [otherUser]: currentMessage as string,
-        }));
+        // Fetch updated list of recent messages from server
+        axios
+          .get("/message/get/recent", {
+            params: {
+              sender: sessionUser.name,
+            },
+          })
+          .then((res) => {
+            const messages = res.data;
+
+            // Get recent messages
+            const recentMessages = messages.reduce(
+              // Reduce messages array to object with key as other user and value as message
+              (acc: { [key: string]: string }, message: Message) => {
+                const isMessageFromUser = message.sender === sessionUser.name; // Check if message is from session user
+                const otherUser = isMessageFromUser // Set other user as recipient if message is from session user, else set other user as sender
+                  ? message.recipient
+                  : message.sender;
+                const currentMessage = message.message;
+
+                // If other user is not in recentMessages object or message date is greater than other user's message date, set other user's message as current message
+                if (
+                  !acc[otherUser] ||
+                  message.date >
+                    messages.find(
+                      (m: Message) =>
+                        m.sender === otherUser || m.recipient === otherUser
+                    )?.date
+                ) {
+                  acc[otherUser] = currentMessage as string;
+                }
+
+                return acc;
+              },
+              {}
+            );
+
+            setRecentMessages(recentMessages);
+          });
       }
-    });
-  }, [sessionUser.name, socket]);
+    };
+
+    // Update recent messages when message is sent or received
+    socket.on("send_message", updateRecentMessages);
+    socket.on("receive_message", updateRecentMessages);
+  }, [sessionUser.name, socket, recentMessages]);
 
   // Join room
   const joinRoom = (user: User) => {
