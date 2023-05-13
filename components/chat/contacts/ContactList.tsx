@@ -34,9 +34,17 @@ export default function ContactList(props: {
   const [currentIndex, setCurrentIndex] = useState<number>(0); // Current index of user in usersArray
   const [selectRecipient, setSelectRecipient] = useState<string>(""); // Current recipient
 
-  const [recentMessages, setRecentMessages] = useState<{
-    [key: string]: string;
-  }>({});
+  // Recent messages interface
+  type RecentMessages = {
+    [key: string]: {
+      message: string;
+      time: string;
+      date: string;
+      timeDiff: string;
+    };
+  };
+
+  const [recentMessages, setRecentMessages] = useState<RecentMessages>({}); // Recent messages
 
   // Time comparison helper function
   function compareTimes(time1: string, time2: string) {
@@ -55,8 +63,8 @@ export default function ContactList(props: {
     return diffInMinutes;
   }
 
-  // Get all messages for session user
-  useEffect(() => {
+  // Get recent messages
+  const getRecentMessages = () => {
     axios
       .get("/message/get/recent", {
         params: {
@@ -66,9 +74,7 @@ export default function ContactList(props: {
       .then((res) => {
         const messages = res.data;
 
-        // Get recent messages
         const recentMessages = messages.reduce(
-          // Reduce messages array to object with key as other user and value as message and time difference
           (
             acc: {
               [key: string]: {
@@ -80,8 +86,8 @@ export default function ContactList(props: {
             },
             message: Message
           ) => {
-            const isMessageFromUser = message.sender === sessionUser.name; // Check if message is from session user
-            const otherUser = isMessageFromUser // Set other user as recipient if message is from session user, else set other user as sender
+            const isMessageFromUser = message.sender === sessionUser.name;
+            const otherUser = isMessageFromUser
               ? message.recipient
               : message.sender;
             const currentMessage = message.message;
@@ -89,9 +95,12 @@ export default function ContactList(props: {
             const currentMessageDate = message.date;
 
             const currentTime = new Date();
-            const time1 = `${currentTime.getHours()}:${currentTime.getMinutes()}`;
+            const formattedCurrentTime = `${currentTime.getHours()}:${currentTime.getMinutes()}`;
 
-            const diffInMinutes = compareTimes(time1, currentMessageTime);
+            const diffInMinutes = compareTimes(
+              formattedCurrentTime,
+              currentMessageTime
+            );
 
             let timeDiff;
 
@@ -106,7 +115,6 @@ export default function ContactList(props: {
               timeDiff = `${diffInHours} hours ago`;
             }
 
-            // If other user is not in recentMessages object or message date is greater than other user's message date, set other user's message as current message
             if (
               !acc[otherUser] ||
               message.date >
@@ -130,6 +138,13 @@ export default function ContactList(props: {
 
         setRecentMessages(recentMessages);
       });
+  };
+
+  // Get recent messages on mount
+  useEffect(() => {
+    getRecentMessages();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessionUser.name]);
 
   // Update recent messages when message is sent or received
@@ -146,91 +161,18 @@ export default function ContactList(props: {
         (m: Message) => m.sender === otherUser || m.recipient === otherUser
       );
 
-      // If other user is not in recentMessages object or message date is greater than other user's message date, set other user's message as current message
       if (
         !recentMessages[otherUser] ||
         (mostRecentMessage?.date && date > mostRecentMessage.date)
       ) {
-        // Fetch updated list of recent messages from server
-        axios
-          .get("/message/get/recent", {
-            params: {
-              sender: sessionUser.name,
-            },
-          })
-          .then((res) => {
-            const messages = res.data;
-
-            // Get recent messages
-            const recentMessages = messages.reduce(
-              // Reduce messages array to object with key as other user and value as message and time difference
-              (
-                acc: {
-                  [key: string]: {
-                    message: string;
-                    time: string;
-                    date: string;
-                    timeDiff: string;
-                  };
-                },
-                message: Message
-              ) => {
-                const isMessageFromUser = message.sender === sessionUser.name; // Check if message is from session user
-                const otherUser = isMessageFromUser // Set other user as recipient if message is from session user, else set other user as sender
-                  ? message.recipient
-                  : message.sender;
-                const currentMessage = message.message;
-                const currentMessageTime = message.time;
-                const currentMessageDate = message.date;
-
-                const currentTime = new Date();
-                const time1 = `${currentTime.getHours()}:${currentTime.getMinutes()}`;
-
-                const diffInMinutes = compareTimes(time1, currentMessageTime);
-
-                let timeDiff;
-
-                if (diffInMinutes < 1) {
-                  timeDiff = "just now";
-                } else if (diffInMinutes < 2) {
-                  timeDiff = `${Math.round(diffInMinutes)} min ago`;
-                } else if (diffInMinutes < 60) {
-                  timeDiff = `${Math.round(diffInMinutes)} mins ago`;
-                } else {
-                  const diffInHours = Math.floor(diffInMinutes / 60);
-                  timeDiff = `${diffInHours} hours ago`;
-                }
-
-                // If other user is not in recentMessages object or message date is greater than other user's message date, set other user's message as current message
-                if (
-                  !acc[otherUser] ||
-                  message.date >
-                    messages.find(
-                      (m: Message) =>
-                        m.sender === otherUser || m.recipient === otherUser
-                    )?.date
-                ) {
-                  acc[otherUser] = {
-                    message: currentMessage as string,
-                    time: currentMessageTime as string,
-                    date: currentMessageDate as string,
-                    timeDiff: timeDiff as string,
-                  };
-                }
-
-                return acc;
-              },
-              {}
-            );
-
-            setRecentMessages(recentMessages);
-          });
+        getRecentMessages();
       }
     };
 
-    // Update recent messages when message is sent or received
     socket.on("send_message", updateRecentMessages);
     socket.on("receive_message", updateRecentMessages);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessionUser.name, socket, recentMessages]);
 
   // Join room
