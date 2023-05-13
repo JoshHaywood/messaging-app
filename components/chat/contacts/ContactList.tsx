@@ -38,6 +38,7 @@ export default function ContactList(props: {
   type RecentMessages = {
     [key: string]: {
       message: string;
+      image: string;
       time: string;
       date: string;
       timeDiff: string;
@@ -65,6 +66,7 @@ export default function ContactList(props: {
 
   // Get recent messages
   const getRecentMessages = () => {
+    // Get most recent message from each conversation
     axios
       .get("/message/get/recent", {
         params: {
@@ -74,11 +76,13 @@ export default function ContactList(props: {
       .then((res) => {
         const messages = res.data;
 
+        // Reduce array
         const recentMessages = messages.reduce(
           (
             acc: {
               [key: string]: {
                 message: string;
+                image: string;
                 time: string;
                 date: string;
                 timeDiff: string;
@@ -87,34 +91,42 @@ export default function ContactList(props: {
             message: Message
           ) => {
             const isMessageFromUser = message.sender === sessionUser.name;
+            // If message is from user, recipient is other user
             const otherUser = isMessageFromUser
               ? message.recipient
               : message.sender;
-            const currentMessage = message.message;
-            const currentMessageTime = message.time;
-            const currentMessageDate = message.date;
+            const currentMessage = {
+              message: message.message,
+              image: message.image,
+              time: message.time,
+              date: message.date,
+            };
 
+            // Get time difference
             const currentTime = new Date();
             const formattedCurrentTime = `${currentTime.getHours()}:${currentTime.getMinutes()}`;
 
             const diffInMinutes = compareTimes(
               formattedCurrentTime,
-              currentMessageTime
+              currentMessage.time
             );
 
             let timeDiff;
 
+            // If message less than an hour ago
             if (diffInMinutes < 1) {
               timeDiff = "just now";
             } else if (diffInMinutes < 2) {
               timeDiff = `${Math.round(diffInMinutes)} min ago`;
             } else if (diffInMinutes < 60) {
               timeDiff = `${Math.round(diffInMinutes)} mins ago`;
+              // Else message is more than an hour ago
             } else {
               const diffInHours = Math.floor(diffInMinutes / 60);
               timeDiff = `${diffInHours} hours ago`;
             }
 
+            // If other user is not in accumulator or message is more recent than current message in accumulator
             if (
               !acc[otherUser] ||
               message.date >
@@ -123,10 +135,12 @@ export default function ContactList(props: {
                     m.sender === otherUser || m.recipient === otherUser
                 )?.date
             ) {
+              // Add message to accumulator
               acc[otherUser] = {
-                message: currentMessage as string,
-                time: currentMessageTime as string,
-                date: currentMessageDate as string,
+                message: currentMessage.message as string,
+                image: currentMessage.image as string,
+                time: currentMessage.time as string,
+                date: currentMessage.date as string,
                 timeDiff: timeDiff as string,
               };
             }
@@ -283,7 +297,11 @@ export default function ContactList(props: {
             <input
               type="text"
               placeholder={
-                recentMessages[user.first_name + " " + user.last_name]
+                // If recent message is an image, show "Image" else show message
+                recentMessages[user.first_name + " " + user.last_name] &&
+                recentMessages[user.first_name + " " + user.last_name].image
+                  ? "Image"
+                  : recentMessages[user.first_name + " " + user.last_name]
                   ? recentMessages[user.first_name + " " + user.last_name]
                       .message
                   : "No messages"
