@@ -38,6 +38,23 @@ export default function ContactList(props: {
     [key: string]: string;
   }>({});
 
+  // Time comparison helper function
+  function compareTimes(time1: string, time2: string) {
+    const [hours1, minutes1] = time1.split(":");
+    const [hours2, minutes2] = time2.split(":");
+
+    const date1 = new Date();
+    date1.setHours(Number(hours1), Number(minutes1), 0, 0);
+
+    const date2 = new Date();
+    date2.setHours(Number(hours2), Number(minutes2), 0, 0);
+
+    const diffInMs = date1.getTime() - date2.getTime();
+    const diffInMinutes = diffInMs / (1000 * 60);
+
+    return diffInMinutes;
+  }
+
   // Get all messages for session user
   useEffect(() => {
     axios
@@ -51,13 +68,43 @@ export default function ContactList(props: {
 
         // Get recent messages
         const recentMessages = messages.reduce(
-          // Reduce messages array to object with key as other user and value as message
-          (acc: { [key: string]: string }, message: Message) => {
+          // Reduce messages array to object with key as other user and value as message and time difference
+          (
+            acc: {
+              [key: string]: {
+                message: string;
+                time: string;
+                date: string;
+                timeDiff: string;
+              };
+            },
+            message: Message
+          ) => {
             const isMessageFromUser = message.sender === sessionUser.name; // Check if message is from session user
             const otherUser = isMessageFromUser // Set other user as recipient if message is from session user, else set other user as sender
               ? message.recipient
               : message.sender;
             const currentMessage = message.message;
+            const currentMessageTime = message.time;
+            const currentMessageDate = message.date;
+
+            const currentTime = new Date();
+            const time1 = `${currentTime.getHours()}:${currentTime.getMinutes()}`;
+
+            const diffInMinutes = compareTimes(time1, currentMessageTime);
+
+            let timeDiff;
+
+            if (diffInMinutes < 1) {
+              timeDiff = "just now";
+            } else if (diffInMinutes < 2) {
+              timeDiff = `${Math.round(diffInMinutes)} min ago`;
+            } else if (diffInMinutes < 60) {
+              timeDiff = `${Math.round(diffInMinutes)} mins ago`;
+            } else {
+              const diffInHours = Math.floor(diffInMinutes / 60);
+              timeDiff = `${diffInHours} hours ago`;
+            }
 
             // If other user is not in recentMessages object or message date is greater than other user's message date, set other user's message as current message
             if (
@@ -68,7 +115,12 @@ export default function ContactList(props: {
                     m.sender === otherUser || m.recipient === otherUser
                 )?.date
             ) {
-              acc[otherUser] = currentMessage as string;
+              acc[otherUser] = {
+                message: currentMessage as string,
+                time: currentMessageTime as string,
+                date: currentMessageDate as string,
+                timeDiff: timeDiff as string,
+              };
             }
 
             return acc;
@@ -83,7 +135,7 @@ export default function ContactList(props: {
   // Update recent messages when message is sent or received
   useEffect(() => {
     const updateRecentMessages = (message: Message) => {
-      const { sender, recipient, message: currentMessage, date } = message;
+      const { sender, recipient, date } = message;
       const isMessageFromUser = sender === sessionUser.name;
       const otherUser = isMessageFromUser ? recipient : sender;
 
@@ -111,13 +163,43 @@ export default function ContactList(props: {
 
             // Get recent messages
             const recentMessages = messages.reduce(
-              // Reduce messages array to object with key as other user and value as message
-              (acc: { [key: string]: string }, message: Message) => {
+              // Reduce messages array to object with key as other user and value as message and time difference
+              (
+                acc: {
+                  [key: string]: {
+                    message: string;
+                    time: string;
+                    date: string;
+                    timeDiff: string;
+                  };
+                },
+                message: Message
+              ) => {
                 const isMessageFromUser = message.sender === sessionUser.name; // Check if message is from session user
                 const otherUser = isMessageFromUser // Set other user as recipient if message is from session user, else set other user as sender
                   ? message.recipient
                   : message.sender;
                 const currentMessage = message.message;
+                const currentMessageTime = message.time;
+                const currentMessageDate = message.date;
+
+                const currentTime = new Date();
+                const time1 = `${currentTime.getHours()}:${currentTime.getMinutes()}`;
+
+                const diffInMinutes = compareTimes(time1, currentMessageTime);
+
+                let timeDiff;
+
+                if (diffInMinutes < 1) {
+                  timeDiff = "just now";
+                } else if (diffInMinutes < 2) {
+                  timeDiff = `${Math.round(diffInMinutes)} min ago`;
+                } else if (diffInMinutes < 60) {
+                  timeDiff = `${Math.round(diffInMinutes)} mins ago`;
+                } else {
+                  const diffInHours = Math.floor(diffInMinutes / 60);
+                  timeDiff = `${diffInHours} hours ago`;
+                }
 
                 // If other user is not in recentMessages object or message date is greater than other user's message date, set other user's message as current message
                 if (
@@ -128,7 +210,12 @@ export default function ContactList(props: {
                         m.sender === otherUser || m.recipient === otherUser
                     )?.date
                 ) {
-                  acc[otherUser] = currentMessage as string;
+                  acc[otherUser] = {
+                    message: currentMessage as string,
+                    time: currentMessageTime as string,
+                    date: currentMessageDate as string,
+                    timeDiff: timeDiff as string,
+                  };
                 }
 
                 return acc;
@@ -238,7 +325,15 @@ export default function ContactList(props: {
               </div>
 
               <div className="inline-block text-gray-400">
-                &#x2022; <span className="text-sm text-blue-400">5min ago</span>
+                {recentMessages[user.first_name + " " + user.last_name] && (
+                  <>&#x2022;</>
+                )}
+
+                <span className="ml-1 text-sm text-blue-400">
+                  {recentMessages[user.first_name + " " + user.last_name] &&
+                    recentMessages[user.first_name + " " + user.last_name]
+                      .timeDiff}
+                </span>
               </div>
             </div>
 
@@ -246,8 +341,10 @@ export default function ContactList(props: {
             <input
               type="text"
               placeholder={
-                recentMessages[user.first_name + " " + user.last_name] ||
-                "No messages"
+                recentMessages[user.first_name + " " + user.last_name]
+                  ? recentMessages[user.first_name + " " + user.last_name]
+                      .message
+                  : "No messages"
               }
               readOnly
               disabled
