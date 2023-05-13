@@ -42,6 +42,7 @@ export default function ContactList(props: {
       time: string;
       date: string;
       timeDiff: string;
+      dateDiff: string;
     };
   };
 
@@ -52,16 +53,39 @@ export default function ContactList(props: {
     const [hours1, minutes1] = time1.split(":");
     const [hours2, minutes2] = time2.split(":");
 
+    // Set dates to today
     const date1 = new Date();
     date1.setHours(Number(hours1), Number(minutes1), 0, 0);
 
     const date2 = new Date();
     date2.setHours(Number(hours2), Number(minutes2), 0, 0);
 
+    // Get difference in minutes
     const diffInMs = date1.getTime() - date2.getTime();
     const diffInMinutes = diffInMs / (1000 * 60);
 
     return diffInMinutes;
+  }
+
+  // Date comparison helper function
+  function compareDates(date: string) {
+    const storedDate = new Date(date);
+    const today = new Date();
+
+    // Ignore the year when comparing dates
+    storedDate.setFullYear(today.getFullYear());
+
+    storedDate.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+
+    console.log("storedDate", storedDate);
+    console.log("today", today);
+
+    // Calculate the difference in days
+    const timeDiff = today.getTime() - storedDate.getTime();
+    const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+    return daysDiff;
   }
 
   // Get recent messages
@@ -78,18 +102,7 @@ export default function ContactList(props: {
 
         // Reduce array
         const recentMessages = messages.reduce(
-          (
-            acc: {
-              [key: string]: {
-                message: string;
-                image: string;
-                time: string;
-                date: string;
-                timeDiff: string;
-              };
-            },
-            message: Message
-          ) => {
+          (acc: RecentMessages, message: Message) => {
             const isMessageFromUser = message.sender === sessionUser.name;
             // If message is from user, recipient is other user
             const otherUser = isMessageFromUser
@@ -111,6 +124,29 @@ export default function ContactList(props: {
               currentMessage.time
             );
 
+            const storedDate = currentMessage.date;
+
+            // If message is more than 1 day old
+            const diffInDays = compareDates(storedDate);
+
+            let dateDiff;
+
+            // If message is more than 1 day old
+            if (diffInDays < 2) {
+              dateDiff = `${diffInDays} day ago`;
+              // else displays weeks
+            } else if (diffInDays < 7) {
+              dateDiff = `${diffInDays} weeks ago`;
+              // else displays months
+            } else if (diffInDays < 30) {
+              const diffInWeeks = Math.floor(diffInDays / 30.44);
+              dateDiff = `${diffInWeeks} month ago`;
+            } else if (diffInDays < 60) {
+              dateDiff = "last month";
+            } else {
+              dateDiff = "A long time ago";
+            }
+
             let timeDiff;
 
             // If message less than an hour ago
@@ -123,7 +159,11 @@ export default function ContactList(props: {
               // Else message is more than an hour ago
             } else {
               const diffInHours = Math.floor(diffInMinutes / 60);
-              timeDiff = `${diffInHours} hours ago`;
+              if (diffInDays >= 1) {
+                timeDiff = dateDiff; // Use dateDiff if message is over 24 hours old
+              } else {
+                timeDiff = `${diffInHours} hours ago`;
+              }
             }
 
             // If other user is not in accumulator or message is more recent than current message in accumulator
@@ -142,6 +182,7 @@ export default function ContactList(props: {
                 time: currentMessage.time as string,
                 date: currentMessage.date as string,
                 timeDiff: timeDiff as string,
+                dateDiff: dateDiff as string,
               };
             }
 
