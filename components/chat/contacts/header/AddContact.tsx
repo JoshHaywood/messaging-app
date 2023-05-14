@@ -1,27 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useMediaQuery } from "react-responsive";
 import axios from "axios";
 
 import Button from "@mui/material/Button";
 
 export default function AddContact() {
-  const [isSmallMobile, setIsSmallMobile] = useState<boolean>(false);
+  const isSmallMobile = useMediaQuery({ query: "(max-width: 475px)" });
   const [showModel, setShowModel] = useState(false);
 
   const [username, setUsername] = useState<string>("");
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setIsSmallMobile(window.innerWidth < 475);
-    }
-
-    // Re-assign isMobile on window resize
-    function handleResize() {
-      setIsSmallMobile(window.innerWidth < 475);
-    }
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   // Register user
   const insertRow = () => {

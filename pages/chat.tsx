@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { useMediaQuery } from "react-responsive";
 import axios from "axios";
 import * as io from "socket.io-client";
 
@@ -17,7 +18,7 @@ export default function Chat() {
   const socket = io.connect(process.env.NEXT_CLIENT_URL as string);
   const router = useRouter();
 
-  const [isMobile, setIsMobile] = useState<boolean>(false); // Check if device is mobile
+  const isMobile = useMediaQuery({ query: "(max-width: 760px)" });
 
   const [messageList, setMessageList] = useState<Message[]>([]); // List of messages
   const [contact, setContact] = useState<User[]>([]); // User profile data
@@ -56,11 +57,6 @@ export default function Chat() {
 
   // Show messages column
   useEffect(() => {
-    // Prevent type error
-    if (typeof window !== "undefined") {
-      setIsMobile(window.innerWidth < 760);
-    }
-
     // If not on mobile, show messages and profile columns else hide them
     if (!isMobile) {
       setShowComponent((prevShowComponent) => ({
@@ -74,15 +70,7 @@ export default function Chat() {
         showMessages: false,
       }));
     }
-
-    // Re-assign isMobile on window resize
-    function handleResize() {
-      setIsMobile(window.innerWidth < 760);
-    }
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [isMobile, setIsMobile]);
+  }, [isMobile]);
 
   // Show profile column
   useEffect(() => {
