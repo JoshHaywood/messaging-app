@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import axios from "axios";
 
+import Overlay from "../../overlay";
 import Button from "@mui/material/Button";
 
 export default function AddContact() {
@@ -49,7 +50,7 @@ export default function AddContact() {
       {/* Add contact modal */}
       {showModel && (
         <div className="fixed inset-0 z-10 flex items-center justify-center">
-          <div className="fixed inset-0 bg-gray-800 opacity-75"></div>
+          <Overlay />
 
           <div className="relative w-full sm:w-[800px] rounded border z-10 bg-white mr-2 md:mr-0 p-5">
             {/* Close button */}

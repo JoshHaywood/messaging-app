@@ -6,6 +6,8 @@ import SessionUser from "@/interfaces/sessionUser";
 import Message from "@/interfaces/message";
 import ShowComponent from "@/interfaces/showComponent";
 
+import Overlay from "../overlay";
+
 export default function MessageList(props: {
   isMobile: boolean;
   contact: User[];
@@ -172,10 +174,7 @@ export default function MessageList(props: {
             {/* If the image is enhanced, show it */}
             {enhanceImage && (
               <div className="fixed inset-0 z-10 flex items-center justify-center">
-                <div
-                  onClick={() => setEnhanceImage(false)}
-                  className="fixed inset-0 bg-gray-800 opacity-75"
-                ></div>
+                <Overlay onClick={setEnhanceImage} />
 
                 <div className="relative w-full sm:w-[600px] flex flex-row rounded bg-white mx-2.5 sm:mx-0">
                   {message.image !== null && (
