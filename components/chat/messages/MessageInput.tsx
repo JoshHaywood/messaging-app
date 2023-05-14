@@ -89,12 +89,12 @@ export default function MessageInput(props: {
         recipient: contact[0].first_name + " " + contact[0].last_name,
         message: "",
         image: previewImage,
-        time: new Date().toLocaleString("en-US", {
+        time: new Date().toLocaleString("en-GB", {
           hour: "2-digit",
           minute: "2-digit",
           hour12: false,
         }),
-        date: new Date().toLocaleDateString("en-US", {
+        date: new Date().toLocaleDateString("en-GB", {
           weekday: "long",
           month: "short",
           day: "numeric",
