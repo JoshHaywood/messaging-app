@@ -184,7 +184,7 @@ export default function MessageList(props: {
                     setSelectedMessage(null);
                     setEnhanceImage(false);
                   }}
-                  className="fixed inset-0 bg-gray-800 opacity-75"
+                  className="fixed inset-0 bg-gray-800 opacity-25"
                 ></div>
 
                 <div className="relative w-full sm:w-[600px] flex flex-row rounded bg-white mx-2.5 sm:mx-0">

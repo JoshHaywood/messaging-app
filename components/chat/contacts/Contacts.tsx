@@ -8,7 +8,7 @@ import SessionUser from "@/interfaces/sessionUser";
 import Message from "@/interfaces/message";
 import ShowComponent from "@/interfaces/showComponent";
 
-import SearchBar from "./header/Header";
+import Header from "./header/Header";
 import ContactList from "./ContactList";
 import Account from "./Account";
 
@@ -82,7 +82,7 @@ export default function Contacts(props: {
       </div>
 
       {/* Search bar */}
-      <SearchBar
+      <Header
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
         handleChange={handleChange}
