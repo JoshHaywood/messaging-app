@@ -13,9 +13,9 @@ export default function createFileInputHandler(
         const inputElement = event.target as HTMLInputElement;
         if (inputElement.files && inputElement.files[0]) {
           const file = inputElement.files[0];
-          const fileSizeLimit = 20 * 1024 * 1024; // 20MB
+          const fileSizeLimit = 1 * 1024 * 1024;
           if (file.size > fileSizeLimit) {
-            alert("This image is too large. Maximum size is 20MB.");
+            alert("This image is too large. Maximum size is 1MB.");
             return;
           }
           const reader = new FileReader();
