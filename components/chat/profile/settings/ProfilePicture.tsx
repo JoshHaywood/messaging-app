@@ -4,7 +4,6 @@ import axios from "axios";
 import SessionUser from "@/interfaces/sessionUser";
 
 import createFileInputHandler from "@/components/utils/createFileInputHandler";
-import Overlay from "../../overlay";
 import Cropper from "react-easy-crop";
 import { Point, Area } from "react-easy-crop/types";
 import { Slider } from "@mui/material";
@@ -71,7 +70,7 @@ export default function ProfilePicture(props: {
       {/* If editing and editing section is profile picture show image editing */}
       {isEditing && editingSection === "profilePicture" && (
         <div className="fixed inset-0 z-10 flex items-center justify-center">
-          <Overlay />
+          <div className="fixed inset-0 bg-gray-800 opacity-75"></div>
 
           <div className="w-full sm:w-[600px] rounded border z-10 bg-white mx-2.5 sm:mx-0">
             <div className="mt-3 mx-3 font-bold text-lg text-gray-700">
