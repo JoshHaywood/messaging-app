@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useRef, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 
 import User from "@/interfaces/user";
 import SessionUser from "@/interfaces/sessionUser";
@@ -24,6 +24,8 @@ export default function MessageList(props: {
   } = props;
 
   const bottomRef = useRef<HTMLDivElement>(null);
+
+  const [enhanceImage, setEnhanceImage] = useState<boolean>(false);
 
   // Scrolls to bottom of message list
   useEffect(() => {
@@ -78,7 +80,8 @@ export default function MessageList(props: {
                           alt="Message image"
                           width={200}
                           height={200}
-                          className="inline-block justify-end p-0.5 rounded-xl"
+                          onClick={() => setEnhanceImage(true)}
+                          className="inline-block justify-end p-0.5 rounded-xl hover:cursor-pointer"
                         />
                       </div>
                     )
@@ -156,11 +159,52 @@ export default function MessageList(props: {
                           alt="Message image"
                           width={200}
                           height={200}
-                          className="inline-block break-words p-0.5 rounded-xl"
+                          onClick={() => setEnhanceImage(true)}
+                          className="inline-block p-0.5 rounded-xl hover:cursor-pointer"
                         />
                       </div>
                     )
                   )}
+                </div>
+              </div>
+            )}
+
+            {/* If the image is enhanced, show it */}
+            {enhanceImage && (
+              <div className="fixed inset-0 z-10 flex items-center justify-center">
+                <div
+                  onClick={() => setEnhanceImage(false)}
+                  className="fixed inset-0 bg-gray-800 opacity-75"
+                ></div>
+
+                <div className="relative w-full sm:w-[600px] flex flex-row rounded bg-white mx-2.5 sm:mx-0">
+                  {message.image !== null && (
+                    <Image
+                      src={message.image}
+                      alt="Message image"
+                      width={400}
+                      height={400}
+                      onClick={() => setEnhanceImage(true)}
+                      className="rounded mx-auto"
+                    />
+                  )}
+
+                  {/* Attribution: https://heroicons.com/ */}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    onClick={() => setEnhanceImage(false)}
+                    className="w-6 h-6 absolute top-2 right-2 z-50 hover:cursor-pointer hover:text-gray-700"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
                 </div>
               </div>
             )}
