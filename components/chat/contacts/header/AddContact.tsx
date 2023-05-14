@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import axios from "axios";
 
+import ErrorMessage from "@/components/auth/ErrorMessage";
 import Button from "@mui/material/Button";
 
 export default function AddContact() {
@@ -9,6 +10,7 @@ export default function AddContact() {
   const [showModel, setShowModel] = useState(false);
 
   const [username, setUsername] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
   // Register user
   const insertRow = () => {
@@ -17,12 +19,24 @@ export default function AddContact() {
         recipient: username,
       })
       .then((res) => {
-        console.log(res.data);
+        setError(res.data);
+
+        if (res.data === "Contact request sent") {
+          setError("");
+          setShowModel(false);
+          return;
+        }
       });
   };
 
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError("");
+
+    // If username doesnt contain # and 4 digits
+    if (!username.match(/#\d{4}/)) {
+      return setError("Username must contain # and 4 digits");
+    }
 
     insertRow();
   };
@@ -49,7 +63,13 @@ export default function AddContact() {
       {/* Add contact modal */}
       {showModel && (
         <div className="fixed inset-0 z-10 flex items-center justify-center">
-          <div className="fixed inset-0 bg-gray-800 opacity-75"></div>
+          <div
+            onClick={() => {
+              setShowModel(false);
+              setError("");
+            }}
+            className="fixed inset-0 bg-gray-800 opacity-75"
+          ></div>
 
           <div className="relative w-full sm:w-[800px] rounded border z-10 bg-white mr-2 md:mr-0 p-5">
             {/* Close button */}
@@ -60,7 +80,10 @@ export default function AddContact() {
               viewBox="0 0 24 24"
               strokeWidth="1.5"
               stroke="currentColor"
-              onClick={() => setShowModel(false)}
+              onClick={() => {
+                setShowModel(false);
+                setError("");
+              }}
               className="w-6 h-6 absolute top-5 right-5 text-gray-700 hover:text-black hover:cursor-pointer"
             >
               <path
@@ -99,38 +122,46 @@ export default function AddContact() {
                 >
                   Add contact
                 </Button>
+
+                <ErrorMessage error={error ? error : ""} />
               </div>
             ) : (
-              <form
-                id="add-contact-container"
-                onSubmit={submitHandler}
-                onKeyDown={(e) => {
-                  e.key === "Enter" && submitHandler; //Submit form on enter
-                }}
-                className="mt-5 flex flex-row justify-between border rounded-lg"
-              >
-                <input
-                  placeholder="Enter a Username#0000"
-                  required
-                  onChange={(e) => setUsername(e.target.value)}
-                  className="px-2 w-2/3 lg:w-3/4 text-gray-500 focus:outline-none"
-                />
-
-                <Button
-                  type="submit"
-                  variant="contained"
-                  sx={{
-                    margin: "0.5rem",
-                    textTransform: "none",
-                    fontSize: "0.75rem",
-                    borderRadius: "0.25rem",
-                    color: "#fff",
+              <>
+                <form
+                  id="add-contact-container"
+                  onSubmit={submitHandler}
+                  onKeyDown={(e) => {
+                    e.key === "Enter" && submitHandler; //Submit form on enter
                   }}
-                  className="bg-blue-500 hover:bg-blue-600" // MUI background color bug workaround
+                  className={`mt-5 ${
+                    error && "mb-8"
+                  } flex flex-row justify-between border rounded-lg `}
                 >
-                  Add contact
-                </Button>
-              </form>
+                  <input
+                    placeholder="Enter a Username#0000"
+                    required
+                    onChange={(e) => setUsername(e.target.value)}
+                    className="px-2 w-2/3 lg:w-3/4 text-gray-500 focus:outline-none"
+                  />
+
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    sx={{
+                      margin: "0.5rem",
+                      textTransform: "none",
+                      fontSize: "0.75rem",
+                      borderRadius: "0.25rem",
+                      color: "#fff",
+                    }}
+                    className="bg-blue-500 hover:bg-blue-600" // MUI background color bug workaround
+                  >
+                    Add contact
+                  </Button>
+                </form>
+
+                <ErrorMessage error={error ? error : ""} />
+              </>
             )}
           </div>
         </div>
