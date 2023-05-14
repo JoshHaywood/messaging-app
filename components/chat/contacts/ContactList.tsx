@@ -161,6 +161,8 @@ export default function ContactList(props: {
               const diffInHours = Math.floor(diffInMinutes / 60);
               if (diffInDays >= 1) {
                 timeDiff = dateDiff; // Use dateDiff if message is over 24 hours old
+              } else if (diffInHours === 1) {
+                timeDiff = `${diffInHours} hour ago`;
               } else {
                 timeDiff = `${diffInHours} hours ago`;
               }
