@@ -26,6 +26,7 @@ export default function MessageList(props: {
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const [enhanceImage, setEnhanceImage] = useState<boolean>(false);
+  const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
 
   // Scrolls to bottom of message list
   useEffect(() => {
@@ -80,7 +81,10 @@ export default function MessageList(props: {
                           alt="Message image"
                           width={200}
                           height={200}
-                          onClick={() => setEnhanceImage(true)}
+                          onClick={() => {
+                            setEnhanceImage(true);
+                            setSelectedMessage(message);
+                          }}
                           className="inline-block justify-end p-0.5 rounded-xl hover:cursor-pointer"
                         />
                       </div>
@@ -159,7 +163,10 @@ export default function MessageList(props: {
                           alt="Message image"
                           width={200}
                           height={200}
-                          onClick={() => setEnhanceImage(true)}
+                          onClick={() => {
+                            setEnhanceImage(true);
+                            setSelectedMessage(message);
+                          }}
                           className="inline-block p-0.5 rounded-xl hover:cursor-pointer"
                         />
                       </div>
@@ -169,39 +176,43 @@ export default function MessageList(props: {
               </div>
             )}
 
-            {/* If the image is enhanced, show it */}
-            {enhanceImage && (
+            {/* If the image is enhanced and a message has been selected */}
+            {enhanceImage && selectedMessage && selectedMessage.image && (
               <div className="fixed inset-0 z-10 flex items-center justify-center">
                 <div
-                  onClick={() => setEnhanceImage(false)}
+                  onClick={() => {
+                    setSelectedMessage(null);
+                    setEnhanceImage(false);
+                  }}
                   className="fixed inset-0 bg-gray-800 opacity-75"
                 ></div>
 
                 <div className="relative w-full sm:w-[600px] flex flex-row rounded bg-white mx-2.5 sm:mx-0">
-                  {message.image !== null && (
-                    <Image
-                      src={message.image}
-                      alt="Message image"
-                      width={400}
-                      height={400}
-                      onClick={() => setEnhanceImage(true)}
-                      className="rounded mx-auto"
-                    />
-                  )}
+                  <Image
+                    src={selectedMessage.image}
+                    alt="Message image"
+                    width={400}
+                    height={400}
+                    onClick={() => setEnhanceImage(true)}
+                    className="w-full h-full mx-auto p-2.5"
+                  />
 
                   {/* Attribution: https://heroicons.com/ */}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6 absolute top-0.5 right-0.5 cursor-pointer text-gray-800 hover:text-gray-600"
                     fill="none"
                     viewBox="0 0 24 24"
-                    strokeWidth="1.5"
                     stroke="currentColor"
-                    onClick={() => setEnhanceImage(false)}
-                    className="w-6 h-6 absolute top-2 right-2 z-50 hover:cursor-pointer hover:text-gray-700"
+                    onClick={() => {
+                      setSelectedMessage(null);
+                      setEnhanceImage(false);
+                    }}
                   >
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
+                      strokeWidth={2}
                       d="M6 18L18 6M6 6l12 12"
                     />
                   </svg>
