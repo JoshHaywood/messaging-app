@@ -6,7 +6,7 @@ import ChatContext from "@/components/chat/ChatContext";
 import User from "@/interfaces/user";
 
 import Header from "@/components/chat/conversations/header/Header";
-import ConversationList from "@/components/chat/conversations/ConversationList";
+import ConversationList from "@/components/chat/conversations/conversationList/ConversationList";
 import Account from "@/components/chat/conversations/Account";
 
 export default function Conversations() {

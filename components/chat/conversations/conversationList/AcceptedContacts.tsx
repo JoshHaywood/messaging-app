@@ -6,7 +6,7 @@ import ChatContext from "@/components/chat/ChatContext";
 import User from "@/interfaces/user";
 import Message from "@/interfaces/message";
 
-export default function ConversationList(props: {
+export default function AcceptedContacts(props: {
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
   usersArray: User[];
 }) {
@@ -68,9 +68,6 @@ export default function ConversationList(props: {
 
     storedDate.setHours(0, 0, 0, 0);
     today.setHours(0, 0, 0, 0);
-
-    console.log("storedDate", storedDate);
-    console.log("today", today);
 
     // Calculate the difference in days
     const timeDiff = today.getTime() - storedDate.getTime();
@@ -268,7 +265,7 @@ export default function ConversationList(props: {
     /* Recipient profile */
     <div
       id="users-container"
-      className="h-full overflow-y-scroll pr-1 lg:pr-2 -mr-1.5 lg:-mr-3.5 hover:cursor-pointer"
+      className="h-full overflow-y-scroll -mr-1.5 lg:-mr-3.5 pr-1 lg:pr-2 hover:cursor-pointer"
     >
       {usersArray.map((user, index) => (
         <div
