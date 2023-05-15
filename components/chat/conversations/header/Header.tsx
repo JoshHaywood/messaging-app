@@ -1,5 +1,5 @@
-import SearchBar from "./SearchBar";
-import AddContact from "./AddContact";
+import SearchBar from "@/components/chat/conversations/header/SearchBar";
+import AddContact from "@/components/chat/conversations/header/AddContact";
 
 export default function Header(props: {
   searchTerm: string;
