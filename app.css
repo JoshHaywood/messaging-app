@@ -42,19 +42,19 @@ h6 {
   clip-path: inset(-3px 0px -3px -3px);
 }
 
-#users-container::-webkit-scrollbar-track,
+#contacts-container::-webkit-scrollbar-track,
 #messages-container::-webkit-scrollbar-track,
 #media-container::-webkit-scrollbar-track {
   background-color: transparent;
 }
 
-#users-container::-webkit-scrollbar,
+#contacts-container::-webkit-scrollbar,
 #messages-container::-webkit-scrollbar,
 #media-container::-webkit-scrollbar {
   width: 0.375rem;
 }
 
-#users-container::-webkit-scrollbar-thumb,
+#contacts-container::-webkit-scrollbar-thumb,
 #messages-container::-webkit-scrollbar-thumb,
 #media-container::-webkit-scrollbar-thumb {
   border-radius: 0.5rem;

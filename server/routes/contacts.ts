@@ -16,10 +16,23 @@ declare module "express-session" {
   }
 }
 
+// Get pending contacts
+router.get("/pending", (req: Request, res: Response) => {
+  const userName = req.session.userName;
+  const selectPending = `SELECT * FROM contacts WHERE recipient = ? AND status = 'pending'`;
+
+  db.query(selectPending, [userName], (err: Error, rows: Contact[]) => {
+    if (err) throw err;
+
+    res.send(rows);
+  });
+});
+
 // Add contact
 router.post("/request", (req: Request, res: Response) => {
   const sender = req.session.userName;
   const senderName = req.session.firstName + " " + req.session.lastName;
+  const senderPicture = req.session.profilePicture;
   const recipient = req.body.recipient;
   const selectRecipient = `SELECT * FROM users WHERE user_name = '${recipient}'`;
   const selectExisting = `
@@ -27,7 +40,7 @@ router.post("/request", (req: Request, res: Response) => {
     (sender = '${sender}' AND recipient = '${recipient}') OR
     (sender = '${recipient}' AND recipient = '${sender}')
   `;
-  const insertRow = `INSERT INTO contacts (sender, sender_name, recipient, status) VALUES (?, ?, ?, ?)`;
+  const insertRow = `INSERT INTO contacts (sender, sender_name, sender_picture, recipient, status) VALUES (?, ?, ?, ?, ?)`;
 
   // If sender and recipient are the same
   if (sender === recipient) {
@@ -77,7 +90,7 @@ router.post("/request", (req: Request, res: Response) => {
       // Insert new contact
       db.query(
         insertRow,
-        [sender, senderName, recipient, "pending"],
+        [sender, senderName, senderPicture, recipient, "pending"],
         (err: Error, rows: Contact[]) => {
           if (err) throw err;
 

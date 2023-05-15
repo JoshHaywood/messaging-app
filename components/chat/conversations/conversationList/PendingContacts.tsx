@@ -1,22 +1,20 @@
 import Image from "next/image";
-import User from "@/interfaces/user";
 
-export default function PendingContacts(props: { usersArray: User[] }) {
-  const { usersArray } = props;
+import Contact from "@/interfaces/contact";
+
+export default function PendingContacts(props: { pendingContacts: Contact[] }) {
+  const { pendingContacts } = props;
 
   return (
-    <div
-      id="users-container"
-      className="h-full overflow-y-scroll mb-5 lg:mb-2.5 xl:mb-5 -mr-1.5 lg:-mr-3.5 pr-1 lg:pr-2"
-    >
-      {usersArray.map((user, index) => (
+    <>
+      {pendingContacts.map((contact, index) => (
         <div
           key={index}
           className="mb-2.5 px-1 lg:px-2.5 flex flex-row items-center py-2 space-x-4 rounded-lg"
         >
           {/* Profile picture */}
           <Image
-            src={user.profile_picture}
+            src={contact.sender_picture}
             alt="User profile picture"
             width={45}
             height={45}
@@ -27,12 +25,10 @@ export default function PendingContacts(props: { usersArray: User[] }) {
             {/* Name and username */}
             <div className="relative flex flex-row justify-between">
               <div>
-                <div className="text-gray-700">
-                  {user.first_name + " " + user.last_name}
-                </div>
+                <div className="text-gray-700">{contact.sender_name}</div>
 
                 <div className="text-sm font-medium text-gray-300">
-                  {user.user_name}
+                  {contact.sender}
                 </div>
               </div>
 
@@ -74,6 +70,6 @@ export default function PendingContacts(props: { usersArray: User[] }) {
           </div>
         </div>
       ))}
-    </div>
+    </>
   );
 }

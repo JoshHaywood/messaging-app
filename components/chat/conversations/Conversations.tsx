@@ -4,6 +4,7 @@ import Image from "next/image";
 
 import ChatContext from "@/components/chat/ChatContext";
 import User from "@/interfaces/user";
+import Contact from "@/interfaces/contact";
 
 import Header from "@/components/chat/conversations/header/Header";
 import ConversationList from "@/components/chat/conversations/conversationList/ConversationList";
@@ -16,6 +17,8 @@ export default function Conversations() {
   const [searchTerm, setSearchTerm] = useState<string>(""); // Search term
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]); // Filtered users array
 
+  const [pendingContacts, setPendingContacts] = useState<Contact[]>([]);
+
   // Get users from users table
   useEffect(() => {
     axios.get("/users/get").then((res) => {
@@ -27,6 +30,12 @@ export default function Conversations() {
       setUsers(usersArray);
     });
   }, [sessionUser.name]);
+
+  useEffect(() => {
+    axios.get("/contacts/pending").then((res) => {
+      setPendingContacts(res.data);
+    });
+  }, []);
 
   // Handle search bar input
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,6 +83,7 @@ export default function Conversations() {
           /* If search term is empty, display all users, else display filtered users */
           searchTerm === "" ? users : filteredUsers
         }
+        pendingContacts={pendingContacts}
       />
 
       {/* Account */}

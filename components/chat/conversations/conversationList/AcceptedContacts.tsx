@@ -263,10 +263,7 @@ export default function AcceptedContacts(props: {
 
   return (
     /* Recipient profile */
-    <div
-      id="users-container"
-      className="h-full overflow-y-scroll -mr-1.5 lg:-mr-3.5 pr-1 lg:pr-2 hover:cursor-pointer"
-    >
+    <div className="hover:cursor-pointer">
       {usersArray.map((user, index) => (
         <div
           key={index}
