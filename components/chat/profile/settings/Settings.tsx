@@ -1,24 +1,17 @@
-import { useState, useRef } from "react";
+import { useContext, useState, useRef } from "react";
 import axios from "axios";
 
-import SessionUser from "@/interfaces/sessionUser";
-import ShowComponent from "@/interfaces/showComponent";
+import ChatContext from "../../ChatContext";
 import ProfilePicture from "./ProfilePicture";
 
-export default function Settings(props: {
-  isMobile: boolean;
-  sessionUser: SessionUser;
-  setSessionUser: React.Dispatch<React.SetStateAction<SessionUser>>;
-  showComponent: ShowComponent;
-  setShowComponent: React.Dispatch<React.SetStateAction<ShowComponent>>;
-}) {
+export default function Settings() {
   const {
     isMobile,
     sessionUser,
     setSessionUser,
     showComponent,
     setShowComponent,
-  } = props;
+  } = useContext(ChatContext);
 
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [editingSection, setEditingSection] = useState<string>("");
@@ -92,8 +85,6 @@ export default function Settings(props: {
 
       {/* Profile picture */}
       <ProfilePicture
-        sessionUser={sessionUser}
-        setSessionUser={setSessionUser}
         isEditing={isEditing}
         setIsEditing={setIsEditing}
         editingSection={editingSection}

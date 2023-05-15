@@ -1,37 +1,16 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { Socket } from "socket.io-client";
 import Image from "next/image";
 
+import ChatContext from "@/components/chat/ChatContext";
 import User from "@/interfaces/user";
-import SessionUser from "@/interfaces/sessionUser";
-import Message from "@/interfaces/message";
-import ShowComponent from "@/interfaces/showComponent";
 
 import SearchBar from "./SearchBar";
 import ContactList from "./ContactList";
 import Account from "./Account";
 
-export default function Contacts(props: {
-  socket: Socket;
-  isMobile: boolean;
-  setMessageList: React.Dispatch<React.SetStateAction<Message[]>>;
-  setContact: React.Dispatch<React.SetStateAction<User[]>>;
-  sessionUser: SessionUser;
-  setSessionUser: React.Dispatch<React.SetStateAction<SessionUser>>;
-  showComponent: ShowComponent;
-  setShowComponent: React.Dispatch<React.SetStateAction<ShowComponent>>;
-}) {
-  const {
-    socket,
-    isMobile,
-    setMessageList,
-    setContact,
-    sessionUser,
-    setSessionUser,
-    showComponent,
-    setShowComponent,
-  } = props;
+export default function Contacts() {
+  const { isMobile, sessionUser, showComponent } = useContext(ChatContext);
   const [users, setUsers] = useState<User[]>([]); // Users array
 
   const [searchTerm, setSearchTerm] = useState<string>(""); // Search term
@@ -90,13 +69,6 @@ export default function Contacts(props: {
 
       {/* Recipients list */}
       <ContactList
-        socket={socket}
-        isMobile={isMobile}
-        setMessageList={setMessageList}
-        setContact={setContact}
-        sessionUser={sessionUser}
-        showComponent={showComponent}
-        setShowComponent={setShowComponent}
         setSearchTerm={setSearchTerm}
         usersArray={
           /* If search term is empty, display all users, else display filtered users */
@@ -105,13 +77,7 @@ export default function Contacts(props: {
       />
 
       {/* Account */}
-      <Account
-        isMobile={isMobile}
-        sessionUser={sessionUser}
-        setSessionUser={setSessionUser}
-        showComponent={showComponent}
-        setShowComponent={setShowComponent}
-      />
+      <Account />
     </div>
   );
 }

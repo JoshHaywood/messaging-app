@@ -1,17 +1,11 @@
 import { useRouter } from "next/router";
+import { useContext } from "react";
 import Image from "next/image";
 import axios from "axios";
 
-import SessionUser from "@/interfaces/sessionUser";
-import ShowComponent from "@/interfaces/showComponent";
+import ChatContext from "@/components/chat/ChatContext";
 
-export default function Account(props: {
-  isMobile: boolean;
-  sessionUser: SessionUser;
-  setSessionUser: React.Dispatch<React.SetStateAction<SessionUser>>;
-  showComponent: ShowComponent;
-  setShowComponent: React.Dispatch<React.SetStateAction<ShowComponent>>;
-}) {
+export default function Account() {
   const router = useRouter();
 
   const {
@@ -20,7 +14,7 @@ export default function Account(props: {
     setSessionUser,
     showComponent,
     setShowComponent,
-  } = props;
+  } = useContext(ChatContext);
 
   // Logout
   const logoutHandler = () => {

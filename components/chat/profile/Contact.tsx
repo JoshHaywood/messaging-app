@@ -1,10 +1,8 @@
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useContext, useState, useEffect } from "react";
 import axios from "axios";
 
-import User from "@/interfaces/user";
-import SessionUser from "@/interfaces/sessionUser";
-import ShowComponent from "@/interfaces/showComponent";
+import ChatContext from "../ChatContext";
 import Message from "@/interfaces/message";
 
 import Button from "@mui/material/Button";
@@ -21,15 +19,9 @@ const buttons = [
   },
 ];
 
-export default function Contact(props: {
-  isMobile: boolean;
-  sessionUser: SessionUser;
-  contact: User[];
-  showComponent: ShowComponent;
-  setShowComponent: React.Dispatch<React.SetStateAction<ShowComponent>>;
-}) {
+export default function Contact() {
   const { isMobile, sessionUser, contact, showComponent, setShowComponent } =
-    props;
+    useContext(ChatContext);
 
   const [aboutToggle, setAboutToggle] = useState<boolean>(false); // Toggle about section
 

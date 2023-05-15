@@ -1,19 +1,10 @@
 import Image from "next/image";
-import { useRef, useState, useEffect } from "react";
+import { useContext, useRef, useState, useEffect } from "react";
 
-import User from "@/interfaces/user";
-import SessionUser from "@/interfaces/sessionUser";
+import ChatContext from "../ChatContext";
 import Message from "@/interfaces/message";
-import ShowComponent from "@/interfaces/showComponent";
 
-export default function MessageList(props: {
-  isMobile: boolean;
-  contact: User[];
-  sessionUser: SessionUser;
-  messageList: Message[];
-  showComponent: ShowComponent;
-  setShowComponent: React.Dispatch<React.SetStateAction<ShowComponent>>;
-}) {
+export default function MessageList() {
   const {
     isMobile,
     contact,
@@ -21,7 +12,7 @@ export default function MessageList(props: {
     messageList,
     showComponent,
     setShowComponent,
-  } = props;
+  } = useContext(ChatContext);
 
   const bottomRef = useRef<HTMLDivElement>(null);
 

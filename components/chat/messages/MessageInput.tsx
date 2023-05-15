@@ -1,31 +1,20 @@
 import Image from "next/image";
-import { useState } from "react";
-import { Socket } from "socket.io-client";
+import { useContext, useState } from "react";
 import axios from "axios";
 
-import User from "@/interfaces/user";
-import SessionUser from "@/interfaces/sessionUser";
+import ChatContext from "../ChatContext";
 import Message from "@/interfaces/message";
+
 import createFileInputHandler from "@/components/utils/createFileInputHandler";
 
 export default function MessageInput(props: {
-  socket: Socket;
-  contact: User[];
-  sessionUser: SessionUser;
   message: string;
   setMessage: React.Dispatch<React.SetStateAction<string>>;
-  messageList: Message[];
-  setMessageList: React.Dispatch<React.SetStateAction<Message[]>>;
 }) {
-  const {
-    contact,
-    sessionUser,
-    socket,
-    message,
-    setMessage,
-    messageList,
-    setMessageList,
-  } = props;
+  const { message, setMessage } = props;
+
+  const { contact, sessionUser, socket, messageList, setMessageList } =
+    useContext(ChatContext);
 
   const [messageType, setMessageType] = useState<string>("text"); // Message type
   const [previewImage, setPreviewImage] = useState<string | null>(null);

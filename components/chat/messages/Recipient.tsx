@@ -1,15 +1,11 @@
 import Image from "next/image";
+import { useContext } from "react";
 
-import User from "@/interfaces/user";
-import ShowComponent from "@/interfaces/showComponent";
+import ChatContext from "../ChatContext";
 
-export default function Recipient(props: {
-  isMobile: boolean;
-  contact: User[];
-  showComponent: ShowComponent;
-  setShowComponent: React.Dispatch<React.SetStateAction<ShowComponent>>;
-}) {
-  const { isMobile, contact, showComponent, setShowComponent } = props;
+export default function Recipient() {
+  const { isMobile, contact, showComponent, setShowComponent } =
+    useContext(ChatContext);
 
   return (
     <div className="flex flex-row items-center p-4 space-x-4 border border-b-0">
