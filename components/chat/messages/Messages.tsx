@@ -1,37 +1,17 @@
 import Image from "next/image";
-import { useState, useEffect } from "react";
-import { Socket } from "socket.io-client";
+import { useContext, useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
-import User from "@/interfaces/user";
-import SessionUser from "@/interfaces/sessionUser";
+import ChatContext from "@/components/chat/ChatContext";
 import Message from "@/interfaces/message";
-import ShowComponent from "@/interfaces/showComponent";
 
-import Recipient from "./Recipient";
-import MessageList from "./MessageList";
-import MessageInput from "./MessageInput";
+import Recipient from "@/components/chat/messages/Recipient";
+import MessageList from "@/components/chat/messages/MessageList";
+import MessageInput from "@/components/chat/messages/MessageInput";
 
-export default function Messages(props: {
-  socket: Socket;
-  isMobile: boolean;
-  messageList: Message[];
-  setMessageList: React.Dispatch<React.SetStateAction<Message[]>>;
-  contact: User[];
-  sessionUser: SessionUser;
-  showComponent: ShowComponent;
-  setShowComponent: React.Dispatch<React.SetStateAction<ShowComponent>>;
-}) {
-  const {
-    socket,
-    isMobile,
-    messageList,
-    setMessageList,
-    contact,
-    sessionUser,
-    showComponent,
-    setShowComponent,
-  } = props;
+export default function Messages() {
+  const { socket, isMobile, setMessageList, sessionUser, showComponent } =
+    useContext(ChatContext);
 
   const [message, setMessage] = useState(""); // Message to be sent
 
@@ -96,31 +76,11 @@ export default function Messages(props: {
             </div>
           ) : (
             <>
-              <Recipient
-                isMobile={isMobile}
-                contact={contact}
-                showComponent={showComponent}
-                setShowComponent={setShowComponent}
-              />
+              <Recipient />
 
-              <MessageList
-                isMobile={isMobile}
-                contact={contact}
-                sessionUser={sessionUser}
-                messageList={messageList}
-                showComponent={showComponent}
-                setShowComponent={setShowComponent}
-              />
+              <MessageList />
 
-              <MessageInput
-                socket={socket}
-                contact={contact}
-                sessionUser={sessionUser}
-                message={message}
-                setMessage={setMessage}
-                messageList={messageList}
-                setMessageList={setMessageList}
-              />
+              <MessageInput message={message} setMessage={setMessage} />
             </>
           )}
         </motion.div>

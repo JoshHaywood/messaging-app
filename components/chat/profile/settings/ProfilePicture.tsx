@@ -1,30 +1,23 @@
 import Image from "next/image";
-import { useState, useCallback } from "react";
+import { useContext, useState, useCallback } from "react";
 import axios from "axios";
-import SessionUser from "@/interfaces/sessionUser";
+import { Point, Area } from "react-easy-crop/types";
+
+import ChatContext from "@/components/chat/ChatContext";
 
 import createFileInputHandler from "@/components/utils/createFileInputHandler";
 import Cropper from "react-easy-crop";
-import { Point, Area } from "react-easy-crop/types";
 import { Slider } from "@mui/material";
 import Button from "@mui/material/Button";
 
 export default function ProfilePicture(props: {
-  sessionUser: SessionUser;
-  setSessionUser: React.Dispatch<React.SetStateAction<SessionUser>>;
   isEditing: boolean;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
   editingSection: string;
   setEditingSection: React.Dispatch<React.SetStateAction<string>>;
 }) {
-  const {
-    sessionUser,
-    setSessionUser,
-    isEditing,
-    setIsEditing,
-    editingSection,
-    setEditingSection,
-  } = props;
+  const { isEditing, setIsEditing, editingSection, setEditingSection } = props;
+  const { sessionUser, setSessionUser } = useContext(ChatContext);
 
   const [croppedImage, setCroppedImage] = useState<string>("");
 

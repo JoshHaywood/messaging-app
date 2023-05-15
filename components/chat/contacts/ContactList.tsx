@@ -1,35 +1,26 @@
 import Image from "next/image";
-import { useState, useEffect } from "react";
-import { Socket } from "socket.io-client";
+import { useContext, useState, useEffect } from "react";
 import axios from "axios";
 
+import ChatContext from "@/components/chat/ChatContext";
 import User from "@/interfaces/user";
-import SessionUser from "@/interfaces/sessionUser";
 import Message from "@/interfaces/message";
-import ShowComponent from "@/interfaces/showComponent";
 
 export default function ContactList(props: {
-  socket: Socket;
-  isMobile: boolean;
-  setMessageList: React.Dispatch<React.SetStateAction<Message[]>>;
-  setContact: React.Dispatch<React.SetStateAction<User[]>>;
-  sessionUser: SessionUser;
-  showComponent: ShowComponent;
-  setShowComponent: React.Dispatch<React.SetStateAction<ShowComponent>>;
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
   usersArray: User[];
 }) {
+  const { setSearchTerm, usersArray } = props;
+
   const {
     socket,
     isMobile,
-    setMessageList,
-    setContact,
     sessionUser,
     showComponent,
+    setMessageList,
+    setContact,
     setShowComponent,
-    setSearchTerm,
-    usersArray,
-  } = props;
+  } = useContext(ChatContext);
 
   const [currentIndex, setCurrentIndex] = useState<number>(0); // Current index of user in usersArray
   const [selectRecipient, setSelectRecipient] = useState<string>(""); // Current recipient

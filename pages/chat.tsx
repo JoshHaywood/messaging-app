@@ -2,8 +2,10 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
-import axios from "axios";
 import * as io from "socket.io-client";
+import axios from "axios";
+
+import ChatContext from "@/components/chat/ChatContext";
 
 import User from "@/interfaces/user";
 import SessionUser from "@/interfaces/sessionUser";
@@ -91,39 +93,29 @@ export default function Chat() {
 
       <div className="w-screen h-screen relative bg-blue-200">
         <div className="absolute left-0 right-0 top-0 bottom-0 m-0 lg:m-5 xl:m-10 flex flex-row lg:rounded-2xl bg-white">
-          {/* Chats column */}
-          <Contacts
-            socket={socket}
-            isMobile={isMobile}
-            setMessageList={setMessageList}
-            showComponent={showComponent}
-            setShowComponent={setShowComponent}
-            setContact={setContact}
-            sessionUser={sessionUser}
-            setSessionUser={setSessionUser}
-          />
+          <ChatContext.Provider
+            value={{
+              socket,
+              isMobile,
+              messageList,
+              contact,
+              sessionUser,
+              showComponent,
+              setMessageList,
+              setContact,
+              setSessionUser,
+              setShowComponent,
+            }}
+          >
+            {/* Chats column */}
+            <Contacts />
 
-          {/* Messages column */}
-          <Messages
-            socket={socket}
-            isMobile={isMobile}
-            messageList={messageList}
-            setMessageList={setMessageList}
-            showComponent={showComponent}
-            setShowComponent={setShowComponent}
-            contact={contact}
-            sessionUser={sessionUser}
-          />
+            {/* Messages column */}
+            <Messages />
 
-          {/* Profile column */}
-          <Profile
-            isMobile={isMobile}
-            contact={contact}
-            sessionUser={sessionUser}
-            setSessionUser={setSessionUser}
-            showComponent={showComponent}
-            setShowComponent={setShowComponent}
-          />
+            {/* Profile column */}
+            <Profile />
+          </ChatContext.Provider>
         </div>
       </div>
     </>
