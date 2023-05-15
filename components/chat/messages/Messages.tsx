@@ -2,12 +2,12 @@ import Image from "next/image";
 import { useContext, useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
-import ChatContext from "../ChatContext";
+import ChatContext from "@/components/chat/ChatContext";
 import Message from "@/interfaces/message";
 
-import Recipient from "./Recipient";
-import MessageList from "./MessageList";
-import MessageInput from "./MessageInput";
+import Recipient from "@/components/chat/messages/Recipient";
+import MessageList from "@/components/chat/messages/MessageList";
+import MessageInput from "@/components/chat/messages/MessageInput";
 
 export default function Messages() {
   const { socket, isMobile, setMessageList, sessionUser, showComponent } =

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { useContext, useRef, useState, useEffect } from "react";
 
-import ChatContext from "../ChatContext";
+import ChatContext from "@/components/chat/ChatContext";
 import Message from "@/interfaces/message";
 
 export default function MessageList() {

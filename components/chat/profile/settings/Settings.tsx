@@ -1,8 +1,8 @@
 import { useContext, useState, useRef } from "react";
 import axios from "axios";
 
-import ChatContext from "../../ChatContext";
-import ProfilePicture from "./ProfilePicture";
+import ChatContext from "@/components/chat/ChatContext";
+import ProfilePicture from "@/components/chat/profile/settings/ProfilePicture";
 
 export default function Settings() {
   const {

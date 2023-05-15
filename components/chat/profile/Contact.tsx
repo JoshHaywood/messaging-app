@@ -2,7 +2,7 @@ import Image from "next/image";
 import { useContext, useState, useEffect } from "react";
 import axios from "axios";
 
-import ChatContext from "../ChatContext";
+import ChatContext from "@/components/chat/ChatContext";
 import Message from "@/interfaces/message";
 
 import Button from "@mui/material/Button";

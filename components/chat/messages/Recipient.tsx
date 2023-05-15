@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { useContext } from "react";
 
-import ChatContext from "../ChatContext";
+import ChatContext from "@/components/chat/ChatContext";
 
 export default function Recipient() {
   const { isMobile, contact, showComponent, setShowComponent } =

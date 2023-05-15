@@ -5,9 +5,9 @@ import Image from "next/image";
 import ChatContext from "@/components/chat/ChatContext";
 import User from "@/interfaces/user";
 
-import SearchBar from "./SearchBar";
-import ContactList from "./ContactList";
-import Account from "./Account";
+import SearchBar from "@/components/chat/contacts/SearchBar";
+import ContactList from "@/components/chat/contacts/ContactList";
+import Account from "@/components/chat/contacts/Account";
 
 export default function Contacts() {
   const { isMobile, sessionUser, showComponent } = useContext(ChatContext);

@@ -1,10 +1,10 @@
 import { useContext } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
-import ChatContext from "../ChatContext";
+import ChatContext from "@/components/chat/ChatContext";
 
-import Contact from "./Contact";
-import Settings from "./settings/Settings";
+import Contact from "@/components/chat/profile/Contact";
+import Settings from "@/components/chat/profile/settings/Settings";
 
 export default function Profile() {
   const { isMobile, showComponent } = useContext(ChatContext);

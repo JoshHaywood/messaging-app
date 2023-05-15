@@ -3,7 +3,7 @@ import { useContext, useState, useCallback } from "react";
 import axios from "axios";
 import { Point, Area } from "react-easy-crop/types";
 
-import ChatContext from "../../ChatContext";
+import ChatContext from "@/components/chat/ChatContext";
 
 import createFileInputHandler from "@/components/utils/createFileInputHandler";
 import Cropper from "react-easy-crop";
