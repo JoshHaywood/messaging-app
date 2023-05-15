@@ -11,7 +11,7 @@ import SessionUser from "@/interfaces/sessionUser";
 import Message from "@/interfaces/message";
 import ShowComponent from "@/interfaces/showComponent";
 
-import Contacts from "@/components/chat/contacts/Contacts";
+import Conversations from "@/components/chat/conversations/Conversations";
 import Messages from "@/components/chat/messages/Messages";
 import Profile from "@/components/chat/profile/Profile";
 
@@ -117,8 +117,8 @@ export default function Chat() {
               setShowComponent,
             }}
           >
-            {/* Chats column */}
-            <Contacts />
+            {/* Conversations column */}
+            <Conversations />
 
             {/* Messages column */}
             <Messages />

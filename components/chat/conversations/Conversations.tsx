@@ -5,11 +5,11 @@ import Image from "next/image";
 import ChatContext from "@/components/chat/ChatContext";
 import User from "@/interfaces/user";
 
-import SearchBar from "@/components/chat/contacts/SearchBar";
-import ContactList from "@/components/chat/contacts/ContactList";
-import Account from "@/components/chat/contacts/Account";
+import SearchBar from "@/components/chat/conversations/SearchBar";
+import ConversationList from "@/components/chat/conversations/ConversationList";
+import Account from "@/components/chat/conversations/Account";
 
-export default function Contacts() {
+export default function Conversations() {
   const { isMobile, sessionUser, showComponent } = useContext(ChatContext);
   const [users, setUsers] = useState<User[]>([]); // Users array
 
@@ -67,8 +67,8 @@ export default function Contacts() {
         handleChange={handleChange}
       />
 
-      {/* Recipients list */}
-      <ContactList
+      {/* Conversation list */}
+      <ConversationList
         setSearchTerm={setSearchTerm}
         usersArray={
           /* If search term is empty, display all users, else display filtered users */
