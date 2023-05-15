@@ -19,6 +19,7 @@ declare module "express-session" {
 // Add contact
 router.post("/request", (req: Request, res: Response) => {
   const sender = req.session.userName;
+  const senderName = req.session.firstName + " " + req.session.lastName;
   const recipient = req.body.recipient;
   const selectRecipient = `SELECT * FROM users WHERE user_name = '${recipient}'`;
   const selectExisting = `
@@ -26,7 +27,7 @@ router.post("/request", (req: Request, res: Response) => {
     (sender = '${sender}' AND recipient = '${recipient}') OR
     (sender = '${recipient}' AND recipient = '${sender}')
   `;
-  const insertRow = `INSERT INTO contacts (sender, recipient, status) VALUES ('${sender}', '${recipient}', 'pending')`;
+  const insertRow = `INSERT INTO contacts (sender, sender_name, recipient, status) VALUES (?, ?, ?, ?)`;
 
   // If sender and recipient are the same
   if (sender === recipient) {
@@ -74,11 +75,15 @@ router.post("/request", (req: Request, res: Response) => {
       }
 
       // Insert new contact
-      db.query(insertRow, (err: Error, rows: Contact[]) => {
-        if (err) throw err;
+      db.query(
+        insertRow,
+        [sender, senderName, recipient, "pending"],
+        (err: Error, rows: Contact[]) => {
+          if (err) throw err;
 
-        res.send("Contact request sent");
-      });
+          res.send("Contact request sent");
+        }
+      );
     });
   });
 });
