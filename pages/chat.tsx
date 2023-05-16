@@ -53,9 +53,16 @@ export default function Chat() {
           profilePicture: res.data.profilePicture,
           about: res.data.about,
         });
+
+        // Emit session data to socket
+        socket.emit("set_session_data", {
+          userName: res.data.userName,
+        });
       }
     });
-  }, [router]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Show messages column
   useEffect(() => {

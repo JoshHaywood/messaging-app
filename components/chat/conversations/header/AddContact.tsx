@@ -1,22 +1,37 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import axios from "axios";
+
+import ChatContext from "@/components/chat/ChatContext";
 
 import ErrorMessage from "@/components/auth/ErrorMessage";
 import Button from "@mui/material/Button";
 
 export default function AddContact() {
+  const { socket, sessionUser } = useContext(ChatContext);
   const isSmallMobile = useMediaQuery({ query: "(max-width: 475px)" });
   const [showModel, setShowModel] = useState(false);
 
-  const [username, setUsername] = useState<string>("");
+  const [recipient, setRecipient] = useState<string>("");
   const [error, setError] = useState<string>("");
 
-  // Register user
-  const insertRow = () => {
+  // Send contact request
+  const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError("");
+
+    // If username doesnt contain # and 4 digits
+    if (!recipient.match(/#\d{4}/)) {
+      return setError("Username must contain # and 4 digits");
+    }
+
+    // Add contact to contacts table
     axios
       .post("/contacts/request", {
-        recipient: username,
+        sender: sessionUser.userName,
+        sender_name: sessionUser.name,
+        sender_picture: sessionUser.profilePicture,
+        recipient: recipient,
       })
       .then((res) => {
         setError(res.data);
@@ -27,18 +42,14 @@ export default function AddContact() {
           return;
         }
       });
-  };
 
-  const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setError("");
-
-    // If username doesnt contain # and 4 digits
-    if (!username.match(/#\d{4}/)) {
-      return setError("Username must contain # and 4 digits");
-    }
-
-    insertRow();
+    // Emit contact request to recipient
+    socket.emit("send_contact_request", {
+      sender: sessionUser.userName,
+      sender_name: sessionUser.name,
+      sender_picture: sessionUser.profilePicture,
+      recipient: recipient,
+    });
   };
 
   return (
@@ -140,7 +151,7 @@ export default function AddContact() {
                   <input
                     placeholder="Enter a Username#0000"
                     required
-                    onChange={(e) => setUsername(e.target.value)}
+                    onChange={(e) => setRecipient(e.target.value)}
                     className="px-2 w-2/3 lg:w-3/4 text-gray-500 focus:outline-none"
                   />
 

@@ -30,10 +30,8 @@ router.get("/pending", (req: Request, res: Response) => {
 
 // Add contact
 router.post("/request", (req: Request, res: Response) => {
-  const sender = req.session.userName;
-  const senderName = req.session.firstName + " " + req.session.lastName;
-  const senderPicture = req.session.profilePicture;
-  const recipient = req.body.recipient;
+  const { sender, sender_name, sender_picture, recipient } = req.body;
+
   const selectRecipient = `SELECT * FROM users WHERE user_name = '${recipient}'`;
   const selectExisting = `
     SELECT * FROM contacts WHERE
@@ -90,7 +88,7 @@ router.post("/request", (req: Request, res: Response) => {
       // Insert new contact
       db.query(
         insertRow,
-        [sender, senderName, senderPicture, recipient, "pending"],
+        [sender, sender_name, sender_picture, recipient, "pending"],
         (err: Error, rows: Contact[]) => {
           if (err) throw err;
 

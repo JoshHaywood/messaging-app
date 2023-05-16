@@ -2,6 +2,10 @@ import http from "http";
 import { Server } from "socket.io";
 import crypto from "crypto";
 
+interface SocketIdMap {
+  [userName: string]: string;
+}
+
 const socket = (server: http.Server, {}) => {
   const io = new Server(server, {
     cors: {
@@ -11,8 +15,17 @@ const socket = (server: http.Server, {}) => {
     },
   });
 
+  const socketIdMap: SocketIdMap = {}; // Map of socket ids to usernames
+
   // On connection
   io.on("connection", (socket) => {
+    // Set socket id to username
+    socket.on("set_session_data", (data) => {
+      const { userName } = data;
+
+      socketIdMap[userName] = socket.id; // Set socket id to username
+    });
+
     // On join room
     socket.on("join_room", (data) => {
       const roomName = generateRoomName(data.recipient, data.sender);
@@ -23,6 +36,17 @@ const socket = (server: http.Server, {}) => {
     socket.on("send_message", (data) => {
       const roomName = generateRoomName(data.recipient, data.sender);
       socket.to(roomName).emit("receive_message", data); // Send to recipient
+    });
+
+    // On send contact request
+    socket.on("send_contact_request", (data) => {
+      const { recipient } = data;
+      const recipientSocketId = socketIdMap[recipient]; // Set recipient as the socket id of the recipient
+
+      // If recipient is online send contact request
+      if (recipientSocketId) {
+        socket.to(recipientSocketId).emit("receive_contact_request", data);
+      }
     });
   });
 

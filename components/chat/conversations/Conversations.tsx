@@ -11,7 +11,8 @@ import ConversationList from "@/components/chat/conversations/conversationList/C
 import Account from "@/components/chat/conversations/Account";
 
 export default function Conversations() {
-  const { isMobile, sessionUser, showComponent } = useContext(ChatContext);
+  const { socket, isMobile, sessionUser, showComponent } =
+    useContext(ChatContext);
   const [users, setUsers] = useState<User[]>([]); // Users array
 
   const [searchTerm, setSearchTerm] = useState<string>(""); // Search term
@@ -35,6 +36,16 @@ export default function Conversations() {
     axios.get("/contacts/pending").then((res) => {
       setPendingContacts(res.data);
     });
+
+    // Listen for contact request
+    socket.on("receive_contact_request", (data: Contact) => {
+      setPendingContacts((prev) => [...prev, data]); // Add contact request to pending contacts
+    });
+
+    // Prevent multiple occurrences
+    return () => {
+      socket.off("receive_contact_request");
+    };
   }, []);
 
   // Handle search bar input
