@@ -47,7 +47,9 @@ export default function PendingContacts(props: {
       {pendingContacts.map((contact, index) => (
         <div
           key={index}
-          className="mb-2.5 px-1 lg:px-2.5 flex flex-row items-center py-2 space-x-4 rounded-lg"
+          className={`${
+            index === pendingContacts.length - 1 ? "mb-4" : "mb-2.5"
+          } px-1 lg:px-2.5 flex flex-row items-center py-2 space-x-4 rounded-lg`}
         >
           {/* Profile picture */}
           <Image
@@ -108,6 +110,10 @@ export default function PendingContacts(props: {
           </div>
         </div>
       ))}
+
+      {pendingContacts.length > 0 && (
+        <hr className="border border-blue-100 rounded mb-6 mx-6"></hr>
+      )}
     </>
   );
 }
