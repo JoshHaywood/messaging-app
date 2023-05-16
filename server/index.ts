@@ -13,7 +13,7 @@ const app = next({ dev });
 const handle = app.getRequestHandler();
 
 const session = require("./lib/session");
-const socket = require("./lib/socket");
+const socket = require("./lib/sockets/socket");
 
 const authRoutes = require("./routes/auth");
 const contactsRoutes = require("./routes/contacts");
