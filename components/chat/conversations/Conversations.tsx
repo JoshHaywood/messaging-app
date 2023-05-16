@@ -95,6 +95,7 @@ export default function Conversations() {
           searchTerm === "" ? users : filteredUsers
         }
         pendingContacts={pendingContacts}
+        setPendingContacts={setPendingContacts}
       />
 
       {/* Account */}

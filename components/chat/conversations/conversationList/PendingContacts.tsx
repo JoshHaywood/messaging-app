@@ -1,9 +1,46 @@
 import Image from "next/image";
+import { useContext, useEffect } from "react";
+import axios from "axios";
 
 import Contact from "@/interfaces/contact";
+import ChatContext from "../../ChatContext";
 
-export default function PendingContacts(props: { pendingContacts: Contact[] }) {
-  const { pendingContacts } = props;
+export default function PendingContacts(props: {
+  pendingContacts: Contact[];
+  setPendingContacts: React.Dispatch<React.SetStateAction<Contact[]>>;
+}) {
+  const { pendingContacts, setPendingContacts } = props;
+  const { socket } = useContext(ChatContext);
+
+  // Decline contact request
+  const declineRequest = (contact: Contact) => {
+    const encodedSender = encodeURIComponent(contact.sender); // Encode sender as it contains special characters
+
+    // Delete contact from contacts table
+    axios.delete(`/contacts/decline/${encodedSender}`).then((res) => {
+      // If successful, emit contact request declined
+      if (res.data === "Contact request declined") {
+        socket.emit("decline_contact_request", contact);
+      }
+    });
+  };
+
+  // On contact request declined
+  useEffect(() => {
+    socket.on("contact_request_declined", (data: Contact) => {
+      // Remove contact from pending contacts
+      setPendingContacts((prev) =>
+        prev.filter((contact) => contact.sender !== data.sender)
+      );
+    });
+
+    // Prevent multiple occurrences
+    return () => {
+      socket.off("contact_request_declined");
+    };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
@@ -57,6 +94,7 @@ export default function PendingContacts(props: { pendingContacts: Contact[] }) {
                   viewBox="0 0 24 24"
                   strokeWidth="1.5"
                   stroke="currentColor"
+                  onClick={() => declineRequest(contact)}
                   className="w-6 h-6 stroke-gray-700 hover:stroke-blue-500 hover:cursor-pointer"
                 >
                   <path

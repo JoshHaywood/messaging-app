@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 const router = express.Router();
 
 const db = require("../config/db");
+
 import User from "@/interfaces/user";
 import Contact from "@/interfaces/contact";
 
@@ -16,19 +17,7 @@ declare module "express-session" {
   }
 }
 
-// Get pending contacts
-router.get("/pending", (req: Request, res: Response) => {
-  const userName = req.session.userName;
-  const selectPending = `SELECT * FROM contacts WHERE recipient = ? AND status = 'pending'`;
-
-  db.query(selectPending, [userName], (err: Error, rows: Contact[]) => {
-    if (err) throw err;
-
-    res.send(rows);
-  });
-});
-
-// Add contact
+// Create contact request
 router.post("/request", (req: Request, res: Response) => {
   const { sender, sender_name, sender_picture, recipient } = req.body;
 
@@ -96,6 +85,32 @@ router.post("/request", (req: Request, res: Response) => {
         }
       );
     });
+  });
+});
+
+// Get pending contacts
+router.get("/pending", (req: Request, res: Response) => {
+  const userName = req.session.userName;
+  const selectPending = `SELECT * FROM contacts WHERE recipient = ? AND status = 'pending'`;
+
+  db.query(selectPending, [userName], (err: Error, rows: Contact[]) => {
+    if (err) throw err;
+
+    res.send(rows);
+  });
+});
+
+// Decline contact request
+router.delete("/decline/:sender", (req: Request, res: Response) => {
+  const { sender } = req.params;
+
+  const recipient = req.session.userName;
+  const deleteRow = `DELETE FROM contacts WHERE sender = ? AND recipient = ?`;
+
+  db.query(deleteRow, [sender, recipient], (err: Error, rows: Contact[]) => {
+    if (err) throw err;
+
+    res.send("Contact request declined");
   });
 });
 
