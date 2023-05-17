@@ -4,21 +4,17 @@ import Image from "next/image";
 
 import ChatContext from "@/components/chat/ChatContext";
 import User from "@/interfaces/user";
-import Contact from "@/interfaces/contact";
 
 import Header from "@/components/chat/conversations/header/Header";
 import ConversationList from "@/components/chat/conversations/conversationList/ConversationList";
 import Account from "@/components/chat/conversations/Account";
 
 export default function Conversations() {
-  const { socket, isMobile, sessionUser, showComponent } =
-    useContext(ChatContext);
+  const { isMobile, sessionUser, showComponent } = useContext(ChatContext);
   const [users, setUsers] = useState<User[]>([]); // Users array
 
   const [searchTerm, setSearchTerm] = useState<string>(""); // Search term
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]); // Filtered users array
-
-  const [pendingContacts, setPendingContacts] = useState<Contact[]>([]);
 
   // Get users from users table
   useEffect(() => {
@@ -31,22 +27,6 @@ export default function Conversations() {
       setUsers(usersArray);
     });
   }, [sessionUser.name]);
-
-  useEffect(() => {
-    axios.get("/contacts/pending").then((res) => {
-      setPendingContacts(res.data);
-    });
-
-    // Listen for contact request
-    socket.on("receive_contact_request", (data: Contact) => {
-      setPendingContacts((prev) => [...prev, data]); // Add contact request to pending contacts
-    });
-
-    // Prevent multiple occurrences
-    return () => {
-      socket.off("receive_contact_request");
-    };
-  }, []);
 
   // Handle search bar input
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -94,8 +74,6 @@ export default function Conversations() {
           /* If search term is empty, display all users, else display filtered users */
           searchTerm === "" ? users : filteredUsers
         }
-        pendingContacts={pendingContacts}
-        setPendingContacts={setPendingContacts}
       />
 
       {/* Account */}

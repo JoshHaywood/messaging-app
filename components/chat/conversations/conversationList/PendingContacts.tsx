@@ -1,16 +1,33 @@
 import Image from "next/image";
-import { useContext, useEffect } from "react";
+import { useContext, useState, useEffect } from "react";
 import axios from "axios";
 
 import Contact from "@/interfaces/contact";
 import ChatContext from "../../ChatContext";
 
-export default function PendingContacts(props: {
-  pendingContacts: Contact[];
-  setPendingContacts: React.Dispatch<React.SetStateAction<Contact[]>>;
-}) {
-  const { pendingContacts, setPendingContacts } = props;
+export default function PendingContacts() {
   const { socket } = useContext(ChatContext);
+
+  const [pendingContacts, setPendingContacts] = useState<Contact[]>([]);
+
+  // Get pending contacts
+  useEffect(() => {
+    axios.get("/contacts/pending").then((res) => {
+      setPendingContacts(res.data);
+    });
+
+    // Listen for contact request
+    socket.on("receive_contact_request", (data: Contact) => {
+      setPendingContacts((prev) => [...prev, data]); // Add contact request to pending contacts
+    });
+
+    // Prevent multiple occurrences
+    return () => {
+      socket.off("receive_contact_request");
+    };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Accept contact request
   const acceptRequest = (contact: Contact) => {
