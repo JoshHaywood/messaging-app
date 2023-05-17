@@ -7,10 +7,14 @@ import ChatContext from "@/components/chat/ChatContext";
 import ErrorMessage from "@/components/auth/ErrorMessage";
 import Button from "@mui/material/Button";
 
-export default function AddContact() {
+export default function AddContact(props: {
+  showModel: boolean;
+  setShowModel: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
+  const { showModel, setShowModel } = props;
   const { socket, sessionUser } = useContext(ChatContext);
+
   const isSmallMobile = useMediaQuery({ query: "(max-width: 475px)" });
-  const [showModel, setShowModel] = useState(false);
 
   const [recipient, setRecipient] = useState<string>("");
   const [error, setError] = useState<string>("");

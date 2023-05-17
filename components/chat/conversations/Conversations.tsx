@@ -18,6 +18,8 @@ export default function Conversations() {
   const [searchTerm, setSearchTerm] = useState<string>(""); // Search term
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]); // Filtered users array
 
+  const [showModel, setShowModel] = useState(false); // Toggle add contact model
+
   // Get users from users table
   useEffect(() => {
     axios.get("/contacts/accepted").then((res) => {
@@ -32,8 +34,10 @@ export default function Conversations() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // On contact request accepted
   useEffect(() => {
     socket.on("contact_request_accepted", (data: Contact) => {
+      // Convert contact fields to user fields
       const formattedData = {
         user_name: data.sender,
         first_name: data.sender_name.split(" ")[0],
@@ -88,12 +92,15 @@ export default function Conversations() {
       <Header
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
+        showModel={showModel}
+        setShowModel={setShowModel}
         handleChange={handleChange}
       />
 
       {/* Conversation list */}
       <ConversationList
         setSearchTerm={setSearchTerm}
+        setShowModel={setShowModel}
         usersArray={
           /* If search term is empty, display all users, else display filtered users */
           searchTerm === "" ? users : filteredUsers

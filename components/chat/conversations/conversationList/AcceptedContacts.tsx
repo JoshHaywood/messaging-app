@@ -8,9 +8,10 @@ import Message from "@/interfaces/message";
 
 export default function AcceptedContacts(props: {
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
+  setShowModel: React.Dispatch<React.SetStateAction<boolean>>;
   usersArray: User[];
 }) {
-  const { setSearchTerm, usersArray } = props;
+  const { setSearchTerm, setShowModel, usersArray } = props;
 
   const {
     socket,
@@ -263,84 +264,98 @@ export default function AcceptedContacts(props: {
 
   return (
     /* Recipient profile */
-    <div className="hover:cursor-pointer">
-      {usersArray.map((user, index) => (
-        <div
-          key={index}
-          onClick={() => {
-            // If is mobile, show messages and hide profile
-            isMobile
-              ? setShowComponent({
-                  ...showComponent,
-                  welcomeMessage: false,
-                  showMessages: true,
-                  showProfile: false,
-                })
-              : setShowComponent({
-                  ...showComponent,
-                  welcomeMessage: false,
-                  showProfile: true,
-                  isAccountSettings: false,
-                });
-            joinRoom(user); // Join room
-            setContact([user]); // Set profile to current user
-            setSearchTerm(""); // Clear search term
-            setCurrentIndex(index); // Set current index to current user
-          }}
-          className={`${
-            // If current index is equal to index, set background color to gray
-            index === currentIndex ? "bg-gray-100" : "bg-none"
-          } mb-2.5 px-1 lg:px-2.5 flex flex-row items-center py-2 space-x-4 rounded-lg`}
-        >
-          {/* Profile picture */}
-          <Image
-            src={user.profile_picture}
-            alt="User profile picture"
-            width={45}
-            height={45}
-            className="aspect-square rounded-full border"
-          />
+    <>
+      {usersArray.length === 0 ? (
+        <div className="mt-4 flex flex-col justify-center items-center text-gray-400 italic text-sm">
+          You don&apos;t have any contacts, get started
+          <span
+            onClick={() => setShowModel(true)}
+            className="text-blue-300 underline hover:text-blue-500 hover:cursor-pointer"
+          >
+            here
+          </span>
+        </div>
+      ) : (
+        <div className="hover:cursor-pointer">
+          {usersArray.map((user, index) => (
+            <div
+              key={index}
+              onClick={() => {
+                // If is mobile, show messages and hide profile
+                isMobile
+                  ? setShowComponent({
+                      ...showComponent,
+                      welcomeMessage: false,
+                      showMessages: true,
+                      showProfile: false,
+                    })
+                  : setShowComponent({
+                      ...showComponent,
+                      welcomeMessage: false,
+                      showProfile: true,
+                      isAccountSettings: false,
+                    });
+                joinRoom(user); // Join room
+                setContact([user]); // Set profile to current user
+                setSearchTerm(""); // Clear search term
+                setCurrentIndex(index); // Set current index to current user
+              }}
+              className={`${
+                // If current index is equal to index, set background color to gray
+                index === currentIndex ? "bg-gray-100" : "bg-none"
+              } mb-2.5 px-1 lg:px-2.5 flex flex-row items-center py-2 space-x-4 rounded-lg`}
+            >
+              {/* Profile picture */}
+              <Image
+                src={user.profile_picture}
+                alt="User profile picture"
+                width={45}
+                height={45}
+                className="aspect-square rounded-full border"
+              />
 
-          {/* User name and message preview */}
-          <div className="w-full">
-            <div className="relative flex flex-row justify-between">
-              <div className="text-gray-700">
-                {user.first_name + " " + user.last_name}
-              </div>
+              {/* User name and message preview */}
+              <div className="w-full">
+                <div className="relative flex flex-row justify-between">
+                  <div className="text-gray-700">
+                    {user.first_name + " " + user.last_name}
+                  </div>
 
-              <div className="inline-block text-gray-400">
-                {recentMessages[user.first_name + " " + user.last_name] && (
-                  <>&#x2022;</>
-                )}
+                  <div className="inline-block text-gray-400">
+                    {recentMessages[user.first_name + " " + user.last_name] && (
+                      <>&#x2022;</>
+                    )}
 
-                <span className="ml-1 text-sm text-blue-400">
-                  {recentMessages[user.first_name + " " + user.last_name] &&
-                    recentMessages[user.first_name + " " + user.last_name]
-                      .timeDiff}
-                </span>
+                    <span className="ml-1 text-sm text-blue-400">
+                      {recentMessages[user.first_name + " " + user.last_name] &&
+                        recentMessages[user.first_name + " " + user.last_name]
+                          .timeDiff}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Placeholder text used instead of div to prevent overflow */}
+                <input
+                  type="text"
+                  placeholder={
+                    // If recent message is an image, show "Image" else show message
+                    recentMessages[user.first_name + " " + user.last_name] &&
+                    recentMessages[user.first_name + " " + user.last_name].image
+                      ? "Image"
+                      : recentMessages[user.first_name + " " + user.last_name]
+                      ? recentMessages[user.first_name + " " + user.last_name]
+                          .message
+                      : "No messages"
+                  }
+                  readOnly
+                  disabled
+                  className="w-full inline-block ellipsis overflow-hidden overflow-ellipsis whitespace-nowrap outline-none pointer-events-none text-sm text-gray-400 bg-transparent"
+                />
               </div>
             </div>
-
-            {/* Placeholder text used instead of div to prevent overflow */}
-            <input
-              type="text"
-              placeholder={
-                // If recent message is an image, show "Image" else show message
-                recentMessages[user.first_name + " " + user.last_name] &&
-                recentMessages[user.first_name + " " + user.last_name].image
-                  ? "Image"
-                  : recentMessages[user.first_name + " " + user.last_name]
-                  ? recentMessages[user.first_name + " " + user.last_name]
-                      .message
-                  : "No messages"
-              }
-              readOnly
-              disabled
-              className="w-full inline-block ellipsis overflow-hidden overflow-ellipsis whitespace-nowrap outline-none pointer-events-none text-sm text-gray-400 bg-transparent"
-            />
-          </div>
+          ))}
         </div>
-      ))}
-    </div>
+      )}
+    </>
   );
 }

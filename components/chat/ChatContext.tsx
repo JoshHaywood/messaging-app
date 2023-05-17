@@ -24,6 +24,7 @@ const ChatContext = createContext<ChatContextTypes>({
   messageList: [],
   contact: [],
   sessionUser: {
+    userName: "",
     name: "",
     profilePicture: "",
     about: "",
