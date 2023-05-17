@@ -169,4 +169,23 @@ router.delete("/decline/:sender", (req: Request, res: Response) => {
   });
 });
 
+// Remove contact
+router.delete("/remove/:contact", (req: Request, res: Response) => {
+  const { contact } = req.params;
+  const userName = req.session.userName;
+
+  const deleteRow = `Delete FROM contacts WHERE (sender = ? AND recipient = ?) OR (sender = ? AND recipient = ?)`;
+
+  // Delete accepted contact from contacts table
+  db.query(
+    deleteRow,
+    [userName, contact, contact, userName],
+    (err: Error, rows: Contact[]) => {
+      if (err) throw err;
+
+      res.send("Contact removed");
+    }
+  );
+});
+
 module.exports = router;
