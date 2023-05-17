@@ -114,6 +114,47 @@ router.put("/accept/:sender", (req: Request, res: Response) => {
   });
 });
 
+// Pull accept contacts from database
+router.get("/accepted", (req: Request, res: Response) => {
+  const userName = req.session.userName;
+
+  // Select any rows where the sender or recipient have accepted a contact
+  const selectAccepted = `
+    SELECT * FROM contacts WHERE
+    (sender = ? OR recipient = ?) AND status = 'accepted'
+  `;
+
+  // Get user data based on contact user name
+  const selectUsers = `
+    SELECT user_name, first_name, last_name, profile_picture, about FROM users WHERE
+    user_name IN (
+      SELECT sender FROM contacts WHERE recipient = ? AND status = 'accepted'
+      UNION
+      SELECT recipient FROM contacts WHERE sender = ? AND status = 'accepted'
+    )
+  `;
+
+  // Get accepted contacts
+  db.query(
+    selectAccepted,
+    [userName, userName],
+    (err: Error, Contacts: Contact[]) => {
+      if (err) throw err;
+
+      // Get user data for each contact
+      db.query(
+        selectUsers,
+        [userName, userName],
+        (err: Error, rows: User[]) => {
+          if (err) throw err;
+
+          res.send(rows);
+        }
+      );
+    }
+  );
+});
+
 // Decline contact request
 router.delete("/decline/:sender", (req: Request, res: Response) => {
   const { sender } = req.params;
