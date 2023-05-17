@@ -38,43 +38,51 @@ router.post("/register", (req: Request, res: Response) => {
       return;
     }
 
-    // Check if username already exists
-    db.query(selectUsername, [userName], (err: Error, rows: User[]) => {
-      if (err) throw err;
+    // Generate unique username
+    let uniqueUsername: string = "";
+    do {
+      // Generate a 4-digit number
+      const randomNum: number = Math.floor(Math.random() * 10000);
+      const formattedNum: string = ("0000" + randomNum).slice(-4);
 
-      // If username exists
-      if (rows.length > 0) {
-        res.send("Username already exists");
-        return;
-      }
+      // Create username with the generated number
+      uniqueUsername = `${userName}#${formattedNum}`;
 
-      // Else register user
-      else {
-        const hashedPassword = HashPassword(password, salt); // Hash password
+      // Check if username already exists
+      db.query(selectUsername, [uniqueUsername], (err: Error, rows: User[]) => {
+        if (err) throw err;
 
-        // Insert new row
-        db.query(
-          insertRow,
-          [
-            userName,
-            firstName,
-            lastName,
-            email,
-            hashedPassword,
-            salt,
-            profilePicture,
-          ],
-          (err: Error, rows: User[]) => {
-            if (err) throw err;
+        // If username exists, generate a new number and try again
+        if (rows.length > 0) {
+          uniqueUsername = "";
+        }
+      });
+    } while (uniqueUsername === "");
 
-            console.log(
-              "Registered: \n" + "User:" + userName + "\n" + "Email:" + email
-            );
-            res.send("Successfully registered, please login");
-          }
+    // Hash password
+    const hashedPassword = HashPassword(password, salt);
+
+    // Insert new row
+    db.query(
+      insertRow,
+      [
+        uniqueUsername,
+        firstName,
+        lastName,
+        email,
+        hashedPassword,
+        salt,
+        profilePicture,
+      ],
+      (err: Error, rows: User[]) => {
+        if (err) throw err;
+
+        console.log(
+          "Registered: \n" + "User:" + uniqueUsername + "\n" + "Email:" + email
         );
+        res.send("Successfully registered, please login");
       }
-    });
+    );
   });
 });
 
@@ -127,6 +135,7 @@ router.get("/user", (req: Request, res: Response) => {
       loggedIn: true,
       firstName: req.session.firstName,
       lastName: req.session.lastName,
+      userName: req.session.userName,
       profilePicture: req.session.profilePicture,
       about: req.session.about,
     });

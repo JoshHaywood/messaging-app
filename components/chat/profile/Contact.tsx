@@ -5,6 +5,7 @@ import axios from "axios";
 import ChatContext from "@/components/chat/ChatContext";
 import Message from "@/interfaces/message";
 
+import { Squash as Hamburger } from "hamburger-react";
 import Button from "@mui/material/Button";
 
 const buttons = [
@@ -22,6 +23,8 @@ const buttons = [
 export default function Contact() {
   const { isMobile, sessionUser, contact, showComponent, setShowComponent } =
     useContext(ChatContext);
+
+  const [showMenu, setShowMenu] = useState<boolean>(false); // Toggle menu
 
   const [aboutToggle, setAboutToggle] = useState<boolean>(false); // Toggle about section
 
@@ -43,6 +46,19 @@ export default function Contact() {
         setMedia(res.data);
       });
   }, [sessionUser.name, contact]);
+
+  // Remove contact
+  const removeContact = () => {
+    const encodedContact = encodeURIComponent(contact[0].user_name); // Encode sender as it contains special characters
+
+    // Delete contact from contacts table
+    axios.delete(`/contacts/remove/${encodedContact}`).then((res) => {
+      // If successful, reload page
+      if (res.data === "Contact removed") {
+        window.location.reload();
+      }
+    });
+  };
 
   return (
     <>
@@ -83,7 +99,41 @@ export default function Contact() {
 
       {/* Contact profile */}
       {contact.map((contact, index) => (
-        <div key={index} id="media-container" className="overflow-y-auto">
+        <div
+          key={index}
+          id="media-container"
+          className="relative overflow-y-auto"
+        >
+          <div className="absolute top-2.5 right-2.5">
+            {showMenu && (
+              <>
+                <div className="relative">
+                  <div
+                    onClick={removeContact}
+                    className="absolute whitespace-nowrap z-20 top-10 right-1.5 p-1 bg-gray-100 border hover:cursor-pointer"
+                  >
+                    Delete contact
+                  </div>
+
+                  <div
+                    onClick={() => setShowMenu(false)}
+                    className="z-10 fixed inset-0"
+                  ></div>
+                </div>
+              </>
+            )}
+
+            <div className="hover:cursor-pointer">
+              <Hamburger
+                toggled={showMenu}
+                toggle={setShowMenu}
+                size={18}
+                easing="ease-in-out"
+                rounded
+              />
+            </div>
+          </div>
+
           {/* Profile picture */}
           <div className="mx-auto p-5 text-center">
             <Image

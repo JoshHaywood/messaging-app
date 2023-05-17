@@ -22,6 +22,7 @@ export default function Account() {
       // Clear user data
       setSessionUser({
         name: "",
+        userName: "",
         about: "",
         profilePicture: "",
       });

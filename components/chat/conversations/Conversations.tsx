@@ -4,21 +4,25 @@ import Image from "next/image";
 
 import ChatContext from "@/components/chat/ChatContext";
 import User from "@/interfaces/user";
+import Contact from "@/interfaces/contact";
 
-import SearchBar from "@/components/chat/conversations/SearchBar";
-import ConversationList from "@/components/chat/conversations/ConversationList";
+import Header from "@/components/chat/conversations/header/Header";
+import ConversationList from "@/components/chat/conversations/conversationList/ConversationList";
 import Account from "@/components/chat/conversations/Account";
 
 export default function Conversations() {
-  const { isMobile, sessionUser, showComponent } = useContext(ChatContext);
+  const { socket, isMobile, sessionUser, showComponent } =
+    useContext(ChatContext);
   const [users, setUsers] = useState<User[]>([]); // Users array
 
   const [searchTerm, setSearchTerm] = useState<string>(""); // Search term
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]); // Filtered users array
 
+  const [showModel, setShowModel] = useState(false); // Toggle add contact model
+
   // Get users from users table
   useEffect(() => {
-    axios.get("/users/get").then((res) => {
+    axios.get("/contacts/accepted").then((res) => {
       // Exclude session user
       const usersArray = res.data.filter((user: User) => {
         return user.first_name + " " + user.last_name !== sessionUser.name;
@@ -26,7 +30,31 @@ export default function Conversations() {
 
       setUsers(usersArray);
     });
-  }, [sessionUser.name]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // On contact request accepted
+  useEffect(() => {
+    socket.on("contact_request_accepted", (data: Contact) => {
+      // Convert contact fields to user fields
+      const formattedData = {
+        user_name: data.sender,
+        first_name: data.sender_name.split(" ")[0],
+        last_name: data.sender_name.split(" ")[1],
+        profile_picture: data.sender_picture,
+      };
+
+      setUsers((prev) => [...prev, formattedData]); // Add user to users array
+    });
+
+    // Prevent multiple occurrences
+    return () => {
+      socket.off("contact_request_accepted");
+    };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Handle search bar input
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,15 +89,18 @@ export default function Conversations() {
       </div>
 
       {/* Search bar */}
-      <SearchBar
+      <Header
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
+        showModel={showModel}
+        setShowModel={setShowModel}
         handleChange={handleChange}
       />
 
       {/* Conversation list */}
       <ConversationList
         setSearchTerm={setSearchTerm}
+        setShowModel={setShowModel}
         usersArray={
           /* If search term is empty, display all users, else display filtered users */
           searchTerm === "" ? users : filteredUsers

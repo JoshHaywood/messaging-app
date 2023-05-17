@@ -13,10 +13,10 @@ const app = next({ dev });
 const handle = app.getRequestHandler();
 
 const session = require("./lib/session");
-const socket = require("./lib/socket");
+const socket = require("./lib/sockets/socket");
 
 const authRoutes = require("./routes/auth");
-const usersRoutes = require("./routes/users");
+const contactsRoutes = require("./routes/contacts");
 const messageRoutes = require("./routes/message");
 const settingsRoutes = require("./routes/settings");
 
@@ -41,7 +41,7 @@ app.prepare().then(() => {
 
   // Routes
   app.use("/auth", authRoutes);
-  app.use("/users", usersRoutes);
+  app.use("/contacts", contactsRoutes);
   app.use("/message", messageRoutes);
   app.use("/settings", settingsRoutes);
 

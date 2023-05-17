@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { useMediaQuery } from "react-responsive";
 import * as io from "socket.io-client";
 import axios from "axios";
 
@@ -19,13 +20,14 @@ export default function Chat() {
   const socket = io.connect(process.env.NEXT_CLIENT_URL as string);
   const router = useRouter();
 
-  const [isMobile, setIsMobile] = useState<boolean>(false); // Check if device is mobile
+  const isMobile = useMediaQuery({ query: "(max-width: 760px)" });
 
   const [messageList, setMessageList] = useState<Message[]>([]); // List of messages
   const [contact, setContact] = useState<User[]>([]); // User profile data
   // Session user data
   const [sessionUser, setSessionUser] = useState<SessionUser>({
     name: "",
+    userName: "",
     profilePicture: "",
     about: "",
   });
@@ -47,20 +49,23 @@ export default function Chat() {
       } else {
         setSessionUser({
           name: res.data.firstName + " " + res.data.lastName,
+          userName: res.data.userName,
           profilePicture: res.data.profilePicture,
           about: res.data.about,
         });
+
+        // Emit session data to socket
+        socket.emit("set_session_data", {
+          userName: res.data.userName,
+        });
       }
     });
-  }, [router]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Show messages column
   useEffect(() => {
-    // Prevent type error
-    if (typeof window !== "undefined") {
-      setIsMobile(window.innerWidth < 760);
-    }
-
     // If not on mobile, show messages and profile columns else hide them
     if (!isMobile) {
       setShowComponent((prevShowComponent) => ({
@@ -74,15 +79,7 @@ export default function Chat() {
         showMessages: false,
       }));
     }
-
-    // Re-assign isMobile on window resize
-    function handleResize() {
-      setIsMobile(window.innerWidth < 760);
-    }
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [isMobile, setIsMobile]);
+  }, [isMobile]);
 
   // Show profile column
   useEffect(() => {
