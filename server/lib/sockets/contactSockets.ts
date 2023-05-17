@@ -21,6 +21,9 @@ module.exports = function (socket: Socket, socketIdMap: SocketIdMap) {
   // Send contact request
   handleContactRequest("send_contact_request", "receive_contact_request");
 
+  // Accept contact request
+  handleContactRequest("accept_contact_request", "contact_request_accepted");
+
   // Decline contact request
   handleContactRequest("decline_contact_request", "contact_request_declined");
 };

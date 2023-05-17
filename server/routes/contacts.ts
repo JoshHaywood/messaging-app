@@ -100,11 +100,25 @@ router.get("/pending", (req: Request, res: Response) => {
   });
 });
 
+// Accept contact request
+router.put("/accept/:sender", (req: Request, res: Response) => {
+  const { sender } = req.params;
+  const recipient = req.session.userName;
+
+  const updateRow = `UPDATE contacts SET status = 'accepted' WHERE sender = ? AND recipient = ?`;
+
+  db.query(updateRow, [sender, recipient], (err: Error, rows: Contact[]) => {
+    if (err) throw err;
+
+    res.send("Contact request accepted");
+  });
+});
+
 // Decline contact request
 router.delete("/decline/:sender", (req: Request, res: Response) => {
   const { sender } = req.params;
-
   const recipient = req.session.userName;
+
   const deleteRow = `DELETE FROM contacts WHERE sender = ? AND recipient = ?`;
 
   db.query(deleteRow, [sender, recipient], (err: Error, rows: Contact[]) => {
