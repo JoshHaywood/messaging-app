@@ -8,6 +8,12 @@ import Message from "@/interfaces/message";
 import { Squash as Hamburger } from "hamburger-react";
 import Button from "@mui/material/Button";
 
+interface Sections {
+  about: boolean;
+  media: boolean;
+  links: boolean;
+}
+
 const buttons = [
   {
     name: "Media",
@@ -26,12 +32,16 @@ export default function Contact() {
 
   const [showMenu, setShowMenu] = useState<boolean>(false); // Toggle menu
 
-  const [aboutToggle, setAboutToggle] = useState<boolean>(false); // Toggle about section
+  const [showSection, setShowSection] = useState<Sections>({
+    about: false,
+    media: true,
+    links: false,
+  });
 
-  const [showMedia, setShowMedia] = useState<boolean>(true); // Toggle media section
   const [currentIndex, setCurrentIndex] = useState<number>(0); // Current index of media content
 
   const [media, setMedia] = useState<Message[]>([]); // Images from recipient to sender
+  const [links, setLinks] = useState<Message[]>([]); // Links from recipient to sender
 
   // Get images from recipient to sender
   useEffect(() => {
@@ -44,6 +54,20 @@ export default function Contact() {
       })
       .then((res) => {
         setMedia(res.data);
+      });
+  }, [sessionUser.name, contact]);
+
+  // Get links from recipient to sender
+  useEffect(() => {
+    axios
+      .get("/message/get/links", {
+        params: {
+          sender: sessionUser.name,
+          recipient: contact[0].first_name + " " + contact[0].last_name,
+        },
+      })
+      .then((res) => {
+        setLinks(res.data);
       });
   }, [sessionUser.name, contact]);
 
@@ -153,9 +177,10 @@ export default function Contact() {
 
           {/* About */}
           <div
-            id="about"
             // Toggle about on click
-            onClick={() => setAboutToggle(!aboutToggle)}
+            onClick={() =>
+              setShowSection({ ...showSection, about: !showSection.about })
+            }
             className="mt-4 px-5 py-3 border border-x-0 hover:cursor-pointer"
           >
             <div className="flex flex-row justify-between">
@@ -164,7 +189,7 @@ export default function Contact() {
               </div>
 
               {/* If about is true, show the up arrow, else show the down arrow */}
-              {aboutToggle ? (
+              {showSection.about ? (
                 /* Attribution: https://heroicons.com/ */
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -200,18 +225,21 @@ export default function Contact() {
             </div>
 
             {/* If about is true, show the about text */}
-            {aboutToggle && (
+            {showSection.about && (
               <p className="mt-2 text-sm text-gray-400">{contact.about}</p>
             )}
           </div>
 
-          {/* Media */}
+          {/* Sections */}
           <div
-            id="media"
-            className={`${showMedia ? "border-0" : "border-b"} px-5 py-3`}
+            className={`${
+              showSection.media ? "border-0" : "border-b"
+            } px-5 py-3`}
           >
             <div
-              onClick={() => setShowMedia(!showMedia)}
+              onClick={() =>
+                setShowSection({ ...showSection, media: !showSection.media })
+              }
               className="flex flex-row justify-between hover:cursor-pointer"
             >
               <div className="font-medium text-gray-700">
@@ -219,7 +247,7 @@ export default function Contact() {
               </div>
 
               {/* If media is true, show the up arrow, else show the down arrow */}
-              {showMedia ? (
+              {showSection.media ? (
                 /* Attribution: https://heroicons.com/ */
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -255,7 +283,7 @@ export default function Contact() {
             </div>
 
             {/* If media is true, show the contents, else don't show anything */}
-            {showMedia && (
+            {showSection.media && (
               <>
                 {/* Buttons */}
                 <div className="flex flex-row mt-4 space-x-2.5 xl:space-x-5">
@@ -287,7 +315,7 @@ export default function Contact() {
                   ))}
                 </div>
 
-                {/* If the current index is 0, show the media contents, else don't show anything */}
+                {/* If the current index is 0, show the media */}
                 {currentIndex === 0 && (
                   /* Media contents */
                   <div className="mt-4 pr-1">
@@ -309,6 +337,34 @@ export default function Contact() {
                                 height={120}
                                 className="w-full h-auto rounded"
                               />
+                            )
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* If the current index is 1, show links */}
+                {currentIndex === 1 && (
+                  /* Media contents */
+                  <div className="mt-4 pr-1">
+                    {/* If there is no media, show text, else show the media */}
+                    {links.length === 0 ? (
+                      <div className="mt-5 text-sm sm:text-xs italic text-[#e0f2fe]">
+                        Links your sent will appear here
+                      </div>
+                    ) : (
+                      <div className="mt-5 flex flex-col">
+                        {links.map(
+                          (link, index) =>
+                            link.message !== null && (
+                              <a
+                                key={index}
+                                href={link.message}
+                                className="mb-2.5 text-xs text-gray-400 underline hover:text-sky-500"
+                              >
+                                {link.message}
+                              </a>
                             )
                         )}
                       </div>

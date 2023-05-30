@@ -64,6 +64,20 @@ router.get("/get/images", (req: Request, res: Response) => {
   });
 });
 
+// Get links from recipient to sender
+router.get("/get/links", (req: Request, res: Response) => {
+  const { sender, recipient } = req.query; // Get sender and recipient from query
+  const getLinks =
+    "SELECT message FROM messages WHERE sender = ? AND recipient = ? AND (message LIKE '%http://%' OR message LIKE '%https://%')"; // Get any messages that contain "http://" or "https://"
+
+  // Get links
+  db.query(getLinks, [recipient, sender], (err: Error, rows: Message[]) => {
+    if (err) throw err;
+
+    res.send(rows); // Send links
+  });
+});
+
 // Store message in database
 router.post("/store", (req: Request, res: Response) => {
   const { sender, recipient, message, image, time, date } = req.body;
