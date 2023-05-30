@@ -58,12 +58,24 @@ export default function MessageList() {
 
                   {/* If the message is a text message, show it, else show the image */}
                   {message.message !== null && message.image === null ? (
-                    <div
-                      ref={bottomRef}
-                      className="inline-block justify-end break-words p-2.5 text-[13px] rounded-xl rounded-tr-none text-white bg-blue-500"
-                    >
-                      {message.message}
-                    </div>
+                    message.message.includes("https://") ||
+                    message.message.includes("http://") ? (
+                      <div ref={bottomRef}>
+                        <a
+                          href={message.message}
+                          className="inline-block justify-end break-words p-2.5 text-[13px] rounded-xl rounded-tr-none underline text-white bg-blue-500"
+                        >
+                          {message.message}
+                        </a>
+                      </div>
+                    ) : (
+                      <div
+                        ref={bottomRef}
+                        className="inline-block justify-end break-words p-2.5 text-[13px] rounded-xl rounded-tr-none text-white bg-blue-500"
+                      >
+                        {message.message}
+                      </div>
+                    )
                   ) : (
                     message.image !== null && (
                       <div ref={bottomRef}>
